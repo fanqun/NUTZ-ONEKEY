@@ -95,12 +95,6 @@
 
 		<dependency>
 			<groupId>org.nutz</groupId>
-			<artifactId>nutz-integration-quartz</artifactId>
-			<version>1.r.56</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.nutz</groupId>
 			<artifactId>nutzwx</artifactId>
 			<version>1.r.55-SNAPSHOT</version>
 		</dependency>
