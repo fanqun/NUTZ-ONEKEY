@@ -226,6 +226,7 @@ public class APMTask implements Job {
 
 	/**
 	 * @param alarm
+	 * @param alarm
 	 */
 	@Async
 	protected void sendAlarmByWechat(APMAlarm alarm) {
