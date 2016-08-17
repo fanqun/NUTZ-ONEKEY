@@ -23,6 +23,8 @@ import club.zhcs.thunder.biz.acl.RoleService;
 import club.zhcs.thunder.biz.acl.UserRoleService;
 import club.zhcs.thunder.biz.acl.UserService;
 
+import com.alibaba.druid.filter.config.ConfigTools;
+
 /**
  * 
  * 
@@ -49,6 +51,10 @@ import club.zhcs.thunder.biz.acl.UserService;
  */
 public class ThunderSetup implements Setup {
 	private static final Log log = Logs.get();
+
+	public static void main(String[] args) throws Exception {
+		ConfigTools.main(new String[] { "123456" });
+	}
 
 	/*
 	 * 

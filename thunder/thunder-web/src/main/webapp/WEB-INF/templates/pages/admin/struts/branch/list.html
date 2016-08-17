@@ -32,6 +32,8 @@ layout("/layout/default.html",{"menu":["struts","branch_admin"],"breadcrumbs":[{
 			<td>${branch.code!}</td>
 			<td class="center">
 				<div class="hidden-sm hidden-xs btn-group">
+					<a class="btn btn-xs btn-success" href="${base}/branch/detail/${branch.id!}"> <i class="ace-icon fa fa-check bigger-120"></i> 详情
+					</a>
 					<a class="btn btn-xs btn-info" href="${base}/branch/edit/${branch.id!}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
 					</a>
 					<button class="btn btn-xs btn-danger btn-delete" data-url='/branch/delete' data-id='${branch.id!}'>

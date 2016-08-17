@@ -1,51 +1,63 @@
 var ioc = {
+	db : {
+		type : "org.nutz.ioc.impl.PropertiesProxy",
+		fields : {
+			ignoreResourceNotFound : true,
+			paths : [ 'datasource', '/var/datasource', 'C:/datasource' ],
+			utf8 : false
+		}
+	},
 	dataSource : {
 		type : "com.alibaba.druid.pool.DruidDataSource",
 		events : {
-			depose : "close"
+			depose : "close",
+			init : "init"
 		},
 		fields : {
 			url : {
-				java : "$config.get('db-url')"
+				java : "$db.get('db-url')"
 			},
 			username : {
-				java : "$config.get('db-user')"
+				java : "$db.get('db-user')"
 			},
 			password : {
-				java : "$config.get('db-pwd')"
+				java : "$db.get('db-pwd')"
 			},
 			maxActive : {
-				java : "$config.get('db-pool-max')"
+				java : "$db.get('db-pool-max')"
 			},
 			initialSize : {
-				java : "$config.get('db-pool-init')"
+				java : "$db.get('db-pool-init')"
 			},
 			maxWait : {
-				java : "$config.get('db-pool-wait')"
+				java : "$db.get('db-pool-wait')"
 			},
 			minIdle : {
-				java : "$config.get('db-pool-min')"
+				java : "$db.get('db-pool-min')"
 			},
 			timeBetweenEvictionRunsMillis : {
-				java : "$config.get('db-time-betw')"
+				java : "$db.get('db-time-betw')"
 			},
 			minEvictableIdleTimeMillis : {
-				java : "$config.get('db-time-met')"
+				java : "$db.get('db-time-met')"
 			},
 			validationQuery : {
-				java : "$config.get('db-query-val')"
+				java : "$db.get('db-query-val')"
 			},
 			testWhileIdle : {
-				java : "$config.get('db-test-idle')"
+				java : "$db.get('db-test-idle')"
 			},
 			testOnBorrow : {
-				java : "$config.get('db-test-borr')"
+				java : "$db.get('db-test-borr')"
 			},
 			testOnReturn : {
-				java : "$config.get('db-test-return')"
+				java : "$db.get('db-test-return')"
 			},
 			filters : {
-				java : "$config.get('db-filters')"
+				java : "$db.get('db-filters')"
+			},
+			connectionProperties : {
+				java : "$db.get('connectionProperties')"
 			}
 		}
 	},
