@@ -1,6 +1,8 @@
 package club.zhcs.thunder.module.admin.settings;
 
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.nutz.dao.Cnd;
+import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
@@ -36,6 +38,9 @@ public class SettingModule extends AbstractBaseModule {
 	@Inject
 	ConfigService configService;
 
+	@Inject("config")
+	PropertiesProxy config;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -50,9 +55,7 @@ public class SettingModule extends AbstractBaseModule {
 	@Ok("beetl:pages/setting/list.html")
 	@RequiresRoles("admin")
 	public Result list(@Param(value = "page", df = "1") int page) {
-		Pager<Config> pager = configService.searchByPage(_fixPage(page));
-		pager.setUrl(_base() + "/setting/list");
-		return Result.success().addData("pager", pager).setTitle("配置列表");
+		return Result.success().addData("config", config).setTitle("配置列表");
 	}
 
 	@At
@@ -79,8 +82,8 @@ public class SettingModule extends AbstractBaseModule {
 	@GET
 	@Ok("beetl:pages/setting/add_edit.html")
 	@RequiresRoles("admin")
-	public Result edit(int id) {
-		return Result.success().addData("config", configService.fetch(id));
+	public Result edit(String key) {
+		return Result.success().addData("config", configService.fetch(Cnd.where("name", "=", key))).addData("key", key);
 	}
 
 	@At
@@ -97,10 +100,10 @@ public class SettingModule extends AbstractBaseModule {
 		return configService.save(config) == null ? Result.fail("添加配置失败") : Result.success();
 	}
 
-	@At("/delete/*")
+	@At
 	@RequiresRoles("admin")
-	public Result delete(int id) {
-		return configService.delete(id) == 1 ? Result.success() : Result.fail("删除配置失败!");
+	public Result delete(@Param("id") String key) {
+		return configService.delete(key) == 1 ? Result.success() : Result.fail("删除配置失败!");
 	}
 
 }

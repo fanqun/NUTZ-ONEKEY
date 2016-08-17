@@ -59,6 +59,7 @@ $(function() {
 	$('.btn-delete').on('click', function() {
 		var url = $(this).data('url');
 		var id = $(this).data('id');
+		console.log(id);
 		layer.confirm('确认删除这条数据 ?', {
 			icon : 3,
 			title : '删除提示'
