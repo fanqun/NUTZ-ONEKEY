@@ -93,13 +93,13 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-integration-shiro</artifactId>
-			<version>1.r.56</version>
+			<version>1.r.57</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-integration-quartz</artifactId>
-			<version>1.r.56</version>
+			<version>1.r.57</version>
 		</dependency>
 
 		<dependency>
@@ -111,7 +111,7 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutzwx</artifactId>
-			<version>1.r.55-SNAPSHOT</version>
+			<version>1.r.57</version>
 		</dependency>
 
 
@@ -147,5 +147,10 @@
 			<version>7.1.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.nutz</groupId>
+			<artifactId>nutz-plugins-daocache</artifactId>
+			<version>1.r.57</version>
+		</dependency>
 	</dependencies>
 </project>

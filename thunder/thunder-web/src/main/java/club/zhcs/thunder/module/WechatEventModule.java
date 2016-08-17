@@ -13,7 +13,9 @@ import org.nutz.mvc.annotation.Filters;
 import org.nutz.weixin.bean.WxInMsg;
 import org.nutz.weixin.bean.WxOutMsg;
 import org.nutz.weixin.impl.AbstractWxHandler;
-import org.nutz.weixin.spi.WxApi2;
+import org.nutz.weixin.impl.WxApi2Impl;
+import org.nutz.weixin.repo.com.qq.weixin.mp.aes.AesException;
+import org.nutz.weixin.repo.com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import org.nutz.weixin.spi.WxHandler;
 import org.nutz.weixin.util.Wxs;
 
@@ -30,7 +32,7 @@ import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 public class WechatEventModule extends AbstractBaseModule {
 
 	@Inject("wxApi")
-	WxApi2 api;
+	WxApi2Impl api;
 
 	@Inject
 	PropertiesProxy config;
@@ -107,6 +109,15 @@ public class WechatEventModule extends AbstractBaseModule {
 		public WxOutMsg eventUnsubscribe(WxInMsg msg) {
 			// 将客户状态设置为禁用
 			return defaultMsg(msg);
+		}
+
+		@Override
+		public WXBizMsgCrypt getMsgCrypt() {
+			try {
+				return new WXBizMsgCrypt(api.getAccessToken(), api.getEncodingAesKey(), api.getAppid());
+			} catch (AesException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	};
 
