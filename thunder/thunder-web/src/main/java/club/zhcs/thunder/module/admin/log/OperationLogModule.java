@@ -19,7 +19,7 @@ import club.zhcs.titans.utils.db.Result;
  *
  * @file OperationLogModule.java
  *
- * @description // TODO write some description of this class
+ * @description
  *
  * @time 2016年3月15日 下午5:21:08
  *
