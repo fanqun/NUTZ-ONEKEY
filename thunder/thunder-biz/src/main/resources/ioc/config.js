@@ -1,10 +1,11 @@
 var ioc = {
 	config : {
 		type : "org.nutz.ioc.impl.PropertiesProxy",
+		// args :[false,'conf'],
 		fields : {
 			ignoreResourceNotFound : true,
-			paths : [ 'conf' ],
-			utf8 : false
+			utf8 : false,
+			paths : 'conf'
 		}
 	}
 }
