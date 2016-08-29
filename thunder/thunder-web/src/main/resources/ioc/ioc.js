@@ -6,6 +6,13 @@ var ioc = {
 			utf8 : false
 		}
 	},
+	sigar : {
+		type : "org.nutz.ioc.impl.PropertiesProxy",
+		fields : {
+			paths : [ "sigar" ],
+			utf8 : false
+		}
+	},
 	log : {
 		type : "org.nutz.aop.interceptor.LoggingMethodInterceptor"
 	},
