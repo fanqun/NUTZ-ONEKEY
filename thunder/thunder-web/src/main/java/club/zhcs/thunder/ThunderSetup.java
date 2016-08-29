@@ -19,6 +19,7 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
+import org.nutz.plugin.sigar.integration.watchdog.SigarClient;
 
 import club.zhcs.thunder.bean.acl.Role;
 import club.zhcs.thunder.bean.acl.User;
@@ -93,6 +94,8 @@ public class ThunderSetup implements Setup {
 		Dao dao = ioc.get(Dao.class);
 
 		ioc.get(NutQuartzCronJobFactory.class);// 触发任务
+
+		ioc.get(SigarClient.class);// 触发 sigar
 
 		// 为全部标注了@Table的bean建表
 

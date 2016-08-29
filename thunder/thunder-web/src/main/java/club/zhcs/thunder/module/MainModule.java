@@ -1,6 +1,6 @@
 package club.zhcs.thunder.module;
 
-import java.io.File;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -35,7 +35,6 @@ import club.zhcs.titans.nutz.captcha.JPEGView;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.codec.DES;
 import club.zhcs.titans.utils.db.Result;
-import club.zhcs.titans.utils.db.SQLFormater;
 
 /**
  * 
@@ -53,7 +52,7 @@ import club.zhcs.titans.utils.db.SQLFormater;
 
 @Modules(scanPackage = true)
 @IocBy(type = ComboIocProvider.class, args = { "*anno", "club.zhcs", "*tx",
-		"*js", "ioc", "*async", "*quartz", "quartz" })
+		"*js", "ioc", "*async", "*quartz", "quartz", "*sigar", "sigar" })
 @Views({ BeetlViewMaker.class })
 @Fail("http:500")
 @Ok("json")
@@ -72,13 +71,19 @@ public class MainModule extends AbstractBaseModule {
 		return "main";
 	}
 
-	public static void main(String[] args) {
-		System.err.println(SQLFormater.formatSqlFile(new File("D:/a.sql")));
-	}
-
 	@At
 	public Result hello() {
 		return Result.success().addData("msg", "Hello nutz-thunder!");
+	}
+
+	@At("/testSigar")
+	@Filters
+	public Result testSigar(HttpServletRequest request) throws IOException {
+
+		System.err.println(request.getHeader("token"));
+
+		String info = Lang.readAll(request.getReader());
+		return Result.success().addData("info", Lang.map(info));
 	}
 
 	@At
