@@ -1,5 +1,7 @@
 package club.zhcs.thunder.module;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -33,6 +35,7 @@ import club.zhcs.titans.nutz.captcha.JPEGView;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.codec.DES;
 import club.zhcs.titans.utils.db.Result;
+import club.zhcs.titans.utils.db.SQLFormater;
 
 /**
  * 
@@ -49,7 +52,8 @@ import club.zhcs.titans.utils.db.Result;
  */
 
 @Modules(scanPackage = true)
-@IocBy(type = ComboIocProvider.class, args = { "*anno", "club.zhcs", "*tx", "*js", "ioc", "*async", "*quartz", "quartz" })
+@IocBy(type = ComboIocProvider.class, args = { "*anno", "club.zhcs", "*tx",
+		"*js", "ioc", "*async", "*quartz", "quartz" })
 @Views({ BeetlViewMaker.class })
 @Fail("http:500")
 @Ok("json")
@@ -66,6 +70,10 @@ public class MainModule extends AbstractBaseModule {
 	@Override
 	public String _getNameSpace() {
 		return "main";
+	}
+
+	public static void main(String[] args) {
+		System.err.println(SQLFormater.formatSqlFile(new File("D:/a.sql")));
 	}
 
 	@At
@@ -92,7 +100,8 @@ public class MainModule extends AbstractBaseModule {
 	@At("/")
 	@Ok("jsp:/login")
 	@Filters
-	public View login(@Attr(SessionKeys.USER_KEY) User user, HttpServletRequest request) {
+	public View login(@Attr(SessionKeys.USER_KEY) User user,
+			HttpServletRequest request) {
 		String cookie = _getCookie("kerbores");
 		if (!Strings.isBlank(cookie)) {
 			NutMap data = Lang.map(DES.decrypt(cookie));

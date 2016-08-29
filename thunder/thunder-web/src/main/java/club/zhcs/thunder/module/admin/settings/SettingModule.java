@@ -13,7 +13,6 @@ import org.nutz.mvc.annotation.Param;
 import club.zhcs.thunder.bean.config.Config;
 import club.zhcs.thunder.biz.config.ConfigService;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
-import club.zhcs.titans.utils.db.Pager;
 import club.zhcs.titans.utils.db.Result;
 
 /**
@@ -58,17 +57,19 @@ public class SettingModule extends AbstractBaseModule {
 		return Result.success().addData("config", config).setTitle("配置列表");
 	}
 
-	@At
-	@Ok("beetl:pages/setting/list.html")
-	@RequiresRoles("admin")
-	public Result search(@Param("key") String key, @Param(value = "page", df = "1") int page) {
-		page = _fixPage(page);
-		key = _fixSearchKey(key);
-		Pager<Config> pager = configService.searchByKeyAndPage(key, page, "name", "description");
-		pager.setUrl(_base() + "/setting/search");
-		pager.addParas("key", key);
-		return Result.success().addData("pager", pager);
-	}
+	// @At
+	// @Ok("beetl:pages/setting/list.html")
+	// @RequiresRoles("admin")
+	// public Result search(@Param("key") String key, @Param(value = "page", df
+	// = "1") int page) {
+	// page = _fixPage(page);
+	// key = _fixSearchKey(key);
+	// Pager<Config> pager = configService.searchByKeyAndPage(key, page, "name",
+	// "description");
+	// pager.setUrl(_base() + "/setting/search");
+	// pager.addParas("key", key);
+	// return Result.success().addData("pager", pager);
+	// }
 
 	@At
 	@GET
@@ -78,18 +79,19 @@ public class SettingModule extends AbstractBaseModule {
 		return Result.success();
 	}
 
-	@At("/edit/*")
+	@At("/edit")
 	@GET
 	@Ok("beetl:pages/setting/add_edit.html")
 	@RequiresRoles("admin")
-	public Result edit(String key) {
-		return Result.success().addData("config", configService.fetch(Cnd.where("name", "=", key))).addData("key", key);
+	public Result edit(@Param("key") String key) {
+		return Result.success().addData("config", configService.fetch(Cnd.where("name", "=", key))).addData("key", key).addData("value", config.get(key));
 	}
 
 	@At
 	@POST
 	@RequiresRoles("admin")
 	public Result edit(@Param("..") Config config) {
+		this.config.put(config.getName(), config.getValue());
 		return configService.update(config) == 1 ? Result.success() : Result.fail("更新失败!");
 	}
 
@@ -97,12 +99,14 @@ public class SettingModule extends AbstractBaseModule {
 	@POST
 	@RequiresRoles("admin")
 	public Result add(@Param("..") Config config) {
+		this.config.put(config.getName(), config.getValue());
 		return configService.save(config) == null ? Result.fail("添加配置失败") : Result.success();
 	}
 
 	@At
 	@RequiresRoles("admin")
 	public Result delete(@Param("id") String key) {
+		this.config.remove(key);
 		return configService.delete(key) == 1 ? Result.success() : Result.fail("删除配置失败!");
 	}
 

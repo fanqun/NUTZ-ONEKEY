@@ -26,7 +26,7 @@ layout("/layout/default.html",{"menu":["settings","setting_list"],"breadcrumbs":
 		<tr>
 			<td>${config.key!}</td>
 			<td>${config.value!}</td>
-			<td><a class="btn btn-xs btn-info" href="${base}/setting/edit/${config.key}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
+			<td><a class="btn btn-xs btn-info" href="${base}/setting/edit/?key=${config.key}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
 			</a>
 				<button class="btn btn-xs btn-danger btn-delete" data-url='/setting/delete' data-id='${config.key!}'>
 					<i class="ace-icon fa fa-trash-o bigger-120"></i> 删除

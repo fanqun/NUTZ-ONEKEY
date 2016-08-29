@@ -8,8 +8,13 @@ import org.nutz.dao.util.Daos;
 import org.nutz.integration.quartz.NutQuartzCronJobFactory;
 import org.nutz.integration.shiro.NutShiro;
 import org.nutz.ioc.Ioc;
+import org.nutz.ioc.impl.PropertiesProxy;
+import org.nutz.lang.ContinueLoop;
+import org.nutz.lang.Each;
 import org.nutz.lang.Encoding;
+import org.nutz.lang.ExitLoop;
 import org.nutz.lang.Lang;
+import org.nutz.lang.LoopException;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.NutConfig;
@@ -19,11 +24,11 @@ import club.zhcs.thunder.bean.acl.Role;
 import club.zhcs.thunder.bean.acl.User;
 import club.zhcs.thunder.bean.acl.User.Status;
 import club.zhcs.thunder.bean.acl.UserRole;
+import club.zhcs.thunder.bean.config.Config;
 import club.zhcs.thunder.biz.acl.RoleService;
 import club.zhcs.thunder.biz.acl.UserRoleService;
 import club.zhcs.thunder.biz.acl.UserService;
-
-import com.alibaba.druid.filter.config.ConfigTools;
+import club.zhcs.thunder.biz.config.ConfigService;
 
 /**
  * 
@@ -51,10 +56,6 @@ import com.alibaba.druid.filter.config.ConfigTools;
  */
 public class ThunderSetup implements Setup {
 	private static final Log log = Logs.get();
-
-	public static void main(String[] args) throws Exception {
-		ConfigTools.main(new String[] { "123456" });
-	}
 
 	/*
 	 * 
@@ -97,6 +98,18 @@ public class ThunderSetup implements Setup {
 
 		Daos.createTablesInPackage(dao, getClass().getPackage().getName() + ".bean", false);
 		Daos.migration(dao, getClass().getPackage().getName() + ".bean", true, true);
+
+		ConfigService configService = ioc.get(ConfigService.class);
+
+		PropertiesProxy p = ioc.get(PropertiesProxy.class, "config");
+
+		Lang.each(configService.queryAll(), new Each<Config>() {
+
+			@Override
+			public void invoke(int arg0, Config config, int arg2) throws ExitLoop, ContinueLoop, LoopException {
+				p.put(config.getName(), config.getValue());
+			}
+		});
 
 		// 超级管理员
 
