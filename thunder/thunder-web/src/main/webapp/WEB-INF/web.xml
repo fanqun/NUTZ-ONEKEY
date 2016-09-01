@@ -85,4 +85,12 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+    <servlet>
+        <servlet-name>nop</servlet-name>
+        <servlet-class>org.nutz.plugins.nop.server.NOPServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+    	<servlet-name>nop</servlet-name>
+    	<url-pattern>/nop</url-pattern>
+    </servlet-mapping>
 </web-app>
