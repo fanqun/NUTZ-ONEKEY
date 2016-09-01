@@ -4,7 +4,7 @@ import org.beetl.core.Context;
 import org.beetl.core.Function;
 import org.nutz.mvc.Mvcs;
 
-import club.zhcs.thunder.bean.Application.SessionKeys;
+import club.zhcs.thunder.Application.SessionKeys;
 
 /**
  * 

@@ -1,7 +1,9 @@
 package club.zhcs.thunder.chain;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.shiro.authz.aop.AuthorizingAnnotationMethodInterceptor;
 import org.nutz.integration.shiro.NutShiroProcessor;
 import org.nutz.lang.ContinueLoop;
 import org.nutz.lang.Each;
@@ -17,6 +19,10 @@ import org.nutz.mvc.Processor;
 import org.nutz.mvc.impl.NutActionChain;
 import org.nutz.mvc.impl.processor.ActionFiltersProcessor;
 
+import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresPermissions;
+import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresRoles;
+import club.zhcs.thunder.ext.shiro.aop.ThunderPermissionAnnotationMethodInterceptor;
+import club.zhcs.thunder.ext.shiro.aop.ThunderRoleAnnotationMethodInterceptor;
 import club.zhcs.titans.nutz.chain.KerboresActionChainMaker;
 import club.zhcs.titans.nutz.processor.KerboresFailProcessor;
 
@@ -43,8 +49,12 @@ public class ThunderChainMaker extends KerboresActionChainMaker {
 	public ActionChain eval(final NutConfig config, final ActionInfo ai) {
 		List<Processor> list = normalList();
 
-		addBefore(list, ActionFiltersProcessor.class, new NutShiroProcessor());
+		List<AuthorizingAnnotationMethodInterceptor> interceptors = new ArrayList<AuthorizingAnnotationMethodInterceptor>();
 
+		interceptors.add(new ThunderPermissionAnnotationMethodInterceptor());
+		interceptors.add(new ThunderRoleAnnotationMethodInterceptor());
+
+		addBefore(list, ActionFiltersProcessor.class, new NutShiroProcessor(interceptors, ThunderRequiresPermissions.class, ThunderRequiresRoles.class));
 		Processor error = new KerboresFailProcessor();
 		Lang.each(list, new Each<Processor>() {
 

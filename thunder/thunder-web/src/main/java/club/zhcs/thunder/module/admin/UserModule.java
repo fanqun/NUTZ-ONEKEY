@@ -15,6 +15,8 @@ import org.nutz.mvc.annotation.Param;
 import club.zhcs.thunder.aop.SystemLog;
 import club.zhcs.thunder.bean.acl.User;
 import club.zhcs.thunder.biz.acl.UserService;
+import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresPermissions;
+import club.zhcs.thunder.vo.InstallPermission;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.db.Pager;
 import club.zhcs.titans.utils.db.Result;
@@ -57,9 +59,10 @@ public class UserModule extends AbstractBaseModule {
 	 */
 	@At
 	@Ok("beetl:pages/admin/auth/user/list.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_LIST)
 	@SystemLog(module = "用户管理", methods = "用户列表")
 	public Result list(@Param(value = "page", df = "1") int page) {
+
 		page = _fixPage(page);
 		Pager<User> pager = userService.searchByPage(page);
 		pager.setUrl(_base() + "/user/list");
@@ -74,7 +77,7 @@ public class UserModule extends AbstractBaseModule {
 	@At
 	@GET
 	@Ok("beetl:pages/admin/auth/user/add_edit.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_ADD)
 	public Result add() {
 		return Result.success();
 	}
@@ -89,7 +92,7 @@ public class UserModule extends AbstractBaseModule {
 	@At("/edit/*")
 	@GET
 	@Ok("beetl:pages/admin/auth/user/add_edit.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_EDIT)
 	public Result edit(int id) {
 		return Result.success().addData("user", userService.fetch(id));
 	}
@@ -103,7 +106,7 @@ public class UserModule extends AbstractBaseModule {
 	 */
 	@At
 	@POST
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_ADD)
 	public Result add(@Param("..") User user) {
 		user.setPassword(Lang.md5(user.getPassword()));
 		return userService.save(user) != null ? Result.success().addData("user", user) : Result.fail("添加用户失败!");
@@ -118,7 +121,7 @@ public class UserModule extends AbstractBaseModule {
 	 */
 	@At
 	@POST
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_EDIT)
 	public Result edit(@Param("..") User user) {
 		return userService.update(user, "realName", "phone", "email", "status") ? Result.success() : Result.fail("更新失败!");
 	}
@@ -131,6 +134,7 @@ public class UserModule extends AbstractBaseModule {
 	 * @return
 	 */
 	@At("/delete/*")
+	@ThunderRequiresPermissions(InstallPermission.USER_DELETE)
 	@RequiresRoles("admin")
 	public Result delete(int id) {
 		return userService.delete(id) == 1 ? Result.success() : Result.fail("删除用户失败!");
@@ -145,7 +149,7 @@ public class UserModule extends AbstractBaseModule {
 	 */
 	@At("/detail/*")
 	@Ok("beetl:pages/admin/auth/user/detail.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_DETAIL)
 	public Result detail(int id) {
 		return Result.success().addData("user", userService.fetch(id));
 	}
@@ -161,7 +165,7 @@ public class UserModule extends AbstractBaseModule {
 	 */
 	@At
 	@Ok("beetl:pages/admin/auth/user/list.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_LIST)
 	public Result search(@Param("key") String key, @Param(value = "page", df = "1") int page) {
 		page = _fixPage(page);
 		key = _fixSearchKey(key);
@@ -180,7 +184,7 @@ public class UserModule extends AbstractBaseModule {
 	@At("/grant/*")
 	@GET
 	@Ok("beetl:pages/admin/auth/user/grant.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_GRANT)
 	public Result grant(int id) {
 		List<Record> records = userService.findPermissionsWithUserPowerdInfoByUserId(id);
 		return Result.success().addData("records", records).addData("userId", id);
@@ -194,7 +198,7 @@ public class UserModule extends AbstractBaseModule {
 	 * @return
 	 */
 	@At
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_GRANT)
 	public Result grant(@Param("permissions") int[] ids, @Param("id") int id) {
 		return userService.setPermission(ids, id);
 	}
@@ -208,7 +212,7 @@ public class UserModule extends AbstractBaseModule {
 	 */
 	@At("/role/*")
 	@GET
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_ROLE)
 	@Ok("beetl:pages/admin/auth/user/role.html")
 	public Result role(int id) {
 		List<Record> records = userService.findRolesWithUserPowerdInfoByUserId(id);
@@ -225,7 +229,7 @@ public class UserModule extends AbstractBaseModule {
 	 * @return
 	 */
 	@At
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.USER_ROLE)
 	public Result role(@Param("roles") int[] ids, @Param("id") int id) {
 		return userService.setRole(ids, id);
 	}
