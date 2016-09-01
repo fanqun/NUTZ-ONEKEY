@@ -30,30 +30,6 @@ import club.zhcs.thunder.biz.acl.UserRoleService;
 import club.zhcs.thunder.biz.acl.UserService;
 import club.zhcs.thunder.biz.config.ConfigService;
 
-/**
- * 
- * 
- * 
- * @author Kerbores(kerbores@gmail.com)
- * 
- *
- * 
- * @project thunder-web
- * 
- *
- * 
- * @file ThunderSetup.java
- * 
- *
- * 
- * @description 初始化
- * 
- *
- * 
- * @time 2016年3月8日 上午10:51:26
- * 
- *
- */
 public class ThunderSetup implements Setup {
 	private static final Log log = Logs.get();
 
