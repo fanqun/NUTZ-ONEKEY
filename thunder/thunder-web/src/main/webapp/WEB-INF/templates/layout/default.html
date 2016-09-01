@@ -52,8 +52,7 @@
 
 <body class="no-skin">
 	<a href="https://github.com/Kerbores/NUTZ-ONEKEY" target="_blank"> <img style="position: absolute; top: 0; right: 0; border: 0;z-index: 999;width: 80px"
-		src="${base!}/resources/images/github.png"
-		alt="Fork me on GitHub" data-canonical-src="${base!}/resources/images/github.png">
+		src="${base!}/resources/images/github.png" alt="Fork me on GitHub" data-canonical-src="${base!}/resources/images/github.png">
 	</a>
 	<!-- #section:basics/navbar.layout -->
 	<div id="navbar" class="navbar navbar-default">
@@ -331,14 +330,18 @@
 				</a> <b class="arrow"></b>
 
 					<ul class="submenu">
+						<!--# if(hasPermission('user.list')){ #-->
 						<li class="${ menu[1] =='user_admin' ?'active':''}"><a href="${base!}/user/list"> <i class="menu-icon fa fa-user"></i> 用户管理
 						</a> <b class="arrow"></b></li>
-
+						<!--# } #-->
+						<!--# if(hasPermission('role.list')){ #-->
 						<li class="${ menu[1] =='role_admin' ?'active':''}"><a href="${base!}/role/list"> <i class="menu-icon fa fa-lock"></i> 角色管理
 						</a> <b class="arrow"></b></li>
-
+						<!--# } #-->
+						<!--# if(hasPermission('permission.list')){ #-->
 						<li class="${ menu[1] =='permission_admin' ?'active':''}"><a href="${base!}/permission/list"> <i class="menu-icon fa fa-eye"></i> 权限管理
 						</a> <b class="arrow"></b></li>
+						<!--# } #-->
 					</ul></li>
 
 				<li class="${ menu[0] =='settings' ?'active open':''}"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-cogs"></i> <span class="menu-text"> 配置管理 </span>
@@ -346,9 +349,10 @@
 				</a> <b class="arrow"></b>
 
 					<ul class="submenu">
+						<!--# if(hasPermission('config.list')){ #-->
 						<li class="${ menu[1] =='setting_list' ?'active':''}"><a href="${base!}/setting/list"> <i class="menu-icon fa fa-cog"></i> 配置列表
 						</a> <b class="arrow"></b></li>
-
+						<!--# } #-->
 					</ul></li>
 
 				<li class="${ menu[0] =='struts' ?'active open':''}"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-building"></i> <span class="menu-text">组织架构
@@ -356,9 +360,10 @@
 				</a> <b class="arrow"></b>
 
 					<ul class="submenu">
+						<!--# if(hasPermission('struts.list')){ #-->
 						<li class="${ menu[1] =='branch_admin' ?'active':''}"><a href="${base!}/branch/list"> <i class="menu-icon fa fa-bank"></i> 机构管理
 						</a> <b class="arrow"></b></li>
-
+						<!--# } #-->
 
 					</ul></li>
 			</ul>
