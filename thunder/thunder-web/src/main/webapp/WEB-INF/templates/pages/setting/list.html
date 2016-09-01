@@ -6,10 +6,11 @@ layout("/layout/default.html",{"menu":["settings","setting_list"],"breadcrumbs":
 		<tr>
 			<th colspan="8">
 				<div class="row">
-					<div class="col-md-3 ">
-					</div>
+					<div class="col-md-3 "></div>
 					<div class="col-md-2 col-md-offset-7">
+						<!--# if(hasPermission('config.add')){ #-->
 						<a href="${base}/setting/add" class="btn btn-info btn-sm"><i class="fa fa-plus-circle"></i> 新增配置</a>
+						<!--# } #-->
 					</div>
 				</div>
 			</th>
@@ -26,11 +27,16 @@ layout("/layout/default.html",{"menu":["settings","setting_list"],"breadcrumbs":
 		<tr>
 			<td>${config.key!}</td>
 			<td>${config.value!}</td>
-			<td><a class="btn btn-xs btn-info" href="${base}/setting/edit/?key=${config.key}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
+			<td>
+			<!--# if(hasPermission('config.edit')){ #-->
+			<a class="btn btn-xs btn-info" href="${base}/setting/edit/?key=${config.key}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
 			</a>
+			<!--# } #-->
+			<!--# if(hasPermission('config.delete')){ #-->
 				<button class="btn btn-xs btn-danger btn-delete" data-url='/setting/delete' data-id='${config.key!}'>
 					<i class="ace-icon fa fa-trash-o bigger-120"></i> 删除
 				</button></td>
+				<!--# } #-->
 		</tr>
 		<!--# } #-->
 	</tbody>

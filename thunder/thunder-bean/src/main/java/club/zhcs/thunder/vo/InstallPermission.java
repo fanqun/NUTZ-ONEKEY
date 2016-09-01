@@ -80,7 +80,7 @@ public enum InstallPermission {
 	/**
 	 * 
 	 */
-	CONFIG_ADD("config.add", "配置 添加"),
+	CONFIG_ADD("config.add", "配置添加"),
 	/**
 	 * 
 	 */
@@ -104,7 +104,7 @@ public enum InstallPermission {
 	/**
 	 * 
 	 */
-	STRUTS_EDIT("struts.edit", "机构 编辑"),
+	STRUTS_EDIT("struts.edit", "机构编辑"),
 	/**
 	 * 
 	 */

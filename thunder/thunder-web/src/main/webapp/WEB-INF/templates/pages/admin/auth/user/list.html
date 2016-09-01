@@ -16,7 +16,9 @@ layout("/layout/default.html",{"menu":["acl","user_admin"],"breadcrumbs":[{"name
 						</form>
 					</div>
 					<div class="col-md-2 col-md-offset-7">
+						<!--# if(hasPermission('user.add')){ #-->
 						<a href="${base}/user/add" class="btn btn-info btn-sm"><i class="fa fa-plus-circle"></i> 添加用户</a>
+						<!--# } #-->
 					</div>
 				</div>
 			</th>
@@ -40,14 +42,27 @@ layout("/layout/default.html",{"menu":["acl","user_admin"],"breadcrumbs":[{"name
 			<td><span class="label label-${user.status=="ACTIVED" ? "success" : "warning"} label-mini">${user.status}</span></td>
 			<td class="center">
 				<div class="hidden-sm hidden-xs btn-group">
+					<!--# if(hasPermission('user.detail')){ #-->
 					<a class="btn btn-xs btn-success" href="${base}/user/detail/${user.id!}"> <i class="ace-icon fa fa-check bigger-120"></i> 详情
-					</a> <a class="btn btn-xs btn-warning " href='${base}/user/role/${user.id!}'> <i class="ace-icon fa fa-fire  bigger-120"></i> 设置角色
-					</a> <a class="btn btn-xs btn-danger" href='${base}/user/grant/${user.id!}'> <i class="ace-icon fa fa-bolt  bigger-120"></i> 设置权限
-					</a> <a class="btn btn-xs btn-info" href="${base}/user/edit/${user.id!}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
 					</a>
+					<!--# } #-->
+					<!--# if(hasPermission('user.role')){ #-->
+					<a class="btn btn-xs btn-warning " href='${base}/user/role/${user.id!}'> <i class="ace-icon fa fa-fire  bigger-120"></i> 设置角色
+					</a>
+					<!--# } #-->
+					<!--# if(hasPermission('user.grant')){ #-->
+					<a class="btn btn-xs btn-danger" href='${base}/user/grant/${user.id!}'> <i class="ace-icon fa fa-bolt  bigger-120"></i> 设置权限
+					</a>
+					<!--# } #-->
+					<!--# if(hasPermission('user.edit')){ #-->
+					<a class="btn btn-xs btn-info" href="${base}/user/edit/${user.id!}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
+					</a>
+					<!--# } #-->
+					<!--# if(hasPermission('user.delete')){ #-->
 					<button class="btn btn-xs btn-danger btn-delete" data-url='/user/delete' data-id='${user.id!}'>
 						<i class="ace-icon fa fa-trash-o bigger-120"></i> 删除
 					</button>
+					<!--# } #-->
 				</div>
 			</td>
 		</tr>
