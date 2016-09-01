@@ -5,16 +5,16 @@ NUTZ一键脚手架
 ## 概述
 
 ### github地址 
- [https://github.com/Kerbores/NUTZ-ONEKEY][1]
+[https://github.com/Kerbores/NUTZ-ONEKEY][1]
 ### 仓库
 ```
 <repositories>
-		<repository>
-			<id>dgj nexus</id>
-			<name>Team Nexus Repository</name>
-			<url>http://maven.kerbores.com/nexus/content/groups/public</url>
-		</repository>
-	</repositories>
+<repository>
+<id>dgj nexus</id>
+<name>Team Nexus Repository</name>
+<url>http://maven.kerbores.com/nexus/content/groups/public</url>
+</repository>
+</repositories>
 ```
 ## 目标
 - 提供开箱即用的企业级开发平台
@@ -67,10 +67,27 @@ NUTZ一键脚手架
 ### 拒绝硬编码的sql管理
 - 文件化的sql管理器
 - 单表使用orm,跨表使用配置化的自定义sql语句
-  + 保证最小化编码
-  + 保证sql的集中化,语义化管理
-  + 保证非单表sql语句的配置化和优化
-  
++ 保证最小化编码
++ 保证sql的集中化,语义化管理
++ 保证非单表sql语句的配置化和优化
+
+## 2.0变更(change log)
+
+- 一些 BUG 的修复
+- 增加微信配置入口
+- druid 密码加密
+- properties 文件加载字符转义问题修复
+- sigar 集成支持 watchdog 模式
++ watchdog 往 mq 生产者上面写数据
++ mq 的消费者消费上报信息并生成告警
+- 增加 nop 集成示例
++ [nop 是什么][4]
++ show me the code
+- 精确到按钮的权限控制
++ shiro 插件更新
++ 自定义 shiro 的验证注解及拦截器
++ 权限验证使用枚举,消灭硬编码
+
 ## 关于我
 key  | Value
 ------------- | -------------
@@ -84,6 +101,9 @@ QQ群 | 326068942
 ![支付宝二维码][3]
 
 
-  [1]: http://git.oschina.net/uploads/qrcode/qrcode_wechat_14675223541030518.png
-  [2]: http://git.oschina.net/uploads/qrcode/qrcode_wechat_14675223541030518.png
-  [3]: http://git.oschina.net/uploads/qrcode/qrcode_alipay_14675225071030518.png
+
+
+[1]: http://git.oschina.net/uploads/qrcode/qrcode_wechat_14675223541030518.png
+[2]: http://git.oschina.net/uploads/qrcode/qrcode_wechat_14675223541030518.png
+[3]: http://git.oschina.net/uploads/qrcode/qrcode_alipay_14675225071030518.png
+[4]: https://github.com/nutzam/nutzmore/tree/master/nutz-plugins-nop

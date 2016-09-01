@@ -90,6 +90,10 @@ public enum InstallPermission {
 	 */
 	CONFIG_DELETE("config.delete", "配置删除"),
 	/**
+	 * 
+	 */
+	CONFIG_WECHAT("config.wechat", "微信配置"),
+	/**
 	 * ++++++++++++++++++++++配置管理++++++++++++++++++++++++++++++++
 	 */
 

@@ -353,6 +353,10 @@
 						<li class="${ menu[1] =='setting_list' ?'active':''}"><a href="${base!}/setting/list"> <i class="menu-icon fa fa-cog"></i> 配置列表
 						</a> <b class="arrow"></b></li>
 						<!--# } #-->
+						<!--# if(hasPermission('config.wechat')){ #-->
+						<li class="${ menu[1] =='setting_wechat' ?'active':''}"><a href="${base!}/setting/wechat"> <i class="menu-icon fa fa-weixin"></i> 微信接入
+						</a> <b class="arrow"></b></li>
+						<!--# } #-->
 					</ul></li>
 
 				<li class="${ menu[0] =='struts' ?'active open':''}"><a href="#" class="dropdown-toggle"> <i class="menu-icon fa fa-building"></i> <span class="menu-text">组织架构
