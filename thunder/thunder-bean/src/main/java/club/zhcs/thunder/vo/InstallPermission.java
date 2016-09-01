@@ -68,7 +68,7 @@ public enum InstallPermission {
 	/**
 	 * 权限管理
 	 */
-	PERMISSION_DELETE("permission.delete", "权限删除")
+	PERMISSION_LIST("permission.list", "权限管理")
 	/**
 	 * ++++++++++++++++++++++访问控制++++++++++++++++++++++++++++++++
 	 */
