@@ -5,7 +5,7 @@ import org.beetl.core.Function;
 import org.nutz.lang.Strings;
 import org.nutz.mvc.Mvcs;
 
-import club.zhcs.thunder.bean.Application;
+import club.zhcs.thunder.Application;
 
 /**
  * 

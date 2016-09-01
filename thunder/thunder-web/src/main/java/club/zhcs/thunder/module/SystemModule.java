@@ -16,7 +16,7 @@ import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
 
-import club.zhcs.thunder.bean.Application.SessionKeys;
+import club.zhcs.thunder.Application.SessionKeys;
 import club.zhcs.thunder.bean.acl.User;
 import club.zhcs.thunder.biz.acl.UserService;
 import club.zhcs.thunder.biz.shiro.ShiroUserService;

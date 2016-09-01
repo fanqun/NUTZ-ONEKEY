@@ -1,6 +1,5 @@
 package club.zhcs.thunder.module.admin;
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Ok;
@@ -8,6 +7,8 @@ import org.nutz.mvc.annotation.Param;
 
 import club.zhcs.thunder.bean.acl.Permission;
 import club.zhcs.thunder.biz.acl.PermissionService;
+import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresPermissions;
+import club.zhcs.thunder.vo.InstallPermission;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.db.Pager;
 import club.zhcs.titans.utils.db.Result;
@@ -51,7 +52,7 @@ public class PermissionModule extends AbstractBaseModule {
 	 */
 	@At
 	@Ok("beetl:pages/admin/auth/permission/list.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.PERMISSION_LIST)
 	public Result list(@Param(value = "page", df = "1") int page) {
 		page = _fixPage(page);
 		Pager<Permission> pager = permissionService.searchByPage(page);
@@ -68,7 +69,7 @@ public class PermissionModule extends AbstractBaseModule {
 	 */
 	@At
 	@Ok("beetl:pages/admin/auth/permission/list.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.PERMISSION_LIST)
 	public Result search(@Param(value = "page", df = "1") int page, @Param("key") String key) {
 		page = _fixPage(page);
 		key = _fixSearchKey(key);

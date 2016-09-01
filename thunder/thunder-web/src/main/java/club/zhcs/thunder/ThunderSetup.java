@@ -19,42 +19,26 @@ import org.nutz.log.Logs;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
 
+import club.zhcs.thunder.bean.acl.Permission;
 import club.zhcs.thunder.bean.acl.Role;
+import club.zhcs.thunder.bean.acl.RolePermission;
 import club.zhcs.thunder.bean.acl.User;
 import club.zhcs.thunder.bean.acl.User.Status;
 import club.zhcs.thunder.bean.acl.UserRole;
 import club.zhcs.thunder.bean.config.Config;
+import club.zhcs.thunder.biz.acl.PermissionService;
+import club.zhcs.thunder.biz.acl.RolePermissionService;
 import club.zhcs.thunder.biz.acl.RoleService;
 import club.zhcs.thunder.biz.acl.UserRoleService;
 import club.zhcs.thunder.biz.acl.UserService;
 import club.zhcs.thunder.biz.config.ConfigService;
+import club.zhcs.thunder.vo.InstallPermission;
+import club.zhcs.thunder.vo.InstalledRole;
 
-/**
- * 
- * 
- * 
- * @author Kerbores(kerbores@gmail.com)
- * 
- *
- * 
- * @project thunder-web
- * 
- *
- * 
- * @file ThunderSetup.java
- * 
- *
- * 
- * @description 初始化
- * 
- *
- * 
- * @time 2016年3月8日 上午10:51:26
- * 
- *
- */
 public class ThunderSetup implements Setup {
 	private static final Log log = Logs.get();
+
+	Role admin;
 
 	/*
 	 * 
@@ -66,7 +50,6 @@ public class ThunderSetup implements Setup {
 	 */
 	@Override
 	public void destroy(NutConfig nc) {
-		// 初始化
 
 	}
 
@@ -102,7 +85,7 @@ public class ThunderSetup implements Setup {
 
 		ConfigService configService = ioc.get(ConfigService.class);
 
-		PropertiesProxy p = ioc.get(PropertiesProxy.class, "config");
+		final PropertiesProxy p = ioc.get(PropertiesProxy.class, "config");
 
 		Lang.each(configService.queryAll(), new Each<Config>() {
 
@@ -112,13 +95,55 @@ public class ThunderSetup implements Setup {
 			}
 		});
 
-		// 超级管理员
+		final UserService userService = ioc.get(UserService.class);
+		final RoleService roleService = ioc.get(RoleService.class);
+		final PermissionService permissionService = ioc.get(PermissionService.class);
+		final UserRoleService userRoleService = ioc.get(UserRoleService.class);
+		final RolePermissionService rolePermissionService = ioc.get(RolePermissionService.class);
 
-		UserService userService = ioc.get(UserService.class);
+		Lang.each(InstalledRole.values(), new Each<InstalledRole>() {// 内置角色
 
-		RoleService roleService = ioc.get(RoleService.class);
+					@Override
+					public void invoke(int index, InstalledRole role, int length) throws ExitLoop, ContinueLoop, LoopException {
+						if (roleService.fetch(Cnd.where("name", "=", role.getName())) == null) {
+							Role temp = new Role();
+							temp.setName(role.getName());
+							temp.setDescription(role.getDescription());
+							roleService.save(temp);
+						}
+					}
+				});
 
-		UserRoleService userRoleService = ioc.get(UserRoleService.class);
+		admin = roleService.fetch(Cnd.where("name", "=", InstalledRole.SU.getName()));
+
+		if (admin == null) {// 这里理论上是进不来的,防止万一吧
+			admin = new Role();
+			admin.setName(InstalledRole.SU.getName());
+			admin.setDescription(InstalledRole.SU.getDescription());
+			admin = roleService.save(admin);
+		}
+
+		Lang.each(InstallPermission.values(), new Each<InstallPermission>() {// 内置权限
+
+					@Override
+					public void invoke(int index, InstallPermission permission, int length) throws ExitLoop, ContinueLoop, LoopException {
+						Permission temp = null;
+						if ((temp = permissionService.fetch(Cnd.where("name", "=", permission.getName()))) == null) {
+							temp = new Permission();
+							temp.setName(permission.getName());
+							temp.setDescription(permission.getDescription());
+							temp = permissionService.save(temp);
+						}
+
+						// 给SU授权
+						if (rolePermissionService.fetch(Cnd.where("permissionId", "=", temp.getId()).and("roleId", "=", admin.getId())) == null) {
+							RolePermission rp = new RolePermission();
+							rp.setRoleId(admin.getId());
+							rp.setPermissionId(temp.getId());
+							rolePermissionService.save(rp);
+						}
+					}
+				});
 
 		User surperMan = null;
 		if ((surperMan = userService.fetch(Cnd.where("name", "=", "admin"))) == null) {
@@ -132,22 +157,13 @@ public class ThunderSetup implements Setup {
 			surperMan = userService.save(surperMan);
 		}
 
-		Role admin = roleService.fetch(Cnd.where("name", "=", "admin"));
-		if (admin == null) {
-			admin = new Role();
-			admin.setInstalled(true);
-			admin.setName("admin");
-			admin.setDescription("超级管理员");
-			admin = roleService.save(admin);
+		UserRole ur = null;
+		if ((ur = userRoleService.fetch(Cnd.where("userId", "=", surperMan.getId()).and("roleId", "=", admin.getId()))) == null) {
+			ur = new UserRole();
+			ur.setUserId(surperMan.getId());
+			ur.setRoleId(admin.getId());
+			userRoleService.save(ur);
 		}
-
-		if (userRoleService.fetch(Cnd.where("userId", "=", surperMan.getId()).and("roleId", "=", admin.getId())) == null) {
-			UserRole userRole = new UserRole();
-			userRole.setRoleId(admin.getId());
-			userRole.setUserId(surperMan.getId());
-			userRoleService.save(userRole);
-		}
-
 	}
 
 }

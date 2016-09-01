@@ -1,4 +1,4 @@
-<%@page import="club.zhcs.thunder.bean.Application"%>
+<%@page import="club.zhcs.thunder.Application"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">

@@ -75,6 +75,17 @@
 		<url-pattern>/sigar</url-pattern>
 	</servlet-mapping>
 	<!-- sigar end -->
+	
+	<!-- nop -->
+	<servlet>
+		<servlet-name>nop</servlet-name>
+		<servlet-class> org.nutz.plugins.nop.server.NOPServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>nop</servlet-name>
+		<url-pattern>/nop</url-pattern>
+	</servlet-mapping>
+	<!-- nop end -->
 
 
 	<welcome-file-list>
@@ -85,12 +96,4 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-    <servlet>
-        <servlet-name>nop</servlet-name>
-        <servlet-class>org.nutz.plugins.nop.server.NOPServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-    	<servlet-name>nop</servlet-name>
-    	<url-pattern>/nop</url-pattern>
-    </servlet-mapping>
 </web-app>

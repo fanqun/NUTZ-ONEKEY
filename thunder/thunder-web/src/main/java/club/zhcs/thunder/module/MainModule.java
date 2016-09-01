@@ -27,7 +27,7 @@ import org.nutz.mvc.filter.CheckSession;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 
 import club.zhcs.thunder.ThunderSetup;
-import club.zhcs.thunder.bean.Application.SessionKeys;
+import club.zhcs.thunder.Application.SessionKeys;
 import club.zhcs.thunder.bean.acl.User;
 import club.zhcs.thunder.biz.acl.RoleService;
 import club.zhcs.thunder.chain.ThunderChainMaker;

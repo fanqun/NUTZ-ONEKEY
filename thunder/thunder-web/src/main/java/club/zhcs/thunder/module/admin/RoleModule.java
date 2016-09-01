@@ -2,7 +2,6 @@ package club.zhcs.thunder.module.admin;
 
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.nutz.dao.entity.Record;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.mvc.annotation.At;
@@ -13,6 +12,8 @@ import org.nutz.mvc.annotation.Param;
 
 import club.zhcs.thunder.bean.acl.Role;
 import club.zhcs.thunder.biz.acl.RoleService;
+import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresPermissions;
+import club.zhcs.thunder.vo.InstallPermission;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.db.Pager;
 import club.zhcs.titans.utils.db.Result;
@@ -55,7 +56,7 @@ public class RoleModule extends AbstractBaseModule {
 	 */
 	@At
 	@Ok("beetl:pages/admin/auth/role/list.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_LIST)
 	public Result list(@Param(value = "page", df = "1") int page) {
 		page = _fixPage(page);
 		Pager<Role> pager = roleService.searchByPage(page);
@@ -74,7 +75,7 @@ public class RoleModule extends AbstractBaseModule {
 	 */
 	@At
 	@Ok("beetl:pages/admin/auth/role/list.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_LIST)
 	public Result search(@Param(value = "page", df = "1") int page, @Param("key") String key) {
 		page = _fixPage(page);
 		key = _fixSearchKey(key);
@@ -92,7 +93,7 @@ public class RoleModule extends AbstractBaseModule {
 	@At
 	@GET
 	@Ok("beetl:pages/admin/auth/role/add_edit.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_ADD)
 	public Result add() {
 		return Result.success();
 	}
@@ -106,7 +107,7 @@ public class RoleModule extends AbstractBaseModule {
 	 */
 	@At
 	@POST
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_ADD)
 	public Result add(@Param("..") Role role) {
 		if (null != roleService.fetch(role.getName())) {
 			return Result.fail("角色" + role.getName() + "已存在");
@@ -124,7 +125,7 @@ public class RoleModule extends AbstractBaseModule {
 	 * @return
 	 */
 	@At("/delete/*")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_DELETE)
 	public Result delete(int id) {
 		return roleService.delete(id) == 1 ? Result.success() : Result.fail("删除失败!");
 	}
@@ -138,7 +139,7 @@ public class RoleModule extends AbstractBaseModule {
 	 */
 	@At("/edit/*")
 	@Ok("beetl:pages/admin/auth/role/add_edit.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_EDIT)
 	public Result edit(int id) {
 		Role role = roleService.fetch(id);
 		return Result.success().addData("role", role);
@@ -153,7 +154,7 @@ public class RoleModule extends AbstractBaseModule {
 	 */
 	@At
 	@POST
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_EDIT)
 	public Result update(@Param("..") Role role) {
 		return roleService.update(role, "description") == 1 ? Result.success() : Result.fail("更新失败!");
 	}
@@ -169,7 +170,7 @@ public class RoleModule extends AbstractBaseModule {
 	@At("/grant/*")
 	@GET
 	@Ok("beetl:pages/admin/auth/role/grant.html")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_GRANT)
 	public Result grant(int id) {
 		List<Record> records = roleService.findPermissionsWithRolePowerdInfoByRoleId(id);
 		return Result.success().addData("records", records).addData("roleId", id);
@@ -186,7 +187,7 @@ public class RoleModule extends AbstractBaseModule {
 	 */
 	@At
 	@POST
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_GRANT)
 	public Result grant(@Param("permissions") int[] ids, @Param("id") int roleId) {
 		return roleService.setPermission(ids, roleId);
 	}

@@ -9,8 +9,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -93,25 +93,20 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-integration-shiro</artifactId>
-			<version>1.r.57</version>
+			<version>${nutz.plugins.version}</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-integration-quartz</artifactId>
-			<version>1.r.57</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.nutz</groupId>
-			<artifactId>nutz-integration-quartz</artifactId>
-			<version>1.r.56</version>
+			<version>${nutz.plugins.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutzwx</artifactId>
-			<version>1.r.57</version>
+			<version>${nutz.plugins.version}</version>
 		</dependency>
 
 
@@ -150,7 +145,20 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-plugins-daocache</artifactId>
-			<version>1.r.57</version>
+			<version>${nutz.plugins.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nutz</groupId>
+			<artifactId>nutz-plugins-sigar</artifactId>
+			<version>${nutz.plugins.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nutz</groupId>
+			<artifactId>nutz-plugins-nop</artifactId>
+			<version>${nutz.plugins.version}</version>
 		</dependency>
 	</dependencies>
+	<properties>
+		<nutz.plugins.version>1.r.58-SNAPSHOT</nutz.plugins.version>
+	</properties>
 </project>
