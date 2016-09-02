@@ -86,11 +86,12 @@ layout("/layout/default.html",{"menu":["struts","branch_admin"],"breadcrumbs":[{
                 var html = '';
                 if (result.length) {
                     $(result).each(function(i, item) {
+                    	var aaa = item.isParent > 0 ? ' hasChild="true" ' : '' ;
                        	html += '<tr id="'
 								+ item.id
 								+ '" pId="'
 								+ id
-								+ '" '+(item.isParent > 0 ? "hasChild=\'true\'":'')+'><td>'
+								+ '" ' + aaa + '><td>'
 								+ item.id
 								+ '</td><td>'
 								+ item.name
