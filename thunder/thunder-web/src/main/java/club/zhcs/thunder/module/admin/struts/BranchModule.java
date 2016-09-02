@@ -56,22 +56,33 @@ public class BranchModule extends AbstractBaseModule {
 	}
 
 	@At
-	@Ok("beetl:pages/admin/struts/branch/list.html")
-	@ThunderRequiresPermissions(InstallPermission.STRUTS_LIST)
-	@SystemLog(module = "分支机构", methods = "机构列表")
-	public Result list(@Param(value = "page", df = "1") int page) {
-		page = _fixPage(page);
-		Pager<Branch> pager = branchService.listByPage(page, Cnd.where("parentId", "=", 0));
-		pager.setUrl(_base() + "/branch/list");
-		return Result.success().addData("pager", pager);
-	}
-
-	@At
 	@GET
 	@Ok("beetl:pages/admin/struts/branch/add_edit.html")
 	@ThunderRequiresPermissions(InstallPermission.STRUTS_ADD)
 	public Result add() {
 		return Result.success().addData("users", userService.queryAll());
+	}
+
+	@At
+	@POST
+	@ThunderRequiresPermissions(InstallPermission.STRUTS_ADD)
+	public Result add(@Param("..") Branch branch) {
+		return branchService.save(branch) == null ? Result.fail("添加失败") : Result.success().addData("branch", branch);
+	}
+
+	@At("/delete/*")
+	@POST
+	@ThunderRequiresPermissions(InstallPermission.STRUTS_DELETE)
+	public Result delete(int id) {
+		return branchService.delete(id) == 1 ? Result.success() : Result.fail("删除失败!");
+	}
+
+	@At
+	@POST
+	@ThunderRequiresPermissions(InstallPermission.STRUTS_EDIT)
+	public Result edit(@Param("..") Branch branch) {
+
+		return branchService.update(branch) != 1 ? Result.fail("更新失败") : Result.success().addData("branch", branch);
 	}
 
 	@At("/edit/*")
@@ -84,25 +95,14 @@ public class BranchModule extends AbstractBaseModule {
 	}
 
 	@At
-	@POST
-	@ThunderRequiresPermissions(InstallPermission.STRUTS_ADD)
-	public Result add(@Param("..") Branch branch) {
-		return branchService.save(branch) == null ? Result.fail("添加失败") : Result.success().addData("branch", branch);
-	}
-
-	@At
-	@POST
-	@ThunderRequiresPermissions(InstallPermission.STRUTS_EDIT)
-	public Result edit(@Param("..") Branch branch) {
-
-		return branchService.update(branch) != 1 ? Result.fail("更新失败") : Result.success().addData("branch", branch);
-	}
-
-	@At
-	@Ok("beetl:pages/admin/struts/branch/selector.html")
-	@ThunderRequiresPermissions(value = { InstallPermission.STRUTS_ADD, InstallPermission.STRUTS_EDIT }, logical = Logical.OR)
-	public Result selector() {
-		return Result.success().addData("topBranchs", Json.toJson(branchService.loadTop()));
+	@Ok("beetl:pages/admin/struts/branch/list.html")
+	@ThunderRequiresPermissions(InstallPermission.STRUTS_LIST)
+	@SystemLog(module = "分支机构", methods = "机构列表")
+	public Result list(@Param(value = "page", df = "1") int page) {
+		page = _fixPage(page);
+		Pager<Branch> pager = branchService.listByPage(page, Cnd.where("parentId", "=", 0));
+		pager.setUrl(_base() + "/branch/list");
+		return Result.success().addData("pager", pager);
 	}
 
 	@At
@@ -111,11 +111,11 @@ public class BranchModule extends AbstractBaseModule {
 		return branchService.nodes(id);
 	}
 
-	@At("/delete/*")
-	@POST
-	@ThunderRequiresPermissions(InstallPermission.STRUTS_DELETE)
-	public Result delete(int id) {
-		return branchService.delete(id) == 1 ? Result.success() : Result.fail("删除失败!");
+	@At
+	@Ok("beetl:pages/admin/struts/branch/selector.html")
+	@ThunderRequiresPermissions(value = { InstallPermission.STRUTS_ADD, InstallPermission.STRUTS_EDIT }, logical = Logical.OR)
+	public Result selector() {
+		return Result.success().addData("topBranchs", Json.toJson(branchService.loadTop()));
 	}
 
 }

@@ -38,25 +38,6 @@ public class ThunderRealm extends AuthorizingRealm {
 	
 	
 	@Override
-	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-		HttpSession session = Mvcs.getReq().getSession();
-		String userName = principalCollection.getPrimaryPrincipal().toString();
-		User user = getUserService().findByName(userName);
-		if (user == null)// 用户不存在
-			return null;
-		if (user.getStatus() == Status.DISABLED)// 用户被锁定
-			throw new LockedAccountException("Account [" + userName + "] is locked.");
-		SimpleAuthorizationInfo auth = new SimpleAuthorizationInfo();
-		List<String> roleNameList = getUserService().getRolesInfo(user.getId());
-		session.setAttribute("roles", roleNameList);
-		auth.addRoles(roleNameList);// 添加角色
-		List<String> permissionNames = getUserService().getAllPermissionsInfo(user.getId());
-		session.setAttribute("permissions", permissionNames);
-		auth.addStringPermissions(permissionNames);// 添加权限
-		return auth;
-	}
-
-	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		HttpSession session = Mvcs.getReq().getSession();
 		UsernamePasswordToken upToken = (UsernamePasswordToken) token;
@@ -74,6 +55,25 @@ public class ThunderRealm extends AuthorizingRealm {
 		List<String> permissionNames = getUserService().getAllPermissionsInfo(user.getId());
 		session.setAttribute("permissions", permissionNames);
 		return account;
+	}
+
+	@Override
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+		HttpSession session = Mvcs.getReq().getSession();
+		String userName = principalCollection.getPrimaryPrincipal().toString();
+		User user = getUserService().findByName(userName);
+		if (user == null)// 用户不存在
+			return null;
+		if (user.getStatus() == Status.DISABLED)// 用户被锁定
+			throw new LockedAccountException("Account [" + userName + "] is locked.");
+		SimpleAuthorizationInfo auth = new SimpleAuthorizationInfo();
+		List<String> roleNameList = getUserService().getRolesInfo(user.getId());
+		session.setAttribute("roles", roleNameList);
+		auth.addRoles(roleNameList);// 添加角色
+		List<String> permissionNames = getUserService().getAllPermissionsInfo(user.getId());
+		session.setAttribute("permissions", permissionNames);
+		auth.addStringPermissions(permissionNames);// 添加权限
+		return auth;
 	}
 
 	private ShiroUserService getUserService() {

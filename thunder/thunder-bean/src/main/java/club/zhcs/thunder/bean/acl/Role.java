@@ -37,28 +37,28 @@ public class Role extends Entity {
 	@Comment("是否内置角色标识")
 	private boolean installed = true;
 
-	public boolean isInstalled() {
-		return installed;
-	}
-
-	public void setInstalled(boolean installed) {
-		this.installed = installed;
+	public String getDescription() {
+		return description;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
+	public boolean isInstalled() {
+		return installed;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public void setInstalled(boolean installed) {
+		this.installed = installed;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

@@ -36,25 +36,17 @@ public class UserPermission extends Entity {
 	private int permissionId;
 
 	/**
-	 * @return the userId
-	 */
-	public int getUserId() {
-		return userId;
-	}
-
-	/**
-	 * @param userId
-	 *            the userId to set
-	 */
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
-	/**
 	 * @return the permissionId
 	 */
 	public int getPermissionId() {
 		return permissionId;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public int getUserId() {
+		return userId;
 	}
 
 	/**
@@ -63,6 +55,14 @@ public class UserPermission extends Entity {
 	 */
 	public void setPermissionId(int permissionId) {
 		this.permissionId = permissionId;
+	}
+
+	/**
+	 * @param userId
+	 *            the userId to set
+	 */
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 }

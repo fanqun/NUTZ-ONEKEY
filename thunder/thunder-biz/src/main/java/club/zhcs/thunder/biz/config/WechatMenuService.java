@@ -36,15 +36,16 @@ public class WechatMenuService extends BaseService<WechatMenu> {
 	@Inject
 	PropertiesProxy wechat;
 
-	public String formatAuthUrl(String action) {
-		String appid = wechat.get("appid", "wx6e4f32b9bfd64693");
-		String domain = config.get("base.domain", "www.kerbores.com");
-		String contextPath = config.get("client.context", Mvcs.getReq().getContextPath());
-		String url = action.startsWith("http") ? action : String.format("http://%s/%s/%s", domain, contextPath, action);
+	public List<WxMenu> exchange(List<WechatMenu> menus) {
+		final List<WxMenu> target = Lists.newArrayList();
+		Lang.each(menus, new Each<WechatMenu>() {
 
-		return String
-				.format("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect",
-						appid, url);
+			@Override
+			public void invoke(int index, WechatMenu ele, int length) throws ExitLoop, ContinueLoop, LoopException {
+				target.add(exchange(ele));
+			}
+		});
+		return target;
 	}
 
 	public WxMenu exchange(WechatMenu menu) {
@@ -74,16 +75,15 @@ public class WechatMenuService extends BaseService<WechatMenu> {
 		return target;
 	}
 
-	public List<WxMenu> exchange(List<WechatMenu> menus) {
-		final List<WxMenu> target = Lists.newArrayList();
-		Lang.each(menus, new Each<WechatMenu>() {
+	public String formatAuthUrl(String action) {
+		String appid = wechat.get("appid", "wx6e4f32b9bfd64693");
+		String domain = config.get("base.domain", "www.kerbores.com");
+		String contextPath = config.get("client.context", Mvcs.getReq().getContextPath());
+		String url = action.startsWith("http") ? action : String.format("http://%s/%s/%s", domain, contextPath, action);
 
-			@Override
-			public void invoke(int index, WechatMenu ele, int length) throws ExitLoop, ContinueLoop, LoopException {
-				target.add(exchange(ele));
-			}
-		});
-		return target;
+		return String
+				.format("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect",
+						appid, url);
 	}
 
 	public List<WxMenu> getWxMenus() {

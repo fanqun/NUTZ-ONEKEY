@@ -46,18 +46,32 @@ public class WxConfig extends Entity {
 	}
 
 	/**
+	 * @return the appsecret
+	 */
+	public String getAppsecret() {
+		return appsecret;
+	}
+
+	/**
+	 * @return the encodingAesKey
+	 */
+	public String getEncodingAesKey() {
+		return encodingAesKey;
+	}
+
+	/**
+	 * @return the token
+	 */
+	public String getToken() {
+		return token;
+	}
+
+	/**
 	 * @param appid
 	 *            the appid to set
 	 */
 	public void setAppid(String appid) {
 		this.appid = appid;
-	}
-
-	/**
-	 * @return the appsecret
-	 */
-	public String getAppsecret() {
-		return appsecret;
 	}
 
 	/**
@@ -69,10 +83,11 @@ public class WxConfig extends Entity {
 	}
 
 	/**
-	 * @return the token
+	 * @param encodingAesKey
+	 *            the encodingAesKey to set
 	 */
-	public String getToken() {
-		return token;
+	public void setEncodingAesKey(String encodingAesKey) {
+		this.encodingAesKey = encodingAesKey;
 	}
 
 	/**
@@ -81,21 +96,6 @@ public class WxConfig extends Entity {
 	 */
 	public void setToken(String token) {
 		this.token = token;
-	}
-
-	/**
-	 * @return the encodingAesKey
-	 */
-	public String getEncodingAesKey() {
-		return encodingAesKey;
-	}
-
-	/**
-	 * @param encodingAesKey
-	 *            the encodingAesKey to set
-	 */
-	public void setEncodingAesKey(String encodingAesKey) {
-		this.encodingAesKey = encodingAesKey;
 	}
 
 }

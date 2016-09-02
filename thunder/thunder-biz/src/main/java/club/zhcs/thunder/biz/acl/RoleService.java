@@ -33,6 +33,17 @@ public class RoleService extends BaseService<Role> {
 	RolePermissionService rolePermissionService;
 
 	/**
+	 * @author 王贵源
+	 * @param id
+	 * @return
+	 */
+	public List<Record> findPermissionsWithRolePowerdInfoByRoleId(int id) {
+		Sql sql = dao().sqls().create("find.permissions.with.role.powered.info.by.role.id");
+		sql.params().set("id", id);
+		return search(sql);
+	}
+
+	/**
 	 * 用户的全部角色
 	 * 
 	 * @author 王贵源
@@ -44,17 +55,6 @@ public class RoleService extends BaseService<Role> {
 		Sql sql = dao().sqls().create("list.role.by.user.id");
 		sql.params().set("userId", id);
 		return searchObj(sql);
-	}
-
-	/**
-	 * @author 王贵源
-	 * @param id
-	 * @return
-	 */
-	public List<Record> findPermissionsWithRolePowerdInfoByRoleId(int id) {
-		Sql sql = dao().sqls().create("find.permissions.with.role.powered.info.by.role.id");
-		sql.params().set("id", id);
-		return search(sql);
 	}
 
 	/**

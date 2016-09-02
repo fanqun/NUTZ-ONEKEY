@@ -37,6 +37,9 @@ import club.zhcs.titans.utils.db.Result;
 @At("user")
 public class UserModule extends AbstractBaseModule {
 
+	@Inject
+	UserService userService;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -45,28 +48,6 @@ public class UserModule extends AbstractBaseModule {
 	@Override
 	public String _getNameSpace() {
 		return "acl";
-	}
-
-	@Inject
-	UserService userService;
-
-	/**
-	 * 用户列表
-	 * 
-	 * @param page
-	 *            页码
-	 * @return
-	 */
-	@At
-	@Ok("beetl:pages/admin/auth/user/list.html")
-	@ThunderRequiresPermissions(InstallPermission.USER_LIST)
-	@SystemLog(module = "用户管理", methods = "用户列表")
-	public Result list(@Param(value = "page", df = "1") int page) {
-
-		page = _fixPage(page);
-		Pager<User> pager = userService.searchByPage(page);
-		pager.setUrl(_base() + "/user/list");
-		return Result.success().addData("pager", pager);
 	}
 
 	/**
@@ -83,21 +64,6 @@ public class UserModule extends AbstractBaseModule {
 	}
 
 	/**
-	 * 编辑用户页面
-	 * 
-	 * @param id
-	 *            用户id
-	 * @return
-	 */
-	@At("/edit/*")
-	@GET
-	@Ok("beetl:pages/admin/auth/user/add_edit.html")
-	@ThunderRequiresPermissions(InstallPermission.USER_EDIT)
-	public Result edit(int id) {
-		return Result.success().addData("user", userService.fetch(id));
-	}
-
-	/**
 	 * 添加用户
 	 * 
 	 * @param user
@@ -110,20 +76,6 @@ public class UserModule extends AbstractBaseModule {
 	public Result add(@Param("..") User user) {
 		user.setPassword(Lang.md5(user.getPassword()));
 		return userService.save(user) != null ? Result.success().addData("user", user) : Result.fail("添加用户失败!");
-	}
-
-	/**
-	 * 编辑用户
-	 * 
-	 * @param user
-	 *            待更新用户
-	 * @return
-	 */
-	@At
-	@POST
-	@ThunderRequiresPermissions(InstallPermission.USER_EDIT)
-	public Result edit(@Param("..") User user) {
-		return userService.update(user, "realName", "phone", "email", "status") ? Result.success() : Result.fail("更新失败!");
 	}
 
 	/**
@@ -155,24 +107,32 @@ public class UserModule extends AbstractBaseModule {
 	}
 
 	/**
-	 * 搜索用户
+	 * 编辑用户页面
 	 * 
-	 * @param key
-	 *            关键词
-	 * @param page
-	 *            页码
+	 * @param id
+	 *            用户id
+	 * @return
+	 */
+	@At("/edit/*")
+	@GET
+	@Ok("beetl:pages/admin/auth/user/add_edit.html")
+	@ThunderRequiresPermissions(InstallPermission.USER_EDIT)
+	public Result edit(int id) {
+		return Result.success().addData("user", userService.fetch(id));
+	}
+
+	/**
+	 * 编辑用户
+	 * 
+	 * @param user
+	 *            待更新用户
 	 * @return
 	 */
 	@At
-	@Ok("beetl:pages/admin/auth/user/list.html")
-	@ThunderRequiresPermissions(InstallPermission.USER_LIST)
-	public Result search(@Param("key") String key, @Param(value = "page", df = "1") int page) {
-		page = _fixPage(page);
-		key = _fixSearchKey(key);
-		Pager<User> pager = userService.searchByKeyAndPage(key, page, "name", "nickName", "realName");
-		pager.setUrl(_base() + "/user/search");
-		pager.addParas("key", key);
-		return Result.success().addData("pager", pager);
+	@POST
+	@ThunderRequiresPermissions(InstallPermission.USER_EDIT)
+	public Result edit(@Param("..") User user) {
+		return userService.update(user, "realName", "phone", "email", "status") ? Result.success() : Result.fail("更新失败!");
 	}
 
 	/**
@@ -204,6 +164,25 @@ public class UserModule extends AbstractBaseModule {
 	}
 
 	/**
+	 * 用户列表
+	 * 
+	 * @param page
+	 *            页码
+	 * @return
+	 */
+	@At
+	@Ok("beetl:pages/admin/auth/user/list.html")
+	@ThunderRequiresPermissions(InstallPermission.USER_LIST)
+	@SystemLog(module = "用户管理", methods = "用户列表")
+	public Result list(@Param(value = "page", df = "1") int page) {
+
+		page = _fixPage(page);
+		Pager<User> pager = userService.searchByPage(page);
+		pager.setUrl(_base() + "/user/list");
+		return Result.success().addData("pager", pager);
+	}
+
+	/**
 	 * 设置角色
 	 *
 	 * @param id
@@ -232,6 +211,27 @@ public class UserModule extends AbstractBaseModule {
 	@ThunderRequiresPermissions(InstallPermission.USER_ROLE)
 	public Result role(@Param("roles") int[] ids, @Param("id") int id) {
 		return userService.setRole(ids, id);
+	}
+
+	/**
+	 * 搜索用户
+	 * 
+	 * @param key
+	 *            关键词
+	 * @param page
+	 *            页码
+	 * @return
+	 */
+	@At
+	@Ok("beetl:pages/admin/auth/user/list.html")
+	@ThunderRequiresPermissions(InstallPermission.USER_LIST)
+	public Result search(@Param("key") String key, @Param(value = "page", df = "1") int page) {
+		page = _fixPage(page);
+		key = _fixSearchKey(key);
+		Pager<User> pager = userService.searchByKeyAndPage(key, page, "name", "nickName", "realName");
+		pager.setUrl(_base() + "/user/search");
+		pager.addParas("key", key);
+		return Result.success().addData("pager", pager);
 	}
 
 }

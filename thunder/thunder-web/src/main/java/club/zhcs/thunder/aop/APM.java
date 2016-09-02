@@ -39,6 +39,8 @@ public class APM implements MethodInterceptor {
 
 	private Dao dao;
 
+	public String hostIp = Ips.hostIp();
+
 	/**
 	 * 
 	 */
@@ -49,12 +51,18 @@ public class APM implements MethodInterceptor {
 		this.dao = dao;
 	}
 
-	public Dao getDao() {
-		return dao;
-	}
-
-	public void setDao(Dao dao) {
-		this.dao = dao;
+	@Async
+	public void alarm(Type type, String msg) {
+		System.err.println(2);
+		APMAlarm alarm = new APMAlarm();
+		alarm.setType(type);
+		alarm.setMsg(msg);
+		alarm.setIp(hostIp);
+		if (dao == null) {
+			LOG.debug(alarm);
+		} else {
+			dao.insert(alarm);
+		}
 	}
 
 	/*
@@ -106,20 +114,8 @@ public class APM implements MethodInterceptor {
 		System.err.println(1);
 	}
 
-	public String hostIp = Ips.hostIp();
-
-	@Async
-	public void alarm(Type type, String msg) {
-		System.err.println(2);
-		APMAlarm alarm = new APMAlarm();
-		alarm.setType(type);
-		alarm.setMsg(msg);
-		alarm.setIp(hostIp);
-		if (dao == null) {
-			LOG.debug(alarm);
-		} else {
-			dao.insert(alarm);
-		}
+	public Dao getDao() {
+		return dao;
 	}
 
 	@Async
@@ -129,6 +125,10 @@ public class APM implements MethodInterceptor {
 		} else {
 			dao.insert(log);
 		}
+	}
+
+	public void setDao(Dao dao) {
+		this.dao = dao;
 	}
 
 }

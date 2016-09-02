@@ -34,24 +34,6 @@ import club.zhcs.titans.utils.db.Pager;
 public class BranchService extends BaseService<Branch> {
 
 	/**
-	 * @return
-	 */
-	public List<NutMap> loadTop() {
-		Sql sql = dao().sqls().create("load.top.branchs");
-		return searchAsMap(sql);
-	}
-
-	/**
-	 * @param id
-	 * @return
-	 */
-	public List<NutMap> nodes(int id) {
-		Sql sql = dao().sqls().create("load.branchs.by.id");
-		sql.params().set("id", id);
-		return searchAsMap(sql);
-	}
-
-	/**
 	 * @param page
 	 * @param where
 	 * @return
@@ -87,5 +69,23 @@ public class BranchService extends BaseService<Branch> {
 		pager.setEntities(branchs);
 		pager.setCount(count(cnd));
 		return pager;
+	}
+
+	/**
+	 * @return
+	 */
+	public List<NutMap> loadTop() {
+		Sql sql = dao().sqls().create("load.top.branchs");
+		return searchAsMap(sql);
+	}
+
+	/**
+	 * @param id
+	 * @return
+	 */
+	public List<NutMap> nodes(int id) {
+		Sql sql = dao().sqls().create("load.branchs.by.id");
+		sql.params().set("id", id);
+		return searchAsMap(sql);
 	}
 }

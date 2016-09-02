@@ -56,52 +56,52 @@ public class OperationLog extends Entity {
 		return account;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public String getModule() {
-		return module;
-	}
-
-	public void setModule(String module) {
-		this.module = module;
-	}
-
 	public String getAction() {
 		return action;
-	}
-
-	public void setAction(String action) {
-		this.action = action;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Date getActionTime() {
 		return actionTime;
 	}
 
-	public void setActionTime(Date actionTime) {
-		this.actionTime = actionTime;
+	public String getDescription() {
+		return description;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public String getModule() {
+		return module;
 	}
 
 	public long getOperationTime() {
 		return operationTime;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public void setActionTime(Date actionTime) {
+		this.actionTime = actionTime;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public void setModule(String module) {
+		this.module = module;
 	}
 
 	public void setOperationTime(long operationTime) {

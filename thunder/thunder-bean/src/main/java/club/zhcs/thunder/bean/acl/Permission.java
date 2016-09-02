@@ -62,10 +62,69 @@ public class Permission extends Entity {
 	private int level = 0;
 
 	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	public String getHilightKey() {
+		return hilightKey;
+	}
+
+	/**
 	 * @return the icon
 	 */
 	public String getIcon() {
 		return icon;
+	}
+
+	/**
+	 * @return the level
+	 */
+	public int getLevel() {
+		return level;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	public String getNeedPermission() {
+		return needPermission;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * @return the installed
+	 */
+	public boolean isInstalled() {
+		return installed;
+	}
+
+	public boolean isMenu() {
+		return menu;
+	}
+
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setHilightKey(String hilightKey) {
+		this.hilightKey = hilightKey;
 	}
 
 	/**
@@ -77,10 +136,11 @@ public class Permission extends Entity {
 	}
 
 	/**
-	 * @return the level
+	 * @param installed
+	 *            the installed to set
 	 */
-	public int getLevel() {
-		return level;
+	public void setInstalled(boolean installed) {
+		this.installed = installed;
 	}
 
 	/**
@@ -91,65 +151,8 @@ public class Permission extends Entity {
 		this.level = level;
 	}
 
-	public String getHilightKey() {
-		return hilightKey;
-	}
-
-	public void setHilightKey(String hilightKey) {
-		this.hilightKey = hilightKey;
-	}
-
-	public boolean isMenu() {
-		return menu;
-	}
-
 	public void setMenu(boolean menu) {
 		this.menu = menu;
-	}
-
-	public String getNeedPermission() {
-		return needPermission;
-	}
-
-	public void setNeedPermission(String needPermission) {
-		this.needPermission = needPermission;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @return the installed
-	 */
-	public boolean isInstalled() {
-		return installed;
-	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @param installed
-	 *            the installed to set
-	 */
-	public void setInstalled(boolean installed) {
-		this.installed = installed;
 	}
 
 	/**
@@ -160,11 +163,8 @@ public class Permission extends Entity {
 		this.name = name;
 	}
 
-	/**
-	 * @return the url
-	 */
-	public String getUrl() {
-		return url;
+	public void setNeedPermission(String needPermission) {
+		this.needPermission = needPermission;
 	}
 
 	/**

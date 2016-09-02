@@ -38,12 +38,41 @@ public class UserService extends BaseService<User> {
 	UserRoleService userRoleService;
 
 	/**
+	 * @param id
+	 * @param old
+	 * @param newPwd
+	 * @return
+	 */
+	public Result changePassword(int id, String old, String newPwd) {
+		User user = fetch(id);
+		if (user == null) {
+			return Result.fail("用户不存在!");
+		}
+		if (!Strings.equals(Lang.md5(old), user.getPassword())) {
+			return Result.fail("旧密码不正确");
+		}
+		user.setPassword(Lang.md5(newPwd));
+		return update(user) == 1 ? Result.success() : Result.fail("修改密码失败");
+	}
+
+	/**
 	 * @author 王贵源
 	 * @param id
 	 * @return
 	 */
 	public List<Record> findPermissionsWithUserPowerdInfoByUserId(int id) {
 		Sql sql = dao().sqls().create("find.permissions.with.user.powered.info.by.user.id");
+		sql.params().set("id", id);
+		return search(sql);
+	}
+
+	/**
+	 * @author 王贵源
+	 * @param id
+	 * @return
+	 */
+	public List<Record> findRolesWithUserPowerdInfoByUserId(int id) {
+		Sql sql = dao().sqls().create("find.roles.with.user.powerd.info.by.user.id");
 		sql.params().set("id", id);
 		return search(sql);
 	}
@@ -85,17 +114,6 @@ public class UserService extends BaseService<User> {
 
 	/**
 	 * @author 王贵源
-	 * @param id
-	 * @return
-	 */
-	public List<Record> findRolesWithUserPowerdInfoByUserId(int id) {
-		Sql sql = dao().sqls().create("find.roles.with.user.powerd.info.by.user.id");
-		sql.params().set("id", id);
-		return search(sql);
-	}
-
-	/**
-	 * @author 王贵源
 	 * @param ids
 	 * @param id
 	 * @return
@@ -127,24 +145,6 @@ public class UserService extends BaseService<User> {
 			userRoleService.save(relation);
 		}
 		return Result.success();
-	}
-
-	/**
-	 * @param id
-	 * @param old
-	 * @param newPwd
-	 * @return
-	 */
-	public Result changePassword(int id, String old, String newPwd) {
-		User user = fetch(id);
-		if (user == null) {
-			return Result.fail("用户不存在!");
-		}
-		if (!Strings.equals(Lang.md5(old), user.getPassword())) {
-			return Result.fail("旧密码不正确");
-		}
-		user.setPassword(Lang.md5(newPwd));
-		return update(user) == 1 ? Result.success() : Result.fail("修改密码失败");
 	}
 
 }

@@ -24,7 +24,7 @@ import club.zhcs.thunder.vo.InstalledRole;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ThunderRequiresRoles {
-	InstalledRole[] value();
-
 	Logical logical() default Logical.AND;
+
+	InstalledRole[] value();
 }

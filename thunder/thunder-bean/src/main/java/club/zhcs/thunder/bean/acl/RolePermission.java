@@ -32,11 +32,17 @@ public class RolePermission extends Entity {
 	private int permissionId;
 
 	/**
-	 * @param roleId
-	 *            the roleId to set
+	 * @return the permissionId
 	 */
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
+	public int getPermissionId() {
+		return permissionId;
+	}
+
+	/**
+	 * @return the roleId
+	 */
+	public long getRoleId() {
+		return roleId;
 	}
 
 	/**
@@ -48,17 +54,11 @@ public class RolePermission extends Entity {
 	}
 
 	/**
-	 * @return the roleId
+	 * @param roleId
+	 *            the roleId to set
 	 */
-	public long getRoleId() {
-		return roleId;
-	}
-
-	/**
-	 * @return the permissionId
-	 */
-	public int getPermissionId() {
-		return permissionId;
+	public void setRoleId(int roleId) {
+		this.roleId = roleId;
 	}
 
 }

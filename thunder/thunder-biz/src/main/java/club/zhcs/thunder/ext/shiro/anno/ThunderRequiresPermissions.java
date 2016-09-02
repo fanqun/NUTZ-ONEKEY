@@ -24,7 +24,7 @@ import club.zhcs.thunder.vo.InstallPermission;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ThunderRequiresPermissions {
-	InstallPermission[] value();
-
 	Logical logical() default Logical.AND;
+
+	InstallPermission[] value();
 }

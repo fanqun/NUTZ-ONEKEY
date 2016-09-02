@@ -60,6 +60,51 @@ public class ShiroUserService {
 	LoginLogService loginLogService;
 
 	/**
+	 * 检查权限
+	 * 
+	 * @param permission
+	 *            权限名称
+	 * @param id
+	 *            用户 id
+	 * @param type
+	 *            用户类型
+	 * @return 用户是否有参数权限的标识
+	 *
+	 * @author 王贵源
+	 */
+	public boolean checkPermission(String permission, int id) {
+
+		for (String p : getAllPermissionsInfo(id)) {
+			if (Strings.equals(p, permission)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 检查角色
+	 * 
+	 * @param role
+	 *            角色名称
+	 * @param id
+	 *            用户 id
+	 * @param type
+	 *            用户类型
+	 * @return 用户是否有参数角色的标识
+	 *
+	 * @author 王贵源
+	 */
+	public boolean checkRole(String role, int id) {
+		for (String r : getRolesInfo(id)) {
+			if (Strings.equals(role, r)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * 根据用户名查询用户
 	 * 
 	 * @param userName
@@ -143,51 +188,6 @@ public class ShiroUserService {
 	}
 
 	/**
-	 * 检查权限
-	 * 
-	 * @param permission
-	 *            权限名称
-	 * @param id
-	 *            用户 id
-	 * @param type
-	 *            用户类型
-	 * @return 用户是否有参数权限的标识
-	 *
-	 * @author 王贵源
-	 */
-	public boolean checkPermission(String permission, int id) {
-
-		for (String p : getAllPermissionsInfo(id)) {
-			if (Strings.equals(p, permission)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * 检查角色
-	 * 
-	 * @param role
-	 *            角色名称
-	 * @param id
-	 *            用户 id
-	 * @param type
-	 *            用户类型
-	 * @return 用户是否有参数角色的标识
-	 *
-	 * @author 王贵源
-	 */
-	public boolean checkRole(String role, int id) {
-		for (String r : getRolesInfo(id)) {
-			if (Strings.equals(role, r)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * 获取用户间接角色
 	 * 
 	 * @param id
@@ -200,6 +200,32 @@ public class ShiroUserService {
 	 */
 	public List<Role> getIndirectRoles(int id, Type type) {
 		return Lists.newArrayList();
+	}
+
+	/**
+	 * 获取用户的菜单权限
+	 * 
+	 * @param id
+	 *            用户 id
+	 * @param type
+	 *            用户类型
+	 * @return 权限列表
+	 *
+	 * @author 王贵源
+	 */
+	public List<Permission> getMenuPermissions(int id) {
+		List<Permission> permissions = getAllPermissions(id);
+		final List<Permission> target = Lists.newArrayList();
+		Lang.each(permissions, new Each<Permission>() {
+
+			@Override
+			public void invoke(int index, Permission ele, int length) throws ExitLoop, ContinueLoop, LoopException {
+				if (ele.isMenu()) {
+					target.add(ele);
+				}
+			}
+		});
+		return target;
 	}
 
 	/**
@@ -262,32 +288,6 @@ public class ShiroUserService {
 			log.debug(e);
 			return Result.fail("登录失败");
 		}
-	}
-
-	/**
-	 * 获取用户的菜单权限
-	 * 
-	 * @param id
-	 *            用户 id
-	 * @param type
-	 *            用户类型
-	 * @return 权限列表
-	 *
-	 * @author 王贵源
-	 */
-	public List<Permission> getMenuPermissions(int id) {
-		List<Permission> permissions = getAllPermissions(id);
-		final List<Permission> target = Lists.newArrayList();
-		Lang.each(permissions, new Each<Permission>() {
-
-			@Override
-			public void invoke(int index, Permission ele, int length) throws ExitLoop, ContinueLoop, LoopException {
-				if (ele.isMenu()) {
-					target.add(ele);
-				}
-			}
-		});
-		return target;
 	}
 
 }

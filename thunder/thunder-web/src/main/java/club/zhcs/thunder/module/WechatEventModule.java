@@ -46,11 +46,6 @@ public class WechatEventModule extends AbstractBaseModule {
 	 */
 	protected WxHandler wxHandler = new AbstractWxHandler() {
 
-		@Override
-		public WxOutMsg voice(WxInMsg msg) {
-			return Wxs.respVoice(null, msg.getRecognition());
-		};
-
 		/**
 		 * 微信服务号的验证
 		 * 
@@ -59,6 +54,14 @@ public class WechatEventModule extends AbstractBaseModule {
 		@Override
 		public boolean check(String signature, String timestamp, String nonce, String key) {
 			return Wxs.check(config.get("token"), signature, timestamp, nonce);
+		};
+
+		/**
+		 * 默认返回的消息，应该是一个帮助类的提示文本
+		 */
+		@Override
+		public WxOutMsg defaultMsg(WxInMsg msg) {
+			return Wxs.respText(null, "你想说: '" + msg.getContent() + "' 吗?");
 		}
 
 		/*
@@ -73,34 +76,13 @@ public class WechatEventModule extends AbstractBaseModule {
 			return defaultMsg(msg);
 		}
 
-		@Override
-		public WxOutMsg eventView(WxInMsg msg) {
-			return defaultMsg(msg);
-		}
-
-		/**
-		 * 默认返回的消息，应该是一个帮助类的提示文本
-		 */
-		@Override
-		public WxOutMsg defaultMsg(WxInMsg msg) {
-			return Wxs.respText(null, "你想说: '" + msg.getContent() + "' 吗?");
-		}
-
-		/**
-		 * 处理文字消息
-		 */
-		@Override
-		public WxOutMsg text(WxInMsg msg) {
-			return defaultMsg(msg);
-		}
-
 		/**
 		 * 微信关注事件 1. 根据openid看看是谁,存入用户数据库 2. 首次关注，如有推荐人同时记录推荐人 3. 响应欢迎页面
 		 */
 		@Override
 		public WxOutMsg eventSubscribe(WxInMsg msg) {
 			return Wxs.respText(null, "欢迎关注!");
-		};
+		}
 
 		/**
 		 * 取消关注事件
@@ -112,14 +94,42 @@ public class WechatEventModule extends AbstractBaseModule {
 		}
 
 		@Override
+		public WxOutMsg eventView(WxInMsg msg) {
+			return defaultMsg(msg);
+		}
+
+		@Override
 		public WXBizMsgCrypt getMsgCrypt() {
 			try {
 				return new WXBizMsgCrypt(api.getAccessToken(), api.getEncodingAesKey(), api.getAppid());
 			} catch (AesException e) {
 				throw new RuntimeException(e);
 			}
+		};
+
+		/**
+		 * 处理文字消息
+		 */
+		@Override
+		public WxOutMsg text(WxInMsg msg) {
+			return defaultMsg(msg);
+		}
+
+		@Override
+		public WxOutMsg voice(WxInMsg msg) {
+			return Wxs.respVoice(null, msg.getRecognition());
 		}
 	};
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.kerbores.nutz.module.base.AbstractBaseModule#_getNameSpace()
+	 */
+	@Override
+	public String _getNameSpace() {
+		return null;
+	}
 
 	/**
 	 * 微信消息回调入口
@@ -133,16 +143,6 @@ public class WechatEventModule extends AbstractBaseModule {
 	@Fail("http:200")
 	public View msgIn(String key, HttpServletRequest req) throws IOException {
 		return Wxs.handle(wxHandler, req, key);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.kerbores.nutz.module.base.AbstractBaseModule#_getNameSpace()
-	 */
-	@Override
-	public String _getNameSpace() {
-		return null;
 	}
 
 }

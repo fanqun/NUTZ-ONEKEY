@@ -40,36 +40,36 @@ public class LoginLog extends Entity {
 	@Comment("登录 ip")
 	private String ip;
 
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
 	public String getAccount() {
 		return account;
-	}
-
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
-	public Date getLoginTime() {
-		return loginTime;
-	}
-
-	public void setLoginTime(Date loginTime) {
-		this.loginTime = loginTime;
 	}
 
 	public String getIp() {
 		return ip;
 	}
 
+	public Date getLoginTime() {
+		return loginTime;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
 	public void setIp(String ip) {
 		this.ip = ip;
+	}
+
+	public void setLoginTime(Date loginTime) {
+		this.loginTime = loginTime;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 }

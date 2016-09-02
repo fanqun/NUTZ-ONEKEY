@@ -40,6 +40,24 @@ public class EmailService {
 	protected Ioc ioc;
 
 	/**
+	 * 生成 alarm 邮件内容
+	 * 
+	 * @param alarm
+	 * @return
+	 * @throws IOException
+	 */
+	private String genHtmlAlarm(APMAlarm alarm) throws IOException {
+
+		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
+		Configuration cfg = Configuration.defaultConfiguration();
+		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
+		Template t = gt.getTemplate(Files.read("templates/alarm.html"));
+		t.binding("alarm", alarm);
+
+		return t.render();
+	}
+
+	/**
 	 * 发送邮件
 	 * 
 	 * @param to
@@ -83,24 +101,6 @@ public class EmailService {
 			return Result.fail("生成邮件内容失败!");
 		}
 		return send(alarm.getTitle(), html, to);
-	}
-
-	/**
-	 * 生成 alarm 邮件内容
-	 * 
-	 * @param alarm
-	 * @return
-	 * @throws IOException
-	 */
-	private String genHtmlAlarm(APMAlarm alarm) throws IOException {
-
-		StringTemplateResourceLoader resourceLoader = new StringTemplateResourceLoader();
-		Configuration cfg = Configuration.defaultConfiguration();
-		GroupTemplate gt = new GroupTemplate(resourceLoader, cfg);
-		Template t = gt.getTemplate(Files.read("templates/alarm.html"));
-		t.binding("alarm", alarm);
-
-		return t.render();
 	}
 
 	/**

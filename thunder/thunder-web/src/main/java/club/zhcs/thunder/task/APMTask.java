@@ -74,16 +74,7 @@ public class APMTask implements Job {
 
 	List<User> listeners = Lists.newArrayList();
 
-	public void init() {
-		String listener = config.get("alarm.listener");
-		Lang.each(listener.split(","), new Each<String>() {
-
-			@Override
-			public void invoke(int index, String lis, int length) throws ExitLoop, ContinueLoop, LoopException {
-				listeners.add(userService.fetch(Cnd.where("name", "=", lis)));
-			}
-		});
-	}
+	public String hostIp = Ips.hostIp();
 
 	/**
 	 * 
@@ -95,15 +86,50 @@ public class APMTask implements Job {
 		this.dao = dao;
 	}
 
-	public Dao getDao() {
-		return dao;
-	}
+	/**
+	 * 
+	 * @param type
+	 * @param title
+	 * @param device
+	 * @param usage
+	 * @param alarmPoint
+	 */
+	@Async
+	private void alarm(Type type, String title, String device, double usage, int alarmPoint) {
+		final APMAlarm alarm = new APMAlarm();
+		alarm.setType(type);
+		alarm.setIp(hostIp);
+		alarm.setMsg(String.format("%s:当前 %s 使用率 %f,高于预警值 %d", title, device, usage, alarmPoint));
+		alarm.setTitle(title);
+		alarm.setDevice(device);
+		alarm.setUsage(usage);
+		alarm.setAlarm(alarmPoint);
 
-	public void setDao(Dao dao) {
-		this.dao = dao;
-	}
+		String alarmTypes = config.get(device.toLowerCase() + ".alarm.types");
 
-	public String hostIp = Ips.hostIp();
+		Lang.each(alarmTypes.split(","), new Each<String>() {
+
+			@Override
+			public void invoke(int index, String type, int length) throws ExitLoop, ContinueLoop, LoopException {
+				if (Strings.equals(type, "EMAIL")) {// 发送邮件
+					sendALarmByEmail(alarm);
+				}
+				if (Strings.equals(type, "SMS")) {// 发送短信
+
+				}
+				if (Strings.equals(type, "WECHAT")) {// 发送微信消息
+					sendAlarmByWechat(alarm);
+				}
+			}
+
+		});
+
+		if (dao == null) {
+			LOG.debug(alarm);
+		} else {
+			dao.insert(alarm);
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -163,49 +189,19 @@ public class APMTask implements Job {
 
 	}
 
-	/**
-	 * 
-	 * @param type
-	 * @param title
-	 * @param device
-	 * @param usage
-	 * @param alarmPoint
-	 */
-	@Async
-	private void alarm(Type type, String title, String device, double usage, int alarmPoint) {
-		final APMAlarm alarm = new APMAlarm();
-		alarm.setType(type);
-		alarm.setIp(hostIp);
-		alarm.setMsg(String.format("%s:当前 %s 使用率 %f,高于预警值 %d", title, device, usage, alarmPoint));
-		alarm.setTitle(title);
-		alarm.setDevice(device);
-		alarm.setUsage(usage);
-		alarm.setAlarm(alarmPoint);
+	public Dao getDao() {
+		return dao;
+	}
 
-		String alarmTypes = config.get(device.toLowerCase() + ".alarm.types");
-
-		Lang.each(alarmTypes.split(","), new Each<String>() {
+	public void init() {
+		String listener = config.get("alarm.listener");
+		Lang.each(listener.split(","), new Each<String>() {
 
 			@Override
-			public void invoke(int index, String type, int length) throws ExitLoop, ContinueLoop, LoopException {
-				if (Strings.equals(type, "EMAIL")) {// 发送邮件
-					sendALarmByEmail(alarm);
-				}
-				if (Strings.equals(type, "SMS")) {// 发送短信
-
-				}
-				if (Strings.equals(type, "WECHAT")) {// 发送微信消息
-					sendAlarmByWechat(alarm);
-				}
+			public void invoke(int index, String lis, int length) throws ExitLoop, ContinueLoop, LoopException {
+				listeners.add(userService.fetch(Cnd.where("name", "=", lis)));
 			}
-
 		});
-
-		if (dao == null) {
-			LOG.debug(alarm);
-		} else {
-			dao.insert(alarm);
-		}
 	}
 
 	@Async
@@ -247,5 +243,9 @@ public class APMTask implements Job {
 				LOG.debug(resp);
 			}
 		});
+	}
+
+	public void setDao(Dao dao) {
+		this.dao = dao;
 	}
 }

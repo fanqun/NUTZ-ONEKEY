@@ -72,44 +72,6 @@ public class User extends Entity {
 		PLATFORM, MERCHANTS, CUSTOMER
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + getId();
-		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (getId() != other.getId())
-			return false;
-		if (userType != other.userType)
-			return false;
-		return true;
-	}
-
 	@Column("u_name")
 	@Name
 	@Comment("用户登录名")
@@ -158,31 +120,28 @@ public class User extends Entity {
 	@Comment("用户微信 openid")
 	private String openid;
 
-	public String getOpenid() {
-		return openid;
-	}
-
-	/**
-	 * @return the nickName
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public String getNickName() {
-		return nickName;
-	}
-
-	/**
-	 * @param nickName
-	 *            the nickName to set
-	 */
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public void setOpenid(String openid) {
-		this.openid = openid;
-	}
-
-	public String getHeadUrl() {
-		return headUrl;
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (getId() != other.getId())
+			return false;
+		if (userType != other.userType)
+			return false;
+		return true;
 	}
 
 	/**
@@ -192,28 +151,31 @@ public class User extends Entity {
 		return createTime;
 	}
 
-	/**
-	 * @param createTime
-	 *            the createTime to set
-	 */
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
 	public String getEmail() {
 		return email;
-	}
-
-	protected void setHeadUrl(String headUrl) {
-		this.headUrl = headUrl;
 	}
 
 	public String getHeadKey() {
 		return headKey;
 	}
 
+	public String getHeadUrl() {
+		return headUrl;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	/**
+	 * @return the nickName
+	 */
+	public String getNickName() {
+		return nickName;
+	}
+
+	public String getOpenid() {
+		return openid;
 	}
 
 	public String getPassword() {
@@ -239,8 +201,30 @@ public class User extends Entity {
 		return userType;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + getId();
+		result = prime * result + ((userType == null) ? 0 : userType.hashCode());
+		return result;
+	}
+
 	public boolean isAvailable() {
 		return status == Status.ACTIVED;
+	}
+
+	/**
+	 * @param createTime
+	 *            the createTime to set
+	 */
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public void setEmail(String email) {
@@ -251,8 +235,24 @@ public class User extends Entity {
 		this.headKey = headKey;
 	}
 
+	protected void setHeadUrl(String headUrl) {
+		this.headUrl = headUrl;
+	}
+
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @param nickName
+	 *            the nickName to set
+	 */
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
 	}
 
 	public void setPassword(String password) {

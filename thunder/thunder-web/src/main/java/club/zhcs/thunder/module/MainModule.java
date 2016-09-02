@@ -61,6 +61,14 @@ import club.zhcs.titans.utils.db.Result;
 @ChainBy(type = ThunderChainMaker.class, args = {})
 public class MainModule extends AbstractBaseModule {
 
+	private @Inject RoleService roleService;
+
+	@At("/403")
+	@Ok("http:403")
+	public void _403() {
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -72,40 +80,14 @@ public class MainModule extends AbstractBaseModule {
 	}
 
 	@At
-	public Result hello() {
-		return Result.success().addData("msg", "Hello nutz-thunder!");
-	}
-
-	@At("/403")
-	@Ok("http:403")
-	public void _403() {
-
-	}
-
-	@At("/testSigar")
-	@Filters
-	public Result testSigar(HttpServletRequest request) throws IOException {
-
-		System.err.println(request.getHeader("token"));
-
-		String info = Lang.readAll(request.getReader());
-		return Result.success().addData("info", Lang.map(info));
-	}
-
-	@At
-	@Filters
-	@RequiresAuthentication
-	public Result shiro() {
-
-		return Result.success();
-	}
-
-	private @Inject RoleService roleService;
-
-	@At
 	@Filters
 	public View captcha(@Param("length") int length) {
 		return new JPEGView(null, length);
+	}
+
+	@At
+	public Result hello() {
+		return Result.success().addData("msg", "Hello nutz-thunder!");
 	}
 
 	@At("/")
@@ -119,6 +101,24 @@ public class MainModule extends AbstractBaseModule {
 			request.setAttribute("loginInfo", data);
 		}
 		return null;
+	}
+
+	@At
+	@Filters
+	@RequiresAuthentication
+	public Result shiro() {
+
+		return Result.success();
+	}
+
+	@At("/testSigar")
+	@Filters
+	public Result testSigar(HttpServletRequest request) throws IOException {
+
+		System.err.println(request.getHeader("token"));
+
+		String info = Lang.readAll(request.getReader());
+		return Result.success().addData("info", Lang.map(info));
 	}
 
 }

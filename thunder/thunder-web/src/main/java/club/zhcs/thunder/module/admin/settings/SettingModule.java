@@ -52,10 +52,11 @@ public class SettingModule extends AbstractBaseModule {
 	}
 
 	@At
-	@Ok("beetl:pages/setting/list.html")
-	@ThunderRequiresPermissions(InstallPermission.CONFIG_LIST)
-	public Result list(@Param(value = "page", df = "1") int page) {
-		return Result.success().addData("config", config).setTitle("配置列表");
+	@GET
+	@Ok("beetl:pages/setting/add_edit.html")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_ADD)
+	public Result add() {
+		return Result.success();
 	}
 
 	// @At
@@ -73,30 +74,6 @@ public class SettingModule extends AbstractBaseModule {
 	// }
 
 	@At
-	@GET
-	@Ok("beetl:pages/setting/add_edit.html")
-	@ThunderRequiresPermissions(InstallPermission.CONFIG_ADD)
-	public Result add() {
-		return Result.success();
-	}
-
-	@At("/edit")
-	@GET
-	@Ok("beetl:pages/setting/add_edit.html")
-	@ThunderRequiresPermissions(InstallPermission.CONFIG_EDIT)
-	public Result edit(@Param("key") String key) {
-		return Result.success().addData("config", configService.fetch(Cnd.where("name", "=", key))).addData("key", key).addData("value", config.get(key));
-	}
-
-	@At
-	@POST
-	@ThunderRequiresPermissions(InstallPermission.CONFIG_EDIT)
-	public Result edit(@Param("..") Config config) {
-		this.config.put(config.getName(), config.getValue());
-		return configService.update(config) == 1 ? Result.success() : Result.fail("更新失败!");
-	}
-
-	@At
 	@POST
 	@ThunderRequiresPermissions(InstallPermission.CONFIG_ADD)
 	public Result add(@Param("..") Config config) {
@@ -109,6 +86,29 @@ public class SettingModule extends AbstractBaseModule {
 	public Result delete(@Param("id") String key) {
 		this.config.remove(key);
 		return configService.delete(key) == 1 ? Result.success() : Result.fail("删除配置失败!");
+	}
+
+	@At
+	@POST
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_EDIT)
+	public Result edit(@Param("..") Config config) {
+		this.config.put(config.getName(), config.getValue());
+		return configService.update(config) == 1 ? Result.success() : Result.fail("更新失败!");
+	}
+
+	@At("/edit")
+	@GET
+	@Ok("beetl:pages/setting/add_edit.html")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_EDIT)
+	public Result edit(@Param("key") String key) {
+		return Result.success().addData("config", configService.fetch(Cnd.where("name", "=", key))).addData("key", key).addData("value", config.get(key));
+	}
+
+	@At
+	@Ok("beetl:pages/setting/list.html")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_LIST)
+	public Result list(@Param(value = "page", df = "1") int page) {
+		return Result.success().addData("config", config).setTitle("配置列表");
 	}
 
 }

@@ -33,16 +33,16 @@ public class DruidModule extends AbstractBaseModule {
 	}
 
 	@At
+	@Ok("beetl:pages/db/connectionPool.html")
+	public Result connectionPool(String id) {
+		return Result.success().addData("id", id);
+	}
+
+	@At
 	@RequiresRoles("admin")
 	@Ok("beetl:pages/db/dashboard.html")
 	public Result dashboard() {
 		return Result.success();
-	}
-
-	@At
-	@Ok("beetl:pages/db/sqlDetail.html")
-	public Result sqlDetail(int sqlId) {
-		return Result.success().addData("sqlId", sqlId);
 	}
 
 	@At
@@ -52,15 +52,15 @@ public class DruidModule extends AbstractBaseModule {
 	}
 
 	@At
-	@Ok("beetl:pages/db/uriDetail.html")
-	public Result uriDetail(String uri) {
-		return Result.success().addData("uri", uri);
+	@Ok("beetl:pages/db/sqlDetail.html")
+	public Result sqlDetail(int sqlId) {
+		return Result.success().addData("sqlId", sqlId);
 	}
 
 	@At
-	@Ok("beetl:pages/db/connectionPool.html")
-	public Result connectionPool(String id) {
-		return Result.success().addData("id", id);
+	@Ok("beetl:pages/db/uriDetail.html")
+	public Result uriDetail(String uri) {
+		return Result.success().addData("uri", uri);
 	}
 
 }

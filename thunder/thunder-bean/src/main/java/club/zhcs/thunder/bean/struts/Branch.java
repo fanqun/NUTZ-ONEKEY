@@ -81,63 +81,10 @@ public class Branch extends Entity {
 	private boolean hasSub;
 
 	/**
-	 * @return the hasSub
+	 * @return the address
 	 */
-	public boolean isHasSub() {
-		return hasSub;
-	}
-
-	/**
-	 * @param hasSub
-	 *            the hasSub to set
-	 */
-	public void setHasSub(boolean hasSub) {
-		this.hasSub = hasSub;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the code
-	 */
-	public String getCode() {
-		return code;
-	}
-
-	/**
-	 * @param code
-	 *            the code to set
-	 */
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
+	public String getAddress() {
+		return address;
 	}
 
 	/**
@@ -148,56 +95,17 @@ public class Branch extends Entity {
 	}
 
 	/**
-	 * @param city
-	 *            the city to set
+	 * @return the code
 	 */
-	public void setCity(String city) {
-		this.city = city;
+	public String getCode() {
+		return code;
 	}
 
 	/**
-	 * @return the province
+	 * @return the description
 	 */
-	public String getProvince() {
-		return province;
-	}
-
-	/**
-	 * @param province
-	 *            the province to set
-	 */
-	public void setProvince(String province) {
-		this.province = province;
-	}
-
-	/**
-	 * @return the longitude
-	 */
-	public double getLongitude() {
-		return longitude;
-	}
-
-	/**
-	 * @param longitude
-	 *            the longitude to set
-	 */
-	public void setLongitude(double longitude) {
-		this.longitude = longitude;
-	}
-
-	/**
-	 * @return the latitude
-	 */
-	public double getLatitude() {
-		return latitude;
-	}
-
-	/**
-	 * @param latitude
-	 *            the latitude to set
-	 */
-	public void setLatitude(double latitude) {
-		this.latitude = latitude;
+	public String getDescription() {
+		return description;
 	}
 
 	/**
@@ -208,18 +116,59 @@ public class Branch extends Entity {
 	}
 
 	/**
-	 * @param district
-	 *            the district to set
+	 * @return the latitude
 	 */
-	public void setDistrict(String district) {
-		this.district = district;
+	public double getLatitude() {
+		return latitude;
 	}
 
 	/**
-	 * @return the address
+	 * @return the longitude
 	 */
-	public String getAddress() {
-		return address;
+	public double getLongitude() {
+		return longitude;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @return the parentId
+	 */
+	public int getParentId() {
+		return parentId;
+	}
+
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+	/**
+	 * @return the principalId
+	 */
+	public int getPrincipalId() {
+		return principalId;
+	}
+
+	/**
+	 * @return the province
+	 */
+	public String getProvince() {
+		return province;
+	}
+
+	/**
+	 * @return the hasSub
+	 */
+	public boolean isHasSub() {
+		return hasSub;
 	}
 
 	/**
@@ -231,10 +180,75 @@ public class Branch extends Entity {
 	}
 
 	/**
-	 * @return the phone
+	 * @param city
+	 *            the city to set
 	 */
-	public String getPhone() {
-		return phone;
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	/**
+	 * @param code
+	 *            the code to set
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	/**
+	 * @param description
+	 *            the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @param district
+	 *            the district to set
+	 */
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	/**
+	 * @param hasSub
+	 *            the hasSub to set
+	 */
+	public void setHasSub(boolean hasSub) {
+		this.hasSub = hasSub;
+	}
+
+	/**
+	 * @param latitude
+	 *            the latitude to set
+	 */
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
+
+	/**
+	 * @param longitude
+	 *            the longitude to set
+	 */
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
+	}
+
+	/**
+	 * @param name
+	 *            the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @param parentId
+	 *            the parentId to set
+	 */
+	public void setParentId(int parentId) {
+		this.parentId = parentId;
 	}
 
 	/**
@@ -246,13 +260,6 @@ public class Branch extends Entity {
 	}
 
 	/**
-	 * @return the principalId
-	 */
-	public int getPrincipalId() {
-		return principalId;
-	}
-
-	/**
 	 * @param principalId
 	 *            the principalId to set
 	 */
@@ -261,18 +268,11 @@ public class Branch extends Entity {
 	}
 
 	/**
-	 * @return the parentId
+	 * @param province
+	 *            the province to set
 	 */
-	public int getParentId() {
-		return parentId;
-	}
-
-	/**
-	 * @param parentId
-	 *            the parentId to set
-	 */
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 }

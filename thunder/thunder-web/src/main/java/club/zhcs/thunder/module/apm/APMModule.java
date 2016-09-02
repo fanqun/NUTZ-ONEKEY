@@ -55,16 +55,22 @@ public class APMModule extends AbstractBaseModule {
 	}
 
 	@At
+	@Filters
+	public Pager<APMAlarm> alarm() {
+		return apmAlarmService.searchByPage(1, 5, null);
+	}
+
+	@At
 	@Ok("beetl:pages/apm/dashboard.html")
 	@RequiresRoles("admin")
 	public Result dashboard() throws SigarException {
 		return Result.success().addData(Gathers.all()).addData("config", config);
 	}
 
-	@At
+	@At("/detail/*")
 	@Filters
-	public Pager<APMAlarm> alarm() {
-		return apmAlarmService.searchByPage(1, 5, null);
+	public APMAlarm detail(String code) {
+		return apmAlarmService.fetch(code);
 	}
 
 	@At
@@ -84,12 +90,6 @@ public class APMModule extends AbstractBaseModule {
 		pager.setUrl(_base() + "/apm/search");
 		pager.addParas("key", key);
 		return Result.success().addData("pager", pager).setTitle("告警列表");
-	}
-
-	@At("/detail/*")
-	@Filters
-	public APMAlarm detail(String code) {
-		return apmAlarmService.fetch(code);
 	}
 
 	@At

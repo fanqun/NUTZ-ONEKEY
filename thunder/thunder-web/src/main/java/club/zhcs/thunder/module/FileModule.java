@@ -48,6 +48,16 @@ public class FileModule extends AbstractBaseModule {
 		return null;
 	}
 
+	@At("/kind/upload")
+	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	public NutMap upload(TempFile imgFile) throws IOException {
+		String key = uploader.upload(Streams.readBytes(imgFile.getInputStream()));
+		if (Strings.isBlank(key)) {
+			return NutMap.NEW().addv("error", 1).addv("message", "上传失败");
+		}
+		return NutMap.NEW().addv("error", 0).addv("url", uploader.privateUrl(key));
+	}
+
 	/**
 	 * ajax 文件上传
 	 * 
@@ -71,16 +81,6 @@ public class FileModule extends AbstractBaseModule {
 			data.add(temp);
 		}
 		return Result.success().addData("data", data);
-	}
-
-	@At("/kind/upload")
-	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
-	public NutMap upload(TempFile imgFile) throws IOException {
-		String key = uploader.upload(Streams.readBytes(imgFile.getInputStream()));
-		if (Strings.isBlank(key)) {
-			return NutMap.NEW().addv("error", 1).addv("message", "上传失败");
-		}
-		return NutMap.NEW().addv("error", 0).addv("url", uploader.privateUrl(key));
 	}
 
 }

@@ -48,44 +48,6 @@ public class RoleModule extends AbstractBaseModule {
 	}
 
 	/**
-	 * 角色列表
-	 * 
-	 * @param page
-	 *            页码
-	 * @return
-	 */
-	@At
-	@Ok("beetl:pages/admin/auth/role/list.html")
-	@ThunderRequiresPermissions(InstallPermission.ROLE_LIST)
-	public Result list(@Param(value = "page", df = "1") int page) {
-		page = _fixPage(page);
-		Pager<Role> pager = roleService.searchByPage(page);
-		pager.setUrl(_base() + "/role/list");
-		return Result.success().addData("pager", pager);
-	}
-
-	/**
-	 * 搜索角色
-	 * 
-	 * @param page
-	 *            页码
-	 * @param key
-	 *            关键词
-	 * @return
-	 */
-	@At
-	@Ok("beetl:pages/admin/auth/role/list.html")
-	@ThunderRequiresPermissions(InstallPermission.ROLE_LIST)
-	public Result search(@Param(value = "page", df = "1") int page, @Param("key") String key) {
-		page = _fixPage(page);
-		key = _fixSearchKey(key);
-		Pager<Role> pager = roleService.searchByKeyAndPage(key, page, "name", "description");
-		pager.setUrl(_base() + "/role/search");
-		pager.addParas("key", key);
-		return Result.success().addData("pager", pager);
-	}
-
-	/**
 	 * 添加角色页面
 	 * 
 	 * @return
@@ -146,20 +108,6 @@ public class RoleModule extends AbstractBaseModule {
 	}
 
 	/**
-	 * 更新角色
-	 * 
-	 * @param role
-	 *            待更新角色
-	 * @return
-	 */
-	@At
-	@POST
-	@ThunderRequiresPermissions(InstallPermission.ROLE_EDIT)
-	public Result update(@Param("..") Role role) {
-		return roleService.update(role, "description") == 1 ? Result.success() : Result.fail("更新失败!");
-	}
-
-	/**
 	 * 授权页面
 	 * 
 	 * @param id
@@ -190,5 +138,57 @@ public class RoleModule extends AbstractBaseModule {
 	@ThunderRequiresPermissions(InstallPermission.ROLE_GRANT)
 	public Result grant(@Param("permissions") int[] ids, @Param("id") int roleId) {
 		return roleService.setPermission(ids, roleId);
+	}
+
+	/**
+	 * 角色列表
+	 * 
+	 * @param page
+	 *            页码
+	 * @return
+	 */
+	@At
+	@Ok("beetl:pages/admin/auth/role/list.html")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_LIST)
+	public Result list(@Param(value = "page", df = "1") int page) {
+		page = _fixPage(page);
+		Pager<Role> pager = roleService.searchByPage(page);
+		pager.setUrl(_base() + "/role/list");
+		return Result.success().addData("pager", pager);
+	}
+
+	/**
+	 * 搜索角色
+	 * 
+	 * @param page
+	 *            页码
+	 * @param key
+	 *            关键词
+	 * @return
+	 */
+	@At
+	@Ok("beetl:pages/admin/auth/role/list.html")
+	@ThunderRequiresPermissions(InstallPermission.ROLE_LIST)
+	public Result search(@Param(value = "page", df = "1") int page, @Param("key") String key) {
+		page = _fixPage(page);
+		key = _fixSearchKey(key);
+		Pager<Role> pager = roleService.searchByKeyAndPage(key, page, "name", "description");
+		pager.setUrl(_base() + "/role/search");
+		pager.addParas("key", key);
+		return Result.success().addData("pager", pager);
+	}
+
+	/**
+	 * 更新角色
+	 * 
+	 * @param role
+	 *            待更新角色
+	 * @return
+	 */
+	@At
+	@POST
+	@ThunderRequiresPermissions(InstallPermission.ROLE_EDIT)
+	public Result update(@Param("..") Role role) {
+		return roleService.update(role, "description") == 1 ? Result.success() : Result.fail("更新失败!");
 	}
 }

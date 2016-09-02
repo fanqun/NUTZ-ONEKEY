@@ -60,6 +60,19 @@ public class SystemModule extends AbstractBaseModule {
 		return "system";
 	}
 
+	@At
+	@GET
+	@Ok("beetl:pages/admin/pwd.html")
+	public Result changePassword() {
+		return Result.success();
+	}
+
+	@At
+	@POST
+	public Result changePassword(@Param("old") String old, @Param("new") String newPwd, @Attr(SessionKeys.USER_KEY) User user) {
+		return userService.changePassword(user.getId(), old, newPwd);
+	}
+
 	// 此处前台是json请求所以会返回json串
 	@At
 	@Filters
@@ -91,12 +104,6 @@ public class SystemModule extends AbstractBaseModule {
 	}
 
 	@At
-	@Ok("beetl:pages/admin/settings.html")
-	public Result settings(@Attr(SessionKeys.USER_KEY) User user) {
-		return Result.success().addData("user", userService.fetch(user.getId()));
-	}
-
-	@At
 	@Ok("beetl:pages/admin/profile.html")
 	public Result profile(@Attr(SessionKeys.USER_KEY) User user) {
 		return Result.success().addData("user", userService.fetch(user.getId()));
@@ -110,15 +117,8 @@ public class SystemModule extends AbstractBaseModule {
 	}
 
 	@At
-	@GET
-	@Ok("beetl:pages/admin/pwd.html")
-	public Result changePassword() {
-		return Result.success();
-	}
-
-	@At
-	@POST
-	public Result changePassword(@Param("old") String old, @Param("new") String newPwd, @Attr(SessionKeys.USER_KEY) User user) {
-		return userService.changePassword(user.getId(), old, newPwd);
+	@Ok("beetl:pages/admin/settings.html")
+	public Result settings(@Attr(SessionKeys.USER_KEY) User user) {
+		return Result.success().addData("user", userService.fetch(user.getId()));
 	}
 }

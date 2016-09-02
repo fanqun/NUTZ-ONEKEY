@@ -30,11 +30,6 @@ import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 public class NOPModule extends AbstractBaseModule {
 
 	@At
-	public NOPData hello() {
-		return NOPData.success().addData("msg", "hello nop");
-	}
-
-	@At
 	public NOPData calc(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
 		return NOPData.success().addData("r", data);
 	}
@@ -42,5 +37,10 @@ public class NOPModule extends AbstractBaseModule {
 	@At
 	public NOPData file(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
 		return NOPData.success().addData("r", data);
+	}
+
+	@At
+	public NOPData hello() {
+		return NOPData.success().addData("msg", "hello nop");
 	}
 }
