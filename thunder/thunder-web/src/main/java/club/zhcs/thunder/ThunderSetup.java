@@ -5,7 +5,6 @@ import java.nio.charset.Charset;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.util.Daos;
-import org.nutz.integration.quartz.NutQuartzCronJobFactory;
 import org.nutz.integration.shiro.NutShiro;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.impl.PropertiesProxy;
@@ -66,6 +65,7 @@ public class ThunderSetup implements Setup {
 	public void init(NutConfig nc) {
 
 		NutShiro.DefaultLoginURL = "/";
+		NutShiro.DefaultNoAuthURL = "/403";
 
 		if (!Charset.defaultCharset().name().equalsIgnoreCase(Encoding.UTF8)) {
 			log.warn("This project must run in UTF-8, pls add -Dfile.encoding=UTF-8 to JAVA_OPTS");
@@ -75,7 +75,7 @@ public class ThunderSetup implements Setup {
 
 		Dao dao = ioc.get(Dao.class);
 
-		ioc.get(NutQuartzCronJobFactory.class);// 触发任务
+		// ioc.get(NutQuartzCronJobFactory.class);// 触发任务
 
 		// ioc.get(SigarClient.class);// 触发 sigar
 

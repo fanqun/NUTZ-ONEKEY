@@ -68,9 +68,57 @@ public enum InstallPermission {
 	/**
 	 * 权限管理
 	 */
-	PERMISSION_LIST("permission.list", "权限管理")
+	PERMISSION_LIST("permission.list", "权限管理"),
 	/**
 	 * ++++++++++++++++++++++访问控制++++++++++++++++++++++++++++++++
+	 */
+
+	/**
+	 * ++++++++++++++++++++++配置管理++++++++++++++++++++++++++++++++
+	 */
+	CONFIG_LIST("config.list", "配置管理"),
+	/**
+	 * 
+	 */
+	CONFIG_ADD("config.add", "配置添加"),
+	/**
+	 * 
+	 */
+	CONFIG_EDIT("config.edit", "配置编辑"),
+	/**
+	 * 
+	 */
+	CONFIG_DELETE("config.delete", "配置删除"),
+	/**
+	 * 
+	 */
+	CONFIG_WECHAT("config.wechat", "微信配置"),
+	/**
+	 * ++++++++++++++++++++++配置管理++++++++++++++++++++++++++++++++
+	 */
+
+	/**
+	 * ++++++++++++++++++++++机构管理++++++++++++++++++++++++++++++++
+	 */
+	STRUTS_LIST("struts.list", "机构管理"),
+	/**
+	 * 
+	 */
+	STRUTS_ADD("struts.add", "机构添加"),
+	/**
+	 * 
+	 */
+	STRUTS_EDIT("struts.edit", "机构编辑"),
+	/**
+	 * 
+	 */
+	STRUTS_DETAIL("struts.detail", "机构详情"),
+	/**
+	 * 
+	 */
+	STRUTS_DELETE("struts.delete", "机构删除"),
+	/**
+	 * ++++++++++++++++++++++机构管理++++++++++++++++++++++++++++++++
 	 */
 
 	;

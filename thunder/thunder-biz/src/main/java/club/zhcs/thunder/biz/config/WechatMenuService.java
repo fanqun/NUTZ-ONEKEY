@@ -1,0 +1,100 @@
+package club.zhcs.thunder.biz.config;
+
+import java.util.List;
+
+import org.nutz.dao.Cnd;
+import org.nutz.ioc.impl.PropertiesProxy;
+import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.lang.ContinueLoop;
+import org.nutz.lang.Each;
+import org.nutz.lang.ExitLoop;
+import org.nutz.lang.Lang;
+import org.nutz.lang.LoopException;
+import org.nutz.weixin.bean.WxMenu;
+
+import club.zhcs.thunder.bean.config.WechatMenu;
+import club.zhcs.thunder.bean.config.WechatMenu.Type;
+import club.zhcs.titans.utils.biz.BaseService;
+
+import com.google.common.collect.Lists;
+
+/**
+ * @author Kerbores(kerbores@gmail.com)
+ *
+ * @project platform-service
+ *
+ * @file WechatMenuService.java
+ *
+ * @description 微信菜单业务
+ *
+ * @time 2016年8月3日 下午10:53:27
+ *
+ */
+public class WechatMenuService extends BaseService<WechatMenu> {
+
+	@Inject("wxConfig")
+	PropertiesProxy wxConfig;
+
+	public String formatAuthUrl(String action) {
+		String appid = wxConfig.get("appid", "wx6e4f32b9bfd64693");
+		String domain = config.get("base.domain", "www.kerbores.com");
+		String contextPath = config.get("client.context", "platform-web-customer");
+		String url = action.startsWith("http") ? action : String.format("http://%s/%s/%s", domain, contextPath, action);
+
+		return String
+				.format("https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect",
+						appid, url);
+	}
+
+	public WxMenu exchange(WechatMenu menu) {
+		final WxMenu target = new WxMenu();
+		target.setName(menu.getName());
+		if (menu.getSubMenus() == null || menu.getSubMenus().size() == 0) {
+			target.setType(menu.getType().getAction());
+			if (menu.getType() == Type.VIEW) {
+				target.setUrl(formatAuthUrl(menu.getAction()));
+			} else {
+				target.setKey(menu.getAction());
+			}
+		}
+		if (menu.getSubMenus() != null && menu.getSubMenus().size() > 0) {
+			Lang.each(menu.getSubMenus(), new Each<WechatMenu>() {
+
+				@Override
+				public void invoke(int index, WechatMenu ele, int length) throws ExitLoop, ContinueLoop, LoopException {
+					if (target.getSubButtons() == null) {
+						List<WxMenu> subs = Lists.newArrayList();
+						target.setSubButtons(subs);
+					}
+					target.getSubButtons().add(exchange(ele));
+				}
+			});
+		}
+		return target;
+	}
+
+	public List<WxMenu> exchange(List<WechatMenu> menus) {
+		final List<WxMenu> target = Lists.newArrayList();
+		Lang.each(menus, new Each<WechatMenu>() {
+
+			@Override
+			public void invoke(int index, WechatMenu ele, int length) throws ExitLoop, ContinueLoop, LoopException {
+				target.add(exchange(ele));
+			}
+		});
+		return target;
+	}
+
+	public List<WxMenu> getWxMenus() {
+		List<WechatMenu> menus = query(Cnd.where("parentId", "=", 0).orderBy("index", "ASC"));
+		Lang.each(menus, new Each<WechatMenu>() {
+
+			@Override
+			public void invoke(int index, WechatMenu menu, int length) throws ExitLoop, ContinueLoop, LoopException {
+				menu.setSubMenus(query(Cnd.where("parentId", "=", menu.getId()).orderBy("index", "ASC")));
+			}
+		});
+		return exchange(menus);
+	}
+
+}

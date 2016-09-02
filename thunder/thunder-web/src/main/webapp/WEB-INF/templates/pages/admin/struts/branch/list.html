@@ -8,7 +8,9 @@ layout("/layout/default.html",{"menu":["struts","branch_admin"],"breadcrumbs":[{
 				<div class="row">
 					<div class="col-md-3 "></div>
 					<div class="col-md-2 col-md-offset-7">
+						<!--# if(hasPermission('struts.add')){ #-->
 						<a href="${base}/branch/add" class="btn btn-info btn-sm"><i class="fa fa-plus-circle"></i> 添加机构</a>
+						<!--# } #-->
 					</div>
 				</div>
 			</th>
@@ -32,13 +34,19 @@ layout("/layout/default.html",{"menu":["struts","branch_admin"],"breadcrumbs":[{
 			<td>${branch.code!}</td>
 			<td class="center">
 				<div class="hidden-sm hidden-xs btn-group">
+					<!--# if(hasPermission('struts.detail')){ #-->
 					<a class="btn btn-xs btn-success" href="${base}/branch/detail/${branch.id!}"> <i class="ace-icon fa fa-check bigger-120"></i> 详情
 					</a>
+					<!--# } #-->
+					<!--# if(hasPermission('struts.edit')){ #-->
 					<a class="btn btn-xs btn-info" href="${base}/branch/edit/${branch.id!}"> <i class="ace-icon fa fa-pencil bigger-120"></i> 编辑
 					</a>
+					<!--# } #-->
+					<!--# if(hasPermission('struts.delete')){ #-->
 					<button class="btn btn-xs btn-danger btn-delete" data-url='/branch/delete' data-id='${branch.id!}'>
 						<i class="ace-icon fa fa-trash-o bigger-120"></i> 删除
 					</button>
+					<!--# } #-->
 				</div>
 			</td>
 		</tr>
