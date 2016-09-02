@@ -19,7 +19,6 @@ import org.nutz.mvc.annotation.Param;
 import org.nutz.weixin.bean.WxMenu;
 import org.nutz.weixin.impl.WxApi2Impl;
 import org.nutz.weixin.spi.WXAccountApi.Type;
-import org.nutz.weixin.spi.WxApi2;
 import org.nutz.weixin.spi.WxResp;
 
 import club.zhcs.thunder.bean.config.WechatMenu;
@@ -47,11 +46,11 @@ public class WechatSettingModule extends AbstractBaseModule {
 	@Inject
 	WxConfigService wxConfigService;
 
-	@Inject("config")
-	PropertiesProxy proxy;
+	@Inject
+	PropertiesProxy wechat;
 
-	@Inject("wxCustomerApi")
-	WxApi2Impl wxCustomerApi;
+	@Inject
+	WxApi2Impl wxApi;
 
 	@Inject
 	WechatMenuService wechatMenuService;
@@ -60,7 +59,7 @@ public class WechatSettingModule extends AbstractBaseModule {
 	@Ok("beetl:pages/admin/setting/wechat.html")
 	@RequiresRoles("admin")
 	public Result index() {
-		return Result.success().addData("config", proxy).addData("wxConfig", wxConfigService.fetch(Cnd.orderBy().asc("id")));
+		return Result.success().addData("config", wechat).addData("wxConfig", wxConfigService.fetch(Cnd.orderBy().asc("id")));
 	}
 
 	@At
@@ -85,8 +84,8 @@ public class WechatSettingModule extends AbstractBaseModule {
 	@Ok(">>:${obj}")
 	@RequiresRoles("admin")
 	public String qr() {
-		WxResp resp = wxCustomerApi.createQRTicket(0, Type.EVERARGS, "test config");
-		return wxCustomerApi.qrURL(resp.getString("ticket"));
+		WxResp resp = wxApi.createQRTicket(0, Type.EVERARGS, "test config");
+		return wxApi.qrURL(resp.getString("ticket"));
 	}
 
 	@At
@@ -126,8 +125,7 @@ public class WechatSettingModule extends AbstractBaseModule {
 	@RequiresRoles("admin")
 	public Result asynMenuToWechat() {
 		List<WxMenu> menus = wechatMenuService.getWxMenus();
-		WxApi2 api = wxCustomerApi;
-		WxResp resp = api.menu_create(menus);
+		WxResp resp = wxApi.menu_create(menus);
 		if (resp.ok()) {
 			return Result.success();
 		}
@@ -165,9 +163,9 @@ public class WechatSettingModule extends AbstractBaseModule {
 	}
 
 	protected void modifyApi(WxConfig config) {
-		wxCustomerApi.setAppid(config.getAppid());
-		wxCustomerApi.setAppsecret(config.getAppsecret());
-		wxCustomerApi.setEncodingAesKey(config.getEncodingAesKey());
-		wxCustomerApi.setToken(config.getToken());
+		wxApi.setAppid(config.getAppid());
+		wxApi.setAppsecret(config.getAppsecret());
+		wxApi.setEncodingAesKey(config.getEncodingAesKey());
+		wxApi.setToken(config.getToken());
 	}
 }

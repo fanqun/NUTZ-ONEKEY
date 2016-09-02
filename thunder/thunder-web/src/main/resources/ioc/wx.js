@@ -1,4 +1,12 @@
 var ioc = {
+		wechat : {
+		type : "org.nutz.ioc.impl.PropertiesProxy",
+		fields : {
+			ignoreResourceNotFound : true,
+			utf8 : false,
+			paths : 'wechat'
+		}
+	},
 	wxJsapiTicketStore : {
 		type : "org.nutz.weixin.at.impl.MemoryJsapiTicketStore"
 	},
@@ -6,16 +14,16 @@ var ioc = {
 		type : "org.nutz.weixin.impl.WxApi2Impl",
 		fields : {
 			token : {
-				java : "$config.get('token')"
+				java : "$wechat.get('token')"
 			},
 			appid : {
-				java : "$config.get('appid')"
+				java : "$wechat.get('appid')"
 			},
 			appsecret : {
-				java : "$config.get('appsecret')"
+				java : "$wechat.get('appsecret')"
 			},
 			encodingAesKey : {
-				java : "$config.get('encodingAesKey')"
+				java : "$wechat.get('encodingAesKey')"
 			},
 			jsapiTicketStore : {
 				refer : 'wxJsapiTicketStore'

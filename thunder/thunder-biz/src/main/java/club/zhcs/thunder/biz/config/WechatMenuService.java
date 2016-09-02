@@ -32,11 +32,11 @@ import com.google.common.collect.Lists;
  */
 public class WechatMenuService extends BaseService<WechatMenu> {
 
-	@Inject("wxConfig")
-	PropertiesProxy wxConfig;
+	@Inject
+	PropertiesProxy wechat;
 
 	public String formatAuthUrl(String action) {
-		String appid = wxConfig.get("appid", "wx6e4f32b9bfd64693");
+		String appid = wechat.get("appid", "wx6e4f32b9bfd64693");
 		String domain = config.get("base.domain", "www.kerbores.com");
 		String contextPath = config.get("client.context", "platform-web-customer");
 		String url = action.startsWith("http") ? action : String.format("http://%s/%s/%s", domain, contextPath, action);
