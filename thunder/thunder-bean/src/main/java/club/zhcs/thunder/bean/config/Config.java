@@ -15,7 +15,7 @@ import club.zhcs.titans.utils.db.po.Entity;
  *
  * @file Config.java
  *
- * @description // TODO write some description of this class
+ * @description Config
  *
  * @time 2016年3月15日 下午1:20:36
  *
