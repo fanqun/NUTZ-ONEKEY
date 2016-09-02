@@ -10,6 +10,7 @@ import org.nutz.lang.Each;
 import org.nutz.lang.ExitLoop;
 import org.nutz.lang.Lang;
 import org.nutz.lang.LoopException;
+import org.nutz.mvc.Mvcs;
 import org.nutz.weixin.bean.WxMenu;
 
 import club.zhcs.thunder.bean.config.WechatMenu;
@@ -38,7 +39,7 @@ public class WechatMenuService extends BaseService<WechatMenu> {
 	public String formatAuthUrl(String action) {
 		String appid = wechat.get("appid", "wx6e4f32b9bfd64693");
 		String domain = config.get("base.domain", "www.kerbores.com");
-		String contextPath = config.get("client.context", "platform-web-customer");
+		String contextPath = config.get("client.context", Mvcs.getReq().getContextPath());
 		String url = action.startsWith("http") ? action : String.format("http://%s/%s/%s", domain, contextPath, action);
 
 		return String

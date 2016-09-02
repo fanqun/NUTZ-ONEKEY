@@ -2,7 +2,8 @@ package club.zhcs.thunder.module.admin.settings;
 
 import java.util.List;
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import javax.servlet.http.HttpServletRequest;
+
 import org.nutz.dao.Cnd;
 import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -11,6 +12,7 @@ import org.nutz.lang.Each;
 import org.nutz.lang.ExitLoop;
 import org.nutz.lang.Lang;
 import org.nutz.lang.LoopException;
+import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
@@ -25,6 +27,8 @@ import club.zhcs.thunder.bean.config.WechatMenu;
 import club.zhcs.thunder.bean.config.WxConfig;
 import club.zhcs.thunder.biz.config.WechatMenuService;
 import club.zhcs.thunder.biz.config.WxConfigService;
+import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresPermissions;
+import club.zhcs.thunder.vo.InstallPermission;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.db.Result;
 
@@ -50,6 +54,9 @@ public class WechatSettingModule extends AbstractBaseModule {
 	PropertiesProxy wechat;
 
 	@Inject
+	PropertiesProxy config;
+
+	@Inject
 	WxApi2Impl wxApi;
 
 	@Inject
@@ -57,22 +64,25 @@ public class WechatSettingModule extends AbstractBaseModule {
 
 	@At("/")
 	@Ok("beetl:pages/admin/setting/wechat.html")
-	@RequiresRoles("admin")
-	public Result index() {
-		return Result.success().addData("config", wechat).addData("wxConfig", wxConfigService.fetch(Cnd.orderBy().asc("id")));
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
+	public Result index(HttpServletRequest request) {
+		return Result.success().addData("wechat", wechat)
+				.addData("wxConfig", wxConfigService.fetch(Cnd.orderBy().asc("id"))).addData("config", config)
+				.addData("context", config.get("client.context", Mvcs.getReq().getContextPath()));
 	}
 
 	@At
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public Result addOrUpdate(@Param("..") WxConfig config) {
-		if (wxConfigService.fetch(Cnd.orderBy().asc("id")) == null) {
+		if (config.getId() == 0) {
 			config = wxConfigService.save(config);
 			if (config != null) {
 				modifyApi(config);
 			}
 			return config == null ? Result.fail("配置失败!<br>失败原因:添加失败") : Result.success();
 		} else {
-			int r = wxConfigService.update(config, Cnd.where("id", "=", config.getId()), "appid", "appsecret", "token", "encodingAesKey");
+			int r = wxConfigService.update(config, Cnd.where("id", "=", config.getId()), "appid", "appsecret", "token",
+					"encodingAesKey");
 			if (r == 1) {
 				modifyApi(config);
 			}
@@ -82,30 +92,30 @@ public class WechatSettingModule extends AbstractBaseModule {
 
 	@At("/qr/*")
 	@Ok(">>:${obj}")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public String qr() {
 		WxResp resp = wxApi.createQRTicket(0, Type.EVERARGS, "test config");
 		return wxApi.qrURL(resp.getString("ticket"));
 	}
 
 	@At
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public Result menu() {
 		return Result.success().addData("menus", wechatMenuService.queryAll());// 一共最多也就15条数据,全部显示了就得了
 	}
 
-	@At("/menu/add/*")
-	@RequiresRoles("admin")
+	@At("/menu/add")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	@GET
 	@Ok("beetl:pages/admin/setting/menu_add.html")
 	public Result addMenu() {
-		return Result.success().addData("types", WechatMenu.Type.values())
-				.addData("menus", wechatMenuService.query(Cnd.where("parentId", "=", 0)));
+		return Result.success().addData("types", WechatMenu.Type.values()).addData("menus",
+				wechatMenuService.query(Cnd.where("parentId", "=", 0)));
 	}
 
-	@At("/menu/asyn/*")
+	@At("/menu/asyn")
 	@GET
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	@Ok("beetl:pages/admin/setting/menu_asyn.html")
 	public Result asynMenu() {
 		List<WechatMenu> menus = wechatMenuService.query(Cnd.where("parentId", "=", 0).orderBy("index", "ASC"));
@@ -113,7 +123,8 @@ public class WechatSettingModule extends AbstractBaseModule {
 
 			@Override
 			public void invoke(int index, WechatMenu menu, int length) throws ExitLoop, ContinueLoop, LoopException {
-				menu.setSubMenus(wechatMenuService.query(Cnd.where("parentId", "=", menu.getId()).orderBy("index", "ASC")));
+				menu.setSubMenus(
+						wechatMenuService.query(Cnd.where("parentId", "=", menu.getId()).orderBy("index", "ASC")));
 			}
 		});
 
@@ -122,7 +133,7 @@ public class WechatSettingModule extends AbstractBaseModule {
 
 	@At("/menu/asyn")
 	@POST
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public Result asynMenuToWechat() {
 		List<WxMenu> menus = wechatMenuService.getWxMenus();
 		WxResp resp = wxApi.menu_create(menus);
@@ -133,16 +144,17 @@ public class WechatSettingModule extends AbstractBaseModule {
 	}
 
 	@At("/menu/edit/*")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	@GET
 	@Ok("beetl:pages/admin/setting/menu_add.html")
 	public Result editMenu(int id) {
 		return Result.success().addData("types", WechatMenu.Type.values())
-				.addData("menus", wechatMenuService.query(Cnd.where("parentId", "=", 0))).addData("menu", wechatMenuService.fetch(id));
+				.addData("menus", wechatMenuService.query(Cnd.where("parentId", "=", 0)))
+				.addData("menu", wechatMenuService.fetch(id));
 	}
 
 	@At("/menu/add")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	@POST
 	public Result addMenu(@Param("..") WechatMenu menu) {
 
@@ -150,14 +162,14 @@ public class WechatSettingModule extends AbstractBaseModule {
 	}
 
 	@At("/menu/edit")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	@POST
 	public Result editMenu(@Param("..") WechatMenu menu) {
 		return wechatMenuService.updateIgnoreNull(menu) == 1 ? Result.success() : Result.fail("添加菜单失败!");
 	}
 
 	@At("/menu/delete")
-	@RequiresRoles("admin")
+	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public Result deleteMenu(@Param("id") int id) {
 		return wechatMenuService.delete(id) == 1 ? Result.success() : Result.fail("删除菜单失败!");
 	}
