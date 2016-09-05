@@ -7,6 +7,7 @@ import org.nutz.json.Json;
 import org.nutz.lang.Lang;
 import org.nutz.lang.Strings;
 import org.nutz.lang.util.NutMap;
+import org.nutz.mvc.ViewModel;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Attr;
 import org.nutz.mvc.annotation.Filters;
@@ -88,10 +89,13 @@ public class WechatQAModule extends AbstractBaseModule {
 
 	@At
 	@Ok("re:beetl:pages/qa/bind.html")
-	public String me(@Attr(SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
+	public String me(@Attr(SessionKeys.WECHAT_USER_KEY) Nutzer nutzer,ViewModel model) {
 		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken())) {
 			return null;
 		}
+		Response r1 = Http.get("https://nutz.cn/yvr/api/v1/user/" +nutzer.getLoginName());
+		NutMap userInfo = Lang.map(r1.getContent());
+		model.putAll(userInfo);
 		return "beetl:pages/qa/me.html";
 	}
 
