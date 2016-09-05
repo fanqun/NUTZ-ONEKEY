@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.beetl.ext.nutz.BeetlViewMaker;
+import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.lang.Lang;
 import org.nutz.lang.Strings;
@@ -51,8 +52,7 @@ import club.zhcs.titans.utils.db.Result;
  */
 
 @Modules(scanPackage = true)
-@IocBy(type = ComboIocProvider.class, args = { "*anno", "club.zhcs", "*tx",
-		"*js", "ioc", "*async", "*quartz", "quartz", "*sigar", "sigar" })
+@IocBy(type = ComboIocProvider.class, args = { "*anno", "club.zhcs", "*tx", "*js", "ioc", "*async", "*quartz", "quartz", "*sigar", "sigar" })
 @Views({ BeetlViewMaker.class })
 @Fail("http:500")
 @Ok("json")
@@ -62,6 +62,9 @@ import club.zhcs.titans.utils.db.Result;
 public class MainModule extends AbstractBaseModule {
 
 	private @Inject RoleService roleService;
+
+	@Inject
+	PropertiesProxy config;
 
 	@At("/403")
 	@Ok("http:403")
@@ -86,15 +89,16 @@ public class MainModule extends AbstractBaseModule {
 	}
 
 	@At
-	public Result hello() {
-		return Result.success().addData("msg", "Hello nutz-thunder!");
+	@Filters
+	public Result hello(HttpServletRequest request) {
+		return Result.success().addData("msg", "Hello nutz-thunder!").addData("url", request.getRequestURL());
 	}
 
 	@At("/")
 	@Ok("jsp:/login")
 	@Filters
-	public View login(@Attr(SessionKeys.USER_KEY) User user,
-			HttpServletRequest request) {
+	public View login(@Attr(SessionKeys.USER_KEY) User user, HttpServletRequest request) {
+		request.setAttribute("config", config);
 		String cookie = _getCookie("kerbores");
 		if (!Strings.isBlank(cookie)) {
 			NutMap data = Lang.map(DES.decrypt(cookie));

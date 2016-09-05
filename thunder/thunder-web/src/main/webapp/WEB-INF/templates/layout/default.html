@@ -6,9 +6,9 @@
 
 <link href="${base}/resources/images/logo.ico" rel="shortcut icon">
 
-<title>${global("name")} ${obj.title!}</title>
+<title>${config("application.name")} ${obj.title!}</title>
 
-<meta name="description" content='${global("name")}' />
+<meta name="description" content='${config("application.name")}' />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
 <!-- bootstrap & fontawesome -->
@@ -72,7 +72,7 @@
 			<!-- /section:basics/sidebar.mobile.toggle -->
 			<div class="navbar-header pull-left">
 				<!-- #section:basics/navbar.layout.brand -->
-				<a href="#" class="navbar-brand"> <small><i class="fa fa-leaf"></i> ${global("name")} </small>
+				<a href="#" class="navbar-brand"> <small><i class="fa fa-leaf"></i> ${config("application.name")} </small>
 				</a>
 
 				<!-- /section:basics/navbar.layout.brand -->
@@ -434,7 +434,7 @@
 						<div class="col-xs-12">
 							<!-- PAGE CONTENT BEGINS -->
 							<!--# 
-                        		if(global("debug")){
+                        		if(config("debug")){
 							#-->
 							<div class="widget-box transparent collapsed">
 								<div class="widget-header widget-header-flat">
@@ -470,7 +470,7 @@
 			<div class="footer-inner">
 				<!-- #section:basics/footer -->
 				<div class="footer-content">
-					<span class="bigger-100"> <span class="blue bolder"> ${global("copyright")} </span>
+					<span class="bigger-100"> <span class="blue bolder"> ${config("copy.right")} </span>
 					</span>
 				</div>
 				<!-- /section:basics/footer -->
