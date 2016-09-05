@@ -20,7 +20,6 @@
 		<module>thunder-bean</module>
 		<module>thunder-biz</module>
 		<module>thunder-web</module>
-		<module>thunder-web-wechat</module>
 	</modules>
 	
 	<repositories>
