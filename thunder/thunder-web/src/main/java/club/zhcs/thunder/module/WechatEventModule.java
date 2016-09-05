@@ -53,7 +53,7 @@ public class WechatEventModule extends AbstractBaseModule {
 		 */
 		@Override
 		public boolean check(String signature, String timestamp, String nonce, String key) {
-			return Wxs.check(config.get("token"), signature, timestamp, nonce);
+			return Wxs.check(api.getToken(), signature, timestamp, nonce);
 		};
 
 		/**
