@@ -38,8 +38,17 @@
 
 <body ontouchstart>
 
-${layoutContent}
+	${layoutContent}
 
+	<script type="text/javascript">
+	<!--
+	$(document.body).pullToRefresh().on("pull-to-refresh", function() {
+			$.toast("正在刷新", function() {
+				location.reload();
+			});
+		});
+	//-->
+	</script>
 </body>
 
 </html>
