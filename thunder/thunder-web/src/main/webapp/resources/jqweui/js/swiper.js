@@ -3972,13 +3972,13 @@ else if (typeof define === 'function' && define.amd) {
         if(this.wrapperDiff > this.containerWidth/2 || (this.wrapperDiff > 20 && duration < 300)) {
           this.slidePrev();
         } else {
-          this.slideTo(this.activeIndex, 200);
+          this.slideTo(this.activeIndex);
         }
       } else {
         if(- this.wrapperDiff > this.containerWidth/2 || (-this.wrapperDiff > 20 && duration < 300)) {
           this.slideNext();
         } else {
-          this.slideTo(this.activeIndex, 200);
+          this.slideTo(this.activeIndex);
         }
       }
 
@@ -4037,17 +4037,10 @@ else if (typeof define === 'function' && define.amd) {
     },
 
     doWrapperTransform: function(duration, callback) {
-      if (duration === 0) {
-        var origin = this.wrapper.css('transition-property')
-        this.wrapper.css('transition-property', 'none').transform('translate3d(' + this.wrapperTransform + 'px, 0, 0)');
-        this.wrapper.css('transition-property', origin);
-        callback()
-      } else {
-        this.wrapper.transitionEnd(function() {
-          callback && callback();
-        });
-        this.wrapper.transition(duration || 0).transform('translate3d(' + this.wrapperTransform + 'px, 0, 0)');
-      }
+      this.wrapper.transitionEnd(function() {
+        callback && callback();
+      });
+      this.wrapper.transition(duration || 0).transform('translate3d(' + this.wrapperTransform + 'px, 0, 0)');
     },
 
     doImageTransform: function(duration, callback) {
@@ -4087,7 +4080,7 @@ else if (typeof define === 'function' && define.amd) {
       this.activeIndex = index;
       this.wrapperTransform = - (index * this.containerWidth);
       this.wrapperLastTransform = this.wrapperTransform;
-      this.doWrapperTransform(duration, $.proxy(function() {
+      this.doWrapperTransform(duration || 200, $.proxy(function() {
         if(this.lastActiveIndex === this.activeIndex) return false; // active index not change
         this.container.find('.caption-item.active').removeClass('active');
         this.container.find('.swiper-slide-active').removeClass('swiper-slide-active');
@@ -4114,10 +4107,10 @@ else if (typeof define === 'function' && define.amd) {
       }, this));
     },
     slideNext: function() {
-      return this.slideTo(this.activeIndex+1, 200);
+      return this.slideTo(this.activeIndex+1);
     },
     slidePrev: function() {
-      return this.slideTo(this.activeIndex-1, 200);
+      return this.slideTo(this.activeIndex-1);
     }
   }
 
