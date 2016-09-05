@@ -46,9 +46,10 @@ public class WechatQAModule extends AbstractBaseModule {
 		if (Strings.isNotBlank(search)) {
 			topicApi += "&tab=" + search;
 		}
-		return Result.success().addData("topics", Json.fromJson(Http.get(topicApi).getContent())).addData("page", page).addData("tab", tab).addData("tag", tag).addData("search", search).addData("limit", limit);
+		return Result.success().addData("topics", Json.fromJson(Http.get(topicApi).getContent())).addData("page", page).addData("tab", tab).addData("tag", tag)
+				.addData("search", search).addData("limit", limit);
 	}
-	
+
 	@At("/topic/json")
 	@POST
 	public Result topicJson(@Param(value = "page", df = "1") int page, @Param("tab") String tab, @Param("tag") String tag, @Param("search") String search,
@@ -63,7 +64,8 @@ public class WechatQAModule extends AbstractBaseModule {
 		if (Strings.isNotBlank(search)) {
 			topicApi += "&tab=" + search;
 		}
-		return Result.success().addData("topics", Json.fromJson(Http.get(topicApi).getContent())).addData("page", page).addData("tab", tab).addData("tag", tag).addData("search", search).addData("limit", limit);
+		return Result.success().addData("topics", Json.fromJson(Http.get(topicApi).getContent())).addData("page", page).addData("tab", tab).addData("tag", tag)
+				.addData("search", search).addData("limit", limit);
 	}
 
 	@At("/topic/detail/*")

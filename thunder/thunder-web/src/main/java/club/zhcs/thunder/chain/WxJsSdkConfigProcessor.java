@@ -44,6 +44,7 @@ public class WxJsSdkConfigProcessor extends AbstractProcessor {
 		WxConfigs configs = ac.getIoc().get(WxConfigs.class);
 		NutMap jsConfig = configs.loadConfig(url);
 		Mvcs.getReq().setAttribute("jsConfig", Json.toJson(jsConfig));
+		Mvcs.getReq().setAttribute("appid", configs.api.getAppid());
 		doNext(ac);
 	}
 

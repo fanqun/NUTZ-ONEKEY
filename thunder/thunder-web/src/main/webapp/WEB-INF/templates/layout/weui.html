@@ -25,6 +25,10 @@
 			console.log(res);
 		});
 	})
+	
+	function genWxSecureRedirectUrl(contextPath){
+		return "https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appid!}&redirect_uri=${config('http.protocol')}://${config('base.domain')}"+contextPath+"&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+	}
 </script>
 <script src="${base}/resources/layer/layer.js"></script>
 <script src="${base}/resources/layer/extend/layer.ext.js"></script>

@@ -7,7 +7,7 @@ import org.nutz.ioc.loader.annotation.IocBean;
 import org.nutz.lang.util.NutMap;
 import org.nutz.log.Log;
 import org.nutz.log.Logs;
-import org.nutz.weixin.spi.WxApi2;
+import org.nutz.weixin.impl.WxApi2Impl;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -31,7 +31,7 @@ import com.google.common.cache.RemovalNotification;
 @IocBean
 public class WxConfigs {
 	@Inject("wxApi")
-	WxApi2 api;
+	WxApi2Impl api;
 
 	/**
 	 * url 和配置的一个缓冲
