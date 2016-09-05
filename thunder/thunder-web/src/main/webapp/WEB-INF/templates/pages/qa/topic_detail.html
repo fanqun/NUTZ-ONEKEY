@@ -15,8 +15,27 @@
 .topic-item {
 	min-height: 102px;
 }
+
+.reply {
+	position: fixed;
+	width: 60px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 99;
+	margin-top: -150px;
+	background: #fff;
+}
+
+.reply img {
+	width: 60px;
+}
 -->
 </style>
+<!--# if(obj.data.reply){ #-->
+<a href="${base!}/qa/reply/${obj.data.topic.data.id}" class="reply">
+	<img alt="点击回复" src="${base!}/resources/jqweui/demos/images/f112.png">
+</a>
+<!--# } #-->
 <header class='demos-header'>
 	<h1 class="demos-title">话题详情</h1>
 </header>

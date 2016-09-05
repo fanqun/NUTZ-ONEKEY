@@ -40,7 +40,7 @@ import club.zhcs.titans.utils.db.Result;
 // SessionKeys.WECHAT_USER_KEY, "/qa/bind" }) })
 @Filters
 public class WechatQAModule extends AbstractBaseModule {
-	
+
 	@Inject
 	NutzerService nutzerService;
 
@@ -83,24 +83,32 @@ public class WechatQAModule extends AbstractBaseModule {
 
 	@At("/topic/detail/*")
 	@Ok("beetl:pages/qa/topic_detail.html")
-	public Result detail(String id) {
-		return Result.success().addData("topic", Json.fromJson(Http.get("https://nutz.cn/yvr/api/v1/topic/" + id).getContent()));
+	public Result detail(String id, @Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
+		return Result.success().addData("topic", Json.fromJson(Http.get("https://nutz.cn/yvr/api/v1/topic/" + id).getContent())).addData("reply",
+				nutzer != null && Strings.isNotBlank(nutzer.getAccessToken()));
 	}
 
 	@At
 	@Ok("re:beetl:pages/qa/bind.html")
-	public String me(@Attr(SessionKeys.WECHAT_USER_KEY) Nutzer nutzer,ViewModel model) {
+	public String me(@Attr(SessionKeys.WECHAT_USER_KEY) Nutzer nutzer, ViewModel model) {
 		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken())) {
 			return null;
 		}
-		Response r1 = Http.get("https://nutz.cn/yvr/api/v1/user/" +nutzer.getLoginName());
+		Response r1 = Http.get("https://nutz.cn/yvr/api/v1/user/" + nutzer.getLoginName());
 		NutMap userInfo = Lang.map(r1.getContent());
 		model.putAll(userInfo);
 		return "beetl:pages/qa/me.html";
 	}
+	
+	@At("/reply/*")
+	@GET
+	@Ok("beetl:pages/qa/reply.html")
+	public Result reply(String id) {
+		return Result.success().addData("id", id);
+	}
 
 	@At
-	public Result bind(@Param("token") String token,@Attr(Application.SessionKeys.WECHAT_USER_KEY)Nutzer nutzer) {
+	public Result bind(@Param("token") String token, @Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
 		Response response = Http.post2("https://nutz.cn/yvr/api/v1/accesstoken", NutMap.NEW().addv("accesstoken", token), 5000);
 		if (response.isOK()) {
 			NutMap data = Lang.map(response.getContent());
@@ -111,7 +119,7 @@ public class WechatQAModule extends AbstractBaseModule {
 				nutzer.setAccessToken(token);
 				nutzer.setLoginName(userInfo.getAs("data", NutMap.class).getString("loginname"));
 				nutzer.setAvatarUrl(userInfo.getAs("data", NutMap.class).getString("avatar_url"));
-				//TODO 其他信息
+				// TODO 其他信息
 				nutzerService.update(nutzer);
 			}
 			return Result.success().addData(data);
