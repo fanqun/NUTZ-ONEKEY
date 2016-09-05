@@ -55,6 +55,10 @@ public class ThunderChainMaker extends KerboresActionChainMaker {
 		interceptors.add(new ThunderRoleAnnotationMethodInterceptor());
 
 		addBefore(list, ActionFiltersProcessor.class, new NutShiroProcessor(interceptors, ThunderRequiresPermissions.class, ThunderRequiresRoles.class));
+
+		addBefore(list, ActionFiltersProcessor.class, new WxUserInjectProcessor());
+		addBefore(list, ActionFiltersProcessor.class, new WxJsSdkConfigProcessor());
+
 		Processor error = new KerboresFailProcessor();
 		Lang.each(list, new Each<Processor>() {
 

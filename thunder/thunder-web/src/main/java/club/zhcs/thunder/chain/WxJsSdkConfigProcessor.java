@@ -2,7 +2,6 @@ package club.zhcs.thunder.chain;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.json.Json;
 import org.nutz.lang.util.NutMap;
 import org.nutz.log.Log;
@@ -35,20 +34,15 @@ public class WxJsSdkConfigProcessor extends AbstractProcessor {
 	@Override
 	public void process(ActionContext ac) throws Throwable {
 
-		PropertiesProxy config = ac.getIoc().get(PropertiesProxy.class, "config");
-
 		HttpServletRequest request = ac.getRequest();
-		if (request.getMethod().equalsIgnoreCase("POST")) {// 屏蔽掉POST请求
+		if (request.getMethod().equalsIgnoreCase("POST")) {// XXX 怎么确定是微信
 			doNext(ac);
 			return;
 		}
 		log.debug("inject wechat jssdk config....");
-		String uri = request.getRequestURI() + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
-		String url = "http://" + config.get("base.domain") + uri;
+		String url = request.getRequestURL() + (request.getQueryString() == null ? "" : "?" + request.getQueryString());
 		WxConfigs configs = ac.getIoc().get(WxConfigs.class);
 		NutMap jsConfig = configs.loadConfig(url);
-		Mvcs.getReq().setAttribute("appid", jsConfig.get("appId"));// 给Velocity模板引用一下
-		Mvcs.getReq().setAttribute("domain", config.get("base.domain"));// 给Velocity模板引用一下
 		Mvcs.getReq().setAttribute("jsConfig", Json.toJson(jsConfig));
 		doNext(ac);
 	}

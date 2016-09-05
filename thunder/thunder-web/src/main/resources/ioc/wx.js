@@ -1,5 +1,5 @@
 var ioc = {
-		wechat : {
+	wechat : {
 		type : "org.nutz.ioc.impl.PropertiesProxy",
 		fields : {
 			ignoreResourceNotFound : true,

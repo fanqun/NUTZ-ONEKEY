@@ -28,6 +28,7 @@ public class Application {
 		 * 用戶在session中保存的key
 		 */
 		public static final String USER_KEY = "KERBORES_USER";
+		public static final String WECHAT_USER_KEY = "KERBORES_WECHAT_USER";
 	}
 	// public static final String NAME =
 	// Mvcs.getIoc().get(PropertiesProxy.class,

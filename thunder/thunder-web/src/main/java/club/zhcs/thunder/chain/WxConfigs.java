@@ -30,7 +30,7 @@ import com.google.common.cache.RemovalNotification;
  */
 @IocBean
 public class WxConfigs {
-	@Inject("wxCustomerApi")
+	@Inject("wxApi")
 	WxApi2 api;
 
 	/**
