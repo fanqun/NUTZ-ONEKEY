@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.nutz.dao.Cnd;
 import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.mvc.View;
@@ -17,8 +18,11 @@ import org.nutz.weixin.impl.WxApi2Impl;
 import org.nutz.weixin.repo.com.qq.weixin.mp.aes.AesException;
 import org.nutz.weixin.repo.com.qq.weixin.mp.aes.WXBizMsgCrypt;
 import org.nutz.weixin.spi.WxHandler;
+import org.nutz.weixin.spi.WxResp;
 import org.nutz.weixin.util.Wxs;
 
+import club.zhcs.thunder.bean.qa.Nutzer;
+import club.zhcs.thunder.biz.qa.NutzerService;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 
 /**
@@ -36,6 +40,9 @@ public class WechatEventModule extends AbstractBaseModule {
 
 	@Inject
 	PropertiesProxy config;
+	
+	@Inject
+	private NutzerService nutzerService;
 
 	{
 		Wxs.enableDevMode();
@@ -61,7 +68,7 @@ public class WechatEventModule extends AbstractBaseModule {
 		 */
 		@Override
 		public WxOutMsg defaultMsg(WxInMsg msg) {
-			return Wxs.respText(null, "你想说: '" + msg.getContent() + "' 吗?");
+			return null;
 		}
 
 		/*
@@ -81,7 +88,23 @@ public class WechatEventModule extends AbstractBaseModule {
 		 */
 		@Override
 		public WxOutMsg eventSubscribe(WxInMsg msg) {
-			return Wxs.respText(null, "欢迎关注!");
+			WxResp resp = api.user_info(msg.getFromUserName(), "zh_CN");
+			Nutzer nutzer = nutzerService.fetch(Cnd.where("openid", "=", msg.getFromUserName()));
+			if (nutzer == null) {
+				nutzer = new Nutzer();
+				nutzer.setOpenid(msg.getFromUserName());
+				String nickName  = resp.getString("nickname").replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
+				nutzer.setCity(resp.getString("city"));
+				nutzer.setCountry(resp.getString("country"));
+				nutzer.setProvince(resp.getString("province"));
+				nutzer.setNickName(nickName);
+				nutzer.setHeadImgUrl(resp.getString("headimgurl"));
+				nutzerService.save(nutzer);
+				return Wxs.respText(null, "欢迎关注!");
+			}else {
+				return Wxs.respText(null, "欢迎回来!");
+			}
+			
 		}
 
 		/**

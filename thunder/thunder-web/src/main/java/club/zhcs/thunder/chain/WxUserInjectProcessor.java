@@ -67,7 +67,7 @@ public class WxUserInjectProcessor extends AbstractProcessor {
 		log.debug("successful invoke ,return message:\n" + data.toString());
 		Mvcs.getReq().getSession().setAttribute("openid", data.getString("openid"));
 
-		Mvcs.getReq().getSession().setAttribute(Application.SessionKeys.USER_KEY, nutzerService.fetch(Cnd.where("openid", "=", data.getString("openid"))));
+		Mvcs.getReq().getSession().setAttribute(Application.SessionKeys.WECHAT_USER_KEY, nutzerService.fetch(Cnd.where("openid", "=", data.getString("openid"))));
 		doNext(ac);
 	}
 

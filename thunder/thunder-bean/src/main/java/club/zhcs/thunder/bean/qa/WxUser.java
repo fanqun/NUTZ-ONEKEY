@@ -43,6 +43,7 @@ public class WxUser extends Entity {
 
 	@Column("c_head_image_url")
 	@Comment("头像地址")
+	@ColDefine(width=150)
 	private String headImgUrl;
 
 	/**

@@ -1,5 +1,6 @@
 package club.zhcs.thunder.bean.qa;
 
+import org.nutz.dao.entity.annotation.ColDefine;
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Comment;
 import org.nutz.dao.entity.annotation.Table;
@@ -34,6 +35,7 @@ public class Nutzer extends WxUser {
 
 	@Column("n_avatar_url")
 	@Comment("头像")
+	@ColDefine(width=150)
 	private String avatarUrl;
 
 	@Column("n_create_at")
