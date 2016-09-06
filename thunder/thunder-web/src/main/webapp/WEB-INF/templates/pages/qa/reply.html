@@ -47,13 +47,12 @@ $(function () {
         }
     });
     $('#reply-btn').on('click', function () {
-    	console.log(1);
         $.post('${base!}/qa/reply', {
             id: $('#topicId').val(),
             content: testEditor.getHTML()
         }, function (result) {
         	if(result.operationState=='SUCCESS'){
-        		$.toast("正在刷新", function() {
+        		$.toast("回复成功!", function() {
 					location.href = '${base!}/qa/topic/detail/'+$('#topicId').val();
 				});
         	}else{
