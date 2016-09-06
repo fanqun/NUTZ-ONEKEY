@@ -5,8 +5,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.dao.Cnd;
+import org.nutz.http.Http;
 import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.lang.Lang;
+import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.View;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Fail;
@@ -40,7 +43,7 @@ public class WechatEventModule extends AbstractBaseModule {
 
 	@Inject
 	PropertiesProxy config;
-	
+
 	@Inject
 	private NutzerService nutzerService;
 
@@ -93,7 +96,7 @@ public class WechatEventModule extends AbstractBaseModule {
 			if (nutzer == null) {
 				nutzer = new Nutzer();
 				nutzer.setOpenid(msg.getFromUserName());
-				String nickName  = resp.getString("nickname").replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
+				String nickName = resp.getString("nickname").replaceAll("[\\ud800\\udc00-\\udbff\\udfff\\ud800-\\udfff]", "");
 				nutzer.setCity(resp.getString("city"));
 				nutzer.setCountry(resp.getString("country"));
 				nutzer.setProvince(resp.getString("province"));
@@ -101,10 +104,10 @@ public class WechatEventModule extends AbstractBaseModule {
 				nutzer.setHeadImgUrl(resp.getString("headimgurl"));
 				nutzerService.save(nutzer);
 				return Wxs.respText(null, "欢迎关注!");
-			}else {
+			} else {
 				return Wxs.respText(null, "欢迎回来!");
 			}
-			
+
 		}
 
 		/**
@@ -135,12 +138,20 @@ public class WechatEventModule extends AbstractBaseModule {
 		 */
 		@Override
 		public WxOutMsg text(WxInMsg msg) {
-			return defaultMsg(msg);
+			String info = Http.post("https://nutz.cn/s/api/create/txt?title=Nutz-onekey 短点儿", NutMap.NEW().addv("data", msg.getContent()), 5000);
+			if (Lang.map(info).getBoolean("ok")) {
+				Wxs.respText("https://nutz.cn" + Lang.map(info).getString("url"));
+			}
+			return Wxs.respText("生成失败!");
 		}
 
 		@Override
 		public WxOutMsg voice(WxInMsg msg) {
-			return Wxs.respVoice(null, msg.getRecognition());
+			String info = Http.post("https://nutz.cn/s/api/create/txt?title=Nutz-onekey 短点儿", NutMap.NEW().addv("data", msg.getRecognition()), 5000);
+			if (Lang.map(info).getBoolean("ok")) {
+				Wxs.respText("https://nutz.cn" + Lang.map(info).getString("url"));
+			}
+			return Wxs.respText("生成失败!");
 		}
 	};
 
