@@ -110,6 +110,29 @@ public class WechatQAModule extends AbstractBaseModule {
 	public Result reply(String id) {
 		return Result.success().addData("id", id);
 	}
+	
+	@At("/new")
+	@GET
+	@Ok("re:beetl:pages/qa/bind.html")
+	public String _new(@Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
+		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken())) {
+			return null;
+		}
+		return "beetl:pages/qa/new.html";
+	}
+	
+	@At
+	@POST
+	public Result topic( @Param("title") String title, @Param("content") String content,@Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
+		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken()))
+			return Result.fail("非法用户");
+		Response response = Http.post2("https://nutz.cn/yvr/api/v1/topics",
+				NutMap.NEW().addv("title", title).addv("content", content).addv("accesstoken", nutzer.getAccessToken()), 5000);
+		if (response.isOK()) {
+			return Result.success();
+		}
+		return Result.fail("发帖失败!");
+	}
 
 	@At
 	@POST
