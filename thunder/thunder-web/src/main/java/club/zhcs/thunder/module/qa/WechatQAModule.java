@@ -172,15 +172,15 @@ public class WechatQAModule extends AbstractBaseModule {
 	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
 	public NutMap upload(@Param("editormd-image-file") TempFile img, @Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
 		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken())) {
-			return NutMap.NEW().addv("success", "0").addv("message", "用户不存在!");
+			return NutMap.NEW().addv("success", 0).addv("message", "用户不存在!");
 		}
 		NutMap paras = NutMap.NEW();
 		paras.addv("file", img.getFile());
 		Response response = Http.upload("https://nutz.cn/yvr/api/v1/images?accesstoken=" + nutzer.getAccessToken(), paras, Header.create(), 100000);
 		if (response.isOK()) {
-			return NutMap.NEW().addv("success", "1").addv("message", "上传成功!").addv("url", Lang.map(response.getContent()).getString("url"));
+			return NutMap.NEW().addv("success", 1).addv("message", "上传成功!").addv("url","https://nutz.cn"+ Lang.map(response.getContent()).getString("url"));
 		}
-		return NutMap.NEW().addv("success", "0").addv("message", "上传失败!<br>code:" + response.getStatus());
+		return NutMap.NEW().addv("success", 0).addv("message", "上传失败!<br>code:" + response.getStatus());
 	}
-
+	
 }
