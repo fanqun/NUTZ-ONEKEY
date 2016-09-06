@@ -1,5 +1,6 @@
 package club.zhcs.thunder.module.qa;
 
+import org.nutz.http.Header;
 import org.nutz.http.Http;
 import org.nutz.http.Response;
 import org.nutz.ioc.loader.annotation.Inject;
@@ -8,6 +9,7 @@ import org.nutz.lang.Lang;
 import org.nutz.lang.Strings;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.ViewModel;
+import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Attr;
 import org.nutz.mvc.annotation.Filters;
@@ -15,6 +17,8 @@ import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.upload.TempFile;
+import org.nutz.mvc.upload.UploadAdaptor;
 
 import club.zhcs.thunder.Application;
 import club.zhcs.thunder.Application.SessionKeys;
@@ -99,12 +103,25 @@ public class WechatQAModule extends AbstractBaseModule {
 		model.putAll(userInfo);
 		return "beetl:pages/qa/me.html";
 	}
-	
+
 	@At("/reply/*")
 	@GET
 	@Ok("beetl:pages/qa/reply.html")
 	public Result reply(String id) {
 		return Result.success().addData("id", id);
+	}
+
+	@At
+	@POST
+	public Result reply(@Param("id") String id, @Param("content") String content, @Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
+		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken()))
+			return Result.fail("非法用户");
+		Response response = Http.post2("https://nutz.cn/yvr/api/v1/topic/" + id + "/replies",
+				NutMap.NEW().addv("id", id).addv("content", content).addv("accesstoken", nutzer.getAccessToken()), 5000);
+		if (response.isOK()) {
+			return Result.success();
+		}
+		return Result.fail("回复失败!");
 	}
 
 	@At
@@ -125,6 +142,23 @@ public class WechatQAModule extends AbstractBaseModule {
 			return Result.success().addData(data);
 		}
 		return Result.fail("token不正确!");
+	}
+
+	@At
+	@SuppressWarnings("deprecation")
+	@AdaptBy(type = UploadAdaptor.class, args = { "${app.root}/WEB-INF/tmp" })
+	public NutMap upload(@Param("editormd-image-file") TempFile img, @Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
+		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken())) {
+			return NutMap.NEW().addv("success", "0").addv("message", "用户不存在!");
+		}
+		NutMap paras = NutMap.NEW();
+		paras.addv("accesstoken", nutzer.getAccessToken());
+		paras.addv("file", img.getFile());
+		Response response = Http.upload("https://nutz.cn/yvr/api/v1/images", paras, Header.create(), 100000);
+		if (response.isOK()) {
+			return NutMap.NEW().addv("success", "1").addv("message", "上传成功!").addv("url", Lang.map(response.getContent()).getAs("data", NutMap.class).getString("url"));
+		}
+		return NutMap.NEW().addv("success", "0").addv("message", "上传失败!<br>code:" + response.getStatus());
 	}
 
 }

@@ -593,7 +593,7 @@
 .editormd-dialog-footer .editormd-btn,
 .editormd-dialog-footer button {
   color: #666;
-  min-width: 75px;
+  min-width: 10px;
   cursor: pointer;
   background: #fff;
   padding: 7px 10px;
@@ -631,14 +631,14 @@
 }
 
 .editormd-file-input {
-  width: 75px;
+  width: 10px;
   height: 32px;
-  margin-left: 8px;
+  margin-left: 0px;
   position: relative;
   display: inline-block;
 }
 .editormd-file-input input[type="file"] {
-  width: 75px;
+  width: 10px;
   height: 32px;
   opacity: 0;
   cursor: pointer;
