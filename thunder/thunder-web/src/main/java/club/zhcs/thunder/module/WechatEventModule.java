@@ -1,13 +1,22 @@
 package club.zhcs.thunder.module;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.nutz.dao.Cnd;
+import org.nutz.http.Header;
 import org.nutz.http.Http;
+import org.nutz.http.Request;
+import org.nutz.http.Request.METHOD;
+import org.nutz.http.Response;
+import org.nutz.http.Sender;
 import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
+import org.nutz.json.Json;
+import org.nutz.json.JsonFormat;
 import org.nutz.lang.Lang;
 import org.nutz.lang.util.NutMap;
 import org.nutz.mvc.View;
@@ -138,22 +147,42 @@ public class WechatEventModule extends AbstractBaseModule {
 		 */
 		@Override
 		public WxOutMsg text(WxInMsg msg) {
-			String info = Http.post("https://nutz.cn/s/api/create/txt?title=Nutz-onekey 短点儿", NutMap.NEW().addv("data", msg.getContent()), 5000);
-			if (Lang.map(info).getBoolean("ok")) {
-				Wxs.respText("https://nutz.cn" + Lang.map(info).getString("url"));
+
+			try {
+				NutMap m = BaiduDog.send("http://apis.baidu.com/apistore/weatherservice/cityname?cityname=" + URLEncoder.encode(msg.getContent(), "UTF-8"), NutMap.NEW(),
+						METHOD.GET);
+				return Wxs.respText(msg.getFromUserName(), Json.toJson(m, JsonFormat.nice()));
+			} catch (UnsupportedEncodingException e) {
+				log.error(e);
+				return Wxs.respText(msg.getFromUserName(), "查询失败!");
 			}
-			return Wxs.respText("生成失败!");
 		}
 
 		@Override
 		public WxOutMsg voice(WxInMsg msg) {
-			String info = Http.post("https://nutz.cn/s/api/create/txt?title=Nutz-onekey 短点儿", NutMap.NEW().addv("data", msg.getRecognition()), 5000);
-			if (Lang.map(info).getBoolean("ok")) {
-				Wxs.respText("https://nutz.cn" + Lang.map(info).getString("url"));
+			try {
+				NutMap m = BaiduDog.send(
+						"http://apis.baidu.com/apistore/weatherservice/cityname?cityname=" + URLEncoder.encode(msg.getRecognition().replace("。", ""), "UTF-8"),
+						NutMap.NEW(),
+						METHOD.GET);
+				return Wxs.respText(msg.getFromUserName(), Json.toJson(m, JsonFormat.nice()));
+			} catch (UnsupportedEncodingException e) {
+				log.error(e);
+				return Wxs.respText(msg.getFromUserName(), "查询失败!");
 			}
-			return Wxs.respText("生成失败!");
 		}
 	};
+
+	public static class BaiduDog {
+		public static NutMap send(String url, NutMap paras, METHOD method) {
+			Request request = Request.create(url, method, paras, Header.create().set("apikey", "1626a6545bea326d03825400a817c8f2"));
+			Response response = Sender.create(request).send();
+			if (response.isOK()) {
+				return Lang.map(response.getContent());
+			}
+			return NutMap.NEW().addv("success", false).addv("code", response.getStatus());
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -163,6 +192,11 @@ public class WechatEventModule extends AbstractBaseModule {
 	@Override
 	public String _getNameSpace() {
 		return null;
+	}
+
+	public static void main(String[] args) {
+		String info = Http.post2("https://nutz.cn/s/api/create/txt?title=Nutz-onekey短点儿", NutMap.NEW().addv("data", "aaa"), 5000).getContent();
+		System.err.println(info);
 	}
 
 	/**
