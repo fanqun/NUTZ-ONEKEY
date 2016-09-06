@@ -175,11 +175,10 @@ public class WechatQAModule extends AbstractBaseModule {
 			return NutMap.NEW().addv("success", "0").addv("message", "用户不存在!");
 		}
 		NutMap paras = NutMap.NEW();
-		paras.addv("accesstoken", nutzer.getAccessToken());
 		paras.addv("file", img.getFile());
-		Response response = Http.upload("https://nutz.cn/yvr/api/v1/images", paras, Header.create(), 100000);
+		Response response = Http.upload("https://nutz.cn/yvr/api/v1/images?accesstoken=" + nutzer.getAccessToken(), paras, Header.create(), 100000);
 		if (response.isOK()) {
-			return NutMap.NEW().addv("success", "1").addv("message", "上传成功!").addv("url", Lang.map(response.getContent()).getAs("data", NutMap.class).getString("url"));
+			return NutMap.NEW().addv("success", "1").addv("message", "上传成功!").addv("url", Lang.map(response.getContent()).getString("url"));
 		}
 		return NutMap.NEW().addv("success", "0").addv("message", "上传失败!<br>code:" + response.getStatus());
 	}
