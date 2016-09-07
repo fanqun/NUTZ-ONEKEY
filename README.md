@@ -77,6 +77,7 @@ NUTZ一键脚手架
 
 - 一些 BUG 的修复
 - 增加微信配置入口
+- 增加微信接入示例(nutz.cn 微信版)
 - druid 密码加密
 - properties 文件加载字符转义问题修复
 - sigar 集成支持 watchdog 模式
