@@ -135,6 +135,9 @@ public class WechatEventModule extends AbstractBaseModule {
 		 */
 		@Override
 		public WxOutMsg text(WxInMsg msg) {
+			if (msg.getContent().startsWith("天气")) {
+				
+			}	
 			return defaultMsg(msg);
 		}
 
