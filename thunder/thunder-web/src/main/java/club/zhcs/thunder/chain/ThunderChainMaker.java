@@ -18,13 +18,13 @@ import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Processor;
 import org.nutz.mvc.impl.NutActionChain;
 import org.nutz.mvc.impl.processor.ActionFiltersProcessor;
-import org.nutz.mvc.impl.processor.FailProcessor;
 
 import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresPermissions;
 import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresRoles;
 import club.zhcs.thunder.ext.shiro.aop.ThunderPermissionAnnotationMethodInterceptor;
 import club.zhcs.thunder.ext.shiro.aop.ThunderRoleAnnotationMethodInterceptor;
 import club.zhcs.titans.nutz.chain.KerboresActionChainMaker;
+import club.zhcs.titans.nutz.processor.KerboresFailProcessor;
 
 /**
  * 
@@ -64,7 +64,7 @@ public class ThunderChainMaker extends KerboresActionChainMaker {
 		addBefore(list, ActionFiltersProcessor.class, new
 				WxJsSdkConfigProcessor());
 
-		Processor error = new FailProcessor();
+		Processor error = new KerboresFailProcessor();
 		Lang.each(list, new Each<Processor>() {
 
 			@Override
