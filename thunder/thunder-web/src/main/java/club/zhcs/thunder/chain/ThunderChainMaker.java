@@ -18,13 +18,13 @@ import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Processor;
 import org.nutz.mvc.impl.NutActionChain;
 import org.nutz.mvc.impl.processor.ActionFiltersProcessor;
+import org.nutz.mvc.impl.processor.FailProcessor;
 
 import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresPermissions;
 import club.zhcs.thunder.ext.shiro.anno.ThunderRequiresRoles;
 import club.zhcs.thunder.ext.shiro.aop.ThunderPermissionAnnotationMethodInterceptor;
 import club.zhcs.thunder.ext.shiro.aop.ThunderRoleAnnotationMethodInterceptor;
 import club.zhcs.titans.nutz.chain.KerboresActionChainMaker;
-import club.zhcs.titans.nutz.processor.KerboresFailProcessor;
 
 /**
  * 
@@ -49,17 +49,22 @@ public class ThunderChainMaker extends KerboresActionChainMaker {
 	public ActionChain eval(final NutConfig config, final ActionInfo ai) {
 		List<Processor> list = normalList();
 
-		List<AuthorizingAnnotationMethodInterceptor> interceptors = new ArrayList<AuthorizingAnnotationMethodInterceptor>();
+		List<AuthorizingAnnotationMethodInterceptor> interceptors = new
+				ArrayList<AuthorizingAnnotationMethodInterceptor>();
 
 		interceptors.add(new ThunderPermissionAnnotationMethodInterceptor());
 		interceptors.add(new ThunderRoleAnnotationMethodInterceptor());
 
-		addBefore(list, ActionFiltersProcessor.class, new NutShiroProcessor(interceptors, ThunderRequiresPermissions.class, ThunderRequiresRoles.class));
+		addBefore(list, ActionFiltersProcessor.class, new
+				NutShiroProcessor(interceptors, ThunderRequiresPermissions.class,
+						ThunderRequiresRoles.class));
 
-		addBefore(list, ActionFiltersProcessor.class, new WxUserInjectProcessor());
-		addBefore(list, ActionFiltersProcessor.class, new WxJsSdkConfigProcessor());
+		addBefore(list, ActionFiltersProcessor.class, new
+				WxUserInjectProcessor());
+		addBefore(list, ActionFiltersProcessor.class, new
+				WxJsSdkConfigProcessor());
 
-		Processor error = new KerboresFailProcessor();
+		Processor error = new FailProcessor();
 		Lang.each(list, new Each<Processor>() {
 
 			@Override

@@ -56,6 +56,10 @@
 			<param-name>exclusions</param-name>
 			<param-value>*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,/sigar</param-value>
 		</init-param>
+		<init-param>
+			<param-name>org.apache.velocity.properties</param-name><!-- 这个不能修改 -->
+			<param-value>velocity.properties</param-value> <!-- 对应上一步中配置文件的位置 -->
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>nutz</filter-name>
@@ -68,18 +72,18 @@
 	<!-- sigar -->
 	<servlet>
 		<servlet-name>sigar</servlet-name>
-		<servlet-class> club.zhcs.titans.gather.servlet.SigarServlet</servlet-class>
+		<servlet-class>club.zhcs.titans.gather.servlet.SigarServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>sigar</servlet-name>
 		<url-pattern>/sigar</url-pattern>
 	</servlet-mapping>
 	<!-- sigar end -->
-	
+
 	<!-- nop -->
 	<servlet>
 		<servlet-name>nop</servlet-name>
-		<servlet-class> org.nutz.plugins.nop.server.NOPServlet</servlet-class>
+		<servlet-class>org.nutz.plugins.nop.server.NOPServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>nop</servlet-name>
