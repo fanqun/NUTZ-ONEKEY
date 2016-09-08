@@ -170,6 +170,11 @@ public class WechatSettingModule extends AbstractBaseModule {
 		wxApi.setAppsecret(config.getAppsecret());
 		wxApi.setEncodingAesKey(config.getEncodingAesKey());
 		wxApi.setToken(config.getToken());
+		wxApi.getAccessTokenStore().save(null, 0, System.currentTimeMillis());// 这个代码可以过期当前
+																				// token
+																				// 吧
+		wxApi.getJsapiTicketStore().save(null, 0, System.currentTimeMillis());// token
+																				// 都过期一下
 	}
 
 	@At("/qr/*")
