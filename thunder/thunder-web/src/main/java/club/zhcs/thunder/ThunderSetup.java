@@ -18,6 +18,7 @@ import org.nutz.log.Log;
 import org.nutz.log.Logs;
 import org.nutz.mvc.NutConfig;
 import org.nutz.mvc.Setup;
+import org.nutz.weixin.impl.WxApi2Impl;
 
 import club.zhcs.thunder.bean.acl.Permission;
 import club.zhcs.thunder.bean.acl.Role;
@@ -26,12 +27,14 @@ import club.zhcs.thunder.bean.acl.User;
 import club.zhcs.thunder.bean.acl.User.Status;
 import club.zhcs.thunder.bean.acl.UserRole;
 import club.zhcs.thunder.bean.config.Config;
+import club.zhcs.thunder.bean.config.WxConfig;
 import club.zhcs.thunder.biz.acl.PermissionService;
 import club.zhcs.thunder.biz.acl.RolePermissionService;
 import club.zhcs.thunder.biz.acl.RoleService;
 import club.zhcs.thunder.biz.acl.UserRoleService;
 import club.zhcs.thunder.biz.acl.UserService;
 import club.zhcs.thunder.biz.config.ConfigService;
+import club.zhcs.thunder.biz.config.WxConfigService;
 import club.zhcs.thunder.vo.InstallPermission;
 import club.zhcs.thunder.vo.InstalledRole;
 
@@ -85,7 +88,15 @@ public class ThunderSetup implements Setup {
 		Daos.migration(dao, getClass().getPackage().getName() + ".bean", true, true);
 
 		ConfigService configService = ioc.get(ConfigService.class);
-
+		WxApi2Impl wxApi = ioc.get(WxApi2Impl.class, "wxApi");
+		WxConfigService wxConfigService = ioc.get(WxConfigService.class);
+		WxConfig wxConfig = wxConfigService.fetch(Cnd.orderBy().desc("id"));
+		if (wxConfig != null) {
+			wxApi.setAppid(wxConfig.getAppid());
+			wxApi.setAppsecret(wxConfig.getAppsecret());
+			wxApi.setEncodingAesKey(wxConfig.getEncodingAesKey());
+			wxApi.setToken(wxConfig.getToken());
+		}
 		final PropertiesProxy p = ioc.get(PropertiesProxy.class, "config");
 
 		Lang.each(configService.queryAll(), new Each<Config>() {

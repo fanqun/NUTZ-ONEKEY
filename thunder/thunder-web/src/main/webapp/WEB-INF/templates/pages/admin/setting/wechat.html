@@ -2,10 +2,8 @@
 layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs":[{"name":"微信配置"}]}){ 
  #-->
 <div class="tabbable">
-	<ul class="nav nav-tabs padding-12 tab-color-blue background-blue"
-		id="myTab4">
-		<li class="active"><a data-toggle="tab" href="#integration"
-			onclick="setStep('integration')">微信接入</a></li>
+	<ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+		<li class="active"><a data-toggle="tab" href="#integration" onclick="setStep('integration')">微信接入</a></li>
 
 		<li><a data-toggle="tab" href="#menus" onclick="setStep('menus')">菜单配置</a></li>
 
@@ -26,14 +24,11 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 						<div id="fuelux-wizard-container" class="wizard-container">
 							<div>
 								<ul class="steps">
-									<li data-step="1" class="active"><span class="step">1</span>
-										<span class="title">微信参数</span></li>
+									<li data-step="1" class="active"><span class="step">1</span> <span class="title">微信参数</span></li>
 
-									<li data-step="2"><span class="step">2</span> <span
-										class="title">接入地址</span></li>
+									<li data-step="2"><span class="step">2</span> <span class="title">接入地址</span></li>
 
-									<li data-step="3"><span class="step">3</span> <span
-										class="title">接入测试</span></li>
+									<li data-step="3"><span class="step">3</span> <span class="title">接入测试</span></li>
 								</ul>
 
 							</div>
@@ -53,51 +48,36 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 											<form class="form-horizontal" role="form" id="merchants-from">
 
 												<div class="form-group">
-													<label class="col-sm-3 control-label no-padding-right"
-														for="form-field-1-1"> appID </label>
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> appID </label>
 
 													<div class="col-sm-9">
-														<input type="text" name="appid"
-															placeholder="请输入微信公众平台appID" class="form-control"
-															data-type='required' data-error='请输入微信公众平台appID'
-															value="${obj.data.wxConfig.appid! == null ? obj.data.wechat.appid  : obj.data.wxConfig.appid }">
+														<input type="text" name="appid" placeholder="请输入微信公众平台appID" class="form-control" data-type='required' data-error='请输入微信公众平台appID' value="${obj.data.wechat.appid! }">
 													</div>
 												</div>
 
 												<div class="form-group">
-													<label class="col-sm-3 control-label no-padding-right"
-														for="form-field-1-1"> appsecret </label>
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> appsecret </label>
 
 													<div class="col-sm-9">
-														<input type="text" name="appsecret"
-															placeholder="请输入微信公众平台appsecret" class="form-control"
-															data-type='required' data-error='请输入微信公众平台appsecret'
-															value="${obj.data.wxConfig.appsecret! == null ? obj.data.wechat.appsecret  : obj.data.wxConfig.appsecret  }">
+														<input type="text" name="appsecret" placeholder="请输入微信公众平台appsecret" class="form-control" data-type='required' data-error='请输入微信公众平台appsecret'
+															value="${obj.data.wechat.appsecret!}">
 													</div>
 												</div>
 
 												<div class="form-group">
-													<label class="col-sm-3 control-label no-padding-right"
-														for="form-field-1-1"> Token </label>
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> Token </label>
 
 													<div class="col-sm-9">
-														<input type="text" name="token"
-															placeholder="请输入微信公众平台Token" class="form-control"
-															data-type='required' data-error='请输入微信公众平台Token'
-															value="${obj.data.wxConfig.token! == null ? obj.data.wechat.token  : obj.data.wxConfig.token}">
+														<input type="text" name="token" placeholder="请输入微信公众平台Token" class="form-control" data-type='required' data-error='请输入微信公众平台Token' value="${obj.data.wechat.token!}">
 													</div>
 												</div>
 
 												<div class="form-group">
-													<label class="col-sm-3 control-label no-padding-right"
-														for="form-field-1-1"> encodingAesKey </label>
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> encodingAesKey </label>
 
 													<div class="col-sm-9">
-														<input type="text" name="encodingAesKey"
-															placeholder="请输入微信公众平台encodingAesKey"
-															class="form-control" data-type='required'
-															data-error='请输入微信公众平台encodingAesKey'
-															value="${obj.data.wxConfig.encodingAesKey! == null ? obj.data.wechat.encodingAesKey  : obj.data.wxConfig.encodingAesKey}">
+														<input type="text" name="encodingAesKey" placeholder="请输入微信公众平台encodingAesKey" class="form-control" data-type='required' data-error='请输入微信公众平台encodingAesKey'
+															value="${obj.data.wechat.encodingAesKey }">
 													</div>
 												</div>
 											</form>
@@ -118,17 +98,13 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 											<form class="form-horizontal" role="form">
 
 												<div class="form-group">
-													<label class="col-sm-3 control-label no-padding-right"
-														for="form-field-1-1"> 接入URL </label>
+													<label class="col-sm-3 control-label no-padding-right" for="form-field-1-1"> 接入URL </label>
 
 													<div class="col-sm-9">
 														<div class="input-group  ">
-															<input type="text" id="merchants-url" readonly="readonly"
-																class="form-control"
-																value="http://${obj.data.config['base.domain'] }${obj.data.context == '' ? '' : '/' + obj.data.context  }/wechat">
-															<span class="input-group-addon"> <i
-																class="ace-icon fa fa-copy" data-clipboard-action="copy"
-																data-clipboard-target="#merchants-url"></i>
+															<input type="text" id="merchants-url" readonly="readonly" class="form-control"
+																value="http://${obj.data.config['base.domain'] }${obj.data.context == '' ? '' : '/' + obj.data.context  }/wechat"> <span class="input-group-addon"> <i
+																class="ace-icon fa fa-copy" data-clipboard-action="copy" data-clipboard-target="#merchants-url"></i>
 															</span>
 														</div>
 													</div>
@@ -145,11 +121,9 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 												<button type="button" class="close" data-dismiss="alert">
 													<i class="ace-icon fa fa-times"></i>
 												</button>
-												<strong>提示:</strong>
-												如果成功显示了二维码,那么恭喜你,配置成功!不过你最好还是扫描一下二维码看是否是你所设置的公众号!<br>
+												<strong>提示:</strong> 如果成功显示了二维码,那么恭喜你,配置成功!不过你最好还是扫描一下二维码看是否是你所设置的公众号!<br>
 											</div>
-											<img id="merchantsQr" alt=""
-												src="${base!}/setting/wechat/qr/EMPLOYEE">
+											<img id="merchantsQr" alt="" src="${base!}/setting/wechat/qr/EMPLOYEE">
 										</div>
 									</div>
 								</div>
@@ -181,11 +155,8 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 					</h5>
 
 					<div class="widget-toolbar">
-						<a href="#" onclick="addMenu()"
-							class="btn btn-info btn-sm"><i class="fa fa-plus-circle"></i>
-							新增菜单</a> <a href="#" onclick="asynMenu()"
-							class="btn btn-info btn-sm"><i class="fa fa-cloud-upload"></i>
-							同步菜单</a>
+						<a href="#" onclick="addMenu()" class="btn btn-info btn-sm"><i class="fa fa-plus-circle"></i> 新增菜单</a> <a href="#" onclick="asynMenu()" class="btn btn-info btn-sm"><i
+							class="fa fa-cloud-upload"></i> 同步菜单</a>
 					</div>
 				</div>
 
@@ -231,19 +202,38 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 			$.ajaxSetup({
 				async : false
 			});
-			$.post(getRootPath() + '/setting/wechat/menu', {}, function(result) {
-				layer.close(index);
-				if (result.operationState == 'SUCCESS') {
-					if (result.data.menus.length) {
-						var panel = $('#merchants-menus-panel').empty();
-						$(result.data.menus).each(function(i, item) {
-							panel.append('<tr>\
-									<td>'+item.id+'</td>\
-									<td>'+item.name+'</td>\
-									<td>'+item.index+'</td>\
-									<td>'+item.typeName+'</td>\
-									<td>'+item.description+'</td>\
-									<td>'+item.action+'</td>\
+			$
+					.post(
+							getRootPath() + '/setting/wechat/menu',
+							{},
+							function(result) {
+								layer.close(index);
+								if (result.operationState == 'SUCCESS') {
+									if (result.data.menus.length) {
+										var panel = $('#merchants-menus-panel').empty();
+										$(result.data.menus)
+												.each(
+														function(i, item) {
+															panel
+																	.append('<tr>\
+									<td>'
+																			+ item.id
+																			+ '</td>\
+									<td>'
+																			+ item.name
+																			+ '</td>\
+									<td>'
+																			+ item.index
+																			+ '</td>\
+									<td>'
+																			+ item.typeName
+																			+ '</td>\
+									<td>'
+																			+ item.description
+																			+ '</td>\
+									<td>'
+																			+ item.action
+																			+ '</td>\
 									<td class="center">\
 										<div class="hidden-sm hidden-xs btn-group">\
 											<button class="btn btn-xs btn-info btn-edit" data-id="'+item.id+'" >\
@@ -255,20 +245,20 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 										</div>\
 									</td>\
 								</tr>');
-						})
-					}
-				} else {
-					layer.alert(result.data.reason, {
-						title : '操作失败'
-					});
-				}
-			}, 'json');
+														})
+									}
+								} else {
+									layer.alert(result.data.reason, {
+										title : '操作失败'
+									});
+								}
+							}, 'json');
 			$.ajaxSetup({
 				async : true
 			});
 		}
 	}
-	
+
 	function asynMenu() {
 		layer.open({
 			type : 2,
@@ -281,14 +271,14 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 			btn : [ '同步', '取消' ],
 			yes : function(index, layero) {
 				// do submit
-				$.post(getRootPath() + '/setting/wechat/menu/asyn/',{},function(result){
+				$.post(getRootPath() + '/setting/wechat/menu/asyn/', {}, function(result) {
 					if (result.operationState == 'SUCCESS') {
-							layer.close(index);
-						} else {
-							var iframeWin = window[layero.find('iframe')[0]['name']];
-							iframeWin.showError(result.data.reason);
-						}
-				},'json');
+						layer.close(index);
+					} else {
+						var iframeWin = window[layero.find('iframe')[0]['name']];
+						iframeWin.showError(result.data.reason);
+					}
+				}, 'json');
 			},
 			cancel : function(index) {
 				layer.close(index);
@@ -326,38 +316,38 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 	}
 	$(function() {
 		$('body').on('click', '.btn-edit', function() {
-			var id =	$(this).data('id');
+			var id = $(this).data('id');
 			layer.open({
-			type : 2,
-			title : '添加微信菜单',
-			fix : false,
-			closeBtn : false,
-			move : false,
-			area : [ '800px', '600px' ],
-			content : getRootPath() + '/setting/wechat/menu/edit/' + id,
-			btn : [ '确认', '取消' ],
-			yes : function(index, layero) {
-				// do submit
-				if ($(layer.getChildFrame('.form-horizontal', index)).validation()) {
-					$.post(getRootPath() + '/setting/wechat/menu/edit', layer.getChildFrame('.form-horizontal', index).serialize(), function(result) {
-						if (result.operationState == 'SUCCESS') {
-							layer.close(index);
-							location.reload();
-						} else {
-							var iframeWin = window[layero.find('iframe')[0]['name']];
-							iframeWin.showError(result.data.reason);
-						}
-					}, 'json');
+				type : 2,
+				title : '添加微信菜单',
+				fix : false,
+				closeBtn : false,
+				move : false,
+				area : [ '800px', '600px' ],
+				content : getRootPath() + '/setting/wechat/menu/edit/' + id,
+				btn : [ '确认', '取消' ],
+				yes : function(index, layero) {
+					// do submit
+					if ($(layer.getChildFrame('.form-horizontal', index)).validation()) {
+						$.post(getRootPath() + '/setting/wechat/menu/edit', layer.getChildFrame('.form-horizontal', index).serialize(), function(result) {
+							if (result.operationState == 'SUCCESS') {
+								layer.close(index);
+								location.reload();
+							} else {
+								var iframeWin = window[layero.find('iframe')[0]['name']];
+								iframeWin.showError(result.data.reason);
+							}
+						}, 'json');
+					}
+				},
+				cancel : function(index) {
+					layer.close(index);
 				}
-			},
-			cancel : function(index) {
-				layer.close(index);
-			}
-		});
-			
+			});
+
 		})
 		$('body').on('click', '.btn-del', function() {
-			var id =	$(this).data('id');
+			var id = $(this).data('id');
 			layer.confirm('确认删除这条数据 ?', {
 				icon : 3,
 				title : '删除提示'
@@ -375,7 +365,7 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 			});
 		})
 		var $validation = false;
-		
+
 		$('.wizard-container').ace_wizard({
 		//buttons: '.wizard-actions:eq(0)'
 		}).on('actionclicked.fu.wizard', function(e, info) {
@@ -384,38 +374,38 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 				$('#merchantsQr').attr('src', $('#merchantsQr').attr('src') + '?' + Math.random());
 			}
 			if (info.step == 1) {//第一个表单
-					if ($('#merchants-from').validation()) {
-						$.ajaxSetup({
-							async : false
-						});
-						$.post(getRootPath() + '/setting/wechat/addOrUpdate', $('#merchants-from').serialize(), function(result) {
-							if (result.operationState != 'SUCCESS') {
-								layer.alert(result.data.reason, {
-									title : '操作失败'
-								});
-								e.preventDefault();
-							}
-						}, 'json');
-						$.ajaxSetup({
-							async : true
-						});
-					} else {
-						e.preventDefault();
-					}
+				if ($('#merchants-from').validation()) {
+					$.ajaxSetup({
+						async : false
+					});
+					$.post(getRootPath() + '/setting/wechat/addOrUpdate', $('#merchants-from').serialize(), function(result) {
+						if (result.operationState != 'SUCCESS') {
+							layer.alert(result.data.reason, {
+								title : '操作失败'
+							});
+							e.preventDefault();
+						}
+					}, 'json');
+					$.ajaxSetup({
+						async : true
+					});
+				} else {
+					e.preventDefault();
+				}
 			}
 		}).on('finished.fu.wizard', function(e) {
 			//完成事件
 			layer.open({
- 				 title: '配置完成',
-  				content: '恭喜你,微信配置完成!'
-			}); 
+				title : '配置完成',
+				content : '恭喜你,微信配置完成!'
+			});
 			setTimeout(function() {
 				location.reload();
-			},3000);   
+			}, 3000);
 		}).on('stepclick.fu.wizard', function(e) {
 			//e.preventDefault();//this will prevent clicking and selecting steps
 		});
-		
+
 		var clipboard = new Clipboard('.fa-copy');
 		clipboard.on('success', function(e) {
 			validationFail('复制成功', e.trigger);
@@ -423,7 +413,7 @@ layout("/layout/default.html",{"menu":["settings","wechat_setting"],"breadcrumbs
 		clipboard.on('error', function(e) {
 			validationFail('复制失败', e.trigger);
 		});
-		
+
 	})
 //-->
 </script>

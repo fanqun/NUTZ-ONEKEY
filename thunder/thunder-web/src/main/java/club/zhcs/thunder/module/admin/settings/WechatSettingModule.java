@@ -51,9 +51,6 @@ public class WechatSettingModule extends AbstractBaseModule {
 	WxConfigService wxConfigService;
 
 	@Inject
-	PropertiesProxy wechat;
-
-	@Inject
 	PropertiesProxy config;
 
 	@Inject
@@ -82,14 +79,14 @@ public class WechatSettingModule extends AbstractBaseModule {
 	@At
 	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public Result addOrUpdate(@Param("..") WxConfig config) {
-		if (config.getId() == 0) {
+		if (wxConfigService.queryAll().size() == 0) {
 			config = wxConfigService.save(config);
 			if (config != null) {
 				modifyApi(config);
 			}
 			return config == null ? Result.fail("配置失败!<br>失败原因:添加失败") : Result.success();
 		} else {
-			int r = wxConfigService.update(config, Cnd.where("id", "=", config.getId()), "appid", "appsecret", "token",
+			int r = wxConfigService.update(config, Cnd.where("1", "=", 1), "appid", "appsecret", "token",
 					"encodingAesKey");
 			if (r == 1) {
 				modifyApi(config);
@@ -155,8 +152,10 @@ public class WechatSettingModule extends AbstractBaseModule {
 	@Ok("beetl:pages/admin/setting/wechat.html")
 	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public Result index(HttpServletRequest request) {
-		return Result.success().addData("wechat", wechat)
-				.addData("wxConfig", wxConfigService.fetch(Cnd.orderBy().asc("id"))).addData("config", config)
+		return Result.success().addData("wechat", wxApi)
+				// .addData("wxConfig",
+				// wxConfigService.fetch(Cnd.orderBy().asc("id")))
+				.addData("config", config)
 				.addData("context", config.get("client.context", Mvcs.getReq().getContextPath()));
 	}
 

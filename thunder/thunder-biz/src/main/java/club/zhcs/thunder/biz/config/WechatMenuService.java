@@ -3,7 +3,6 @@ package club.zhcs.thunder.biz.config;
 import java.util.List;
 
 import org.nutz.dao.Cnd;
-import org.nutz.ioc.impl.PropertiesProxy;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.lang.ContinueLoop;
 import org.nutz.lang.Each;
@@ -12,6 +11,7 @@ import org.nutz.lang.Lang;
 import org.nutz.lang.LoopException;
 import org.nutz.mvc.Mvcs;
 import org.nutz.weixin.bean.WxMenu;
+import org.nutz.weixin.impl.WxApi2Impl;
 
 import club.zhcs.thunder.bean.config.WechatMenu;
 import club.zhcs.thunder.bean.config.WechatMenu.Type;
@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
 public class WechatMenuService extends BaseService<WechatMenu> {
 
 	@Inject
-	PropertiesProxy wechat;
+	WxApi2Impl wxApi;
 
 	public List<WxMenu> exchange(List<WechatMenu> menus) {
 		final List<WxMenu> target = Lists.newArrayList();
@@ -76,7 +76,7 @@ public class WechatMenuService extends BaseService<WechatMenu> {
 	}
 
 	public String formatAuthUrl(String action) {
-		String appid = wechat.get("appid", "wx6e4f32b9bfd64693");
+		String appid = wxApi.getAppid();
 		String domain = config.get("base.domain", "www.kerbores.com");
 		String contextPath = config.get("client.context", Mvcs.getReq().getContextPath());
 		String url = action.startsWith("http") ? action : String.format("http://%s/%s/%s", domain, contextPath, action);
