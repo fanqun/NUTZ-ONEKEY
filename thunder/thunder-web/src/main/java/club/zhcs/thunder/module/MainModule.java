@@ -23,9 +23,11 @@ import org.nutz.mvc.annotation.Modules;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.Param;
 import org.nutz.mvc.annotation.SetupBy;
+import org.nutz.mvc.annotation.UrlMappingBy;
 import org.nutz.mvc.annotation.Views;
 import org.nutz.mvc.filter.CheckSession;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
+import org.nutz.plugins.apidoc.ApidocUrlMapping;
 
 import club.zhcs.thunder.Application.SessionKeys;
 import club.zhcs.thunder.ThunderSetup;
@@ -54,6 +56,7 @@ import club.zhcs.titans.utils.db.Result;
 @Modules(scanPackage = true)
 @IocBy(type = ComboIocProvider.class, args = { "*anno", "club.zhcs", "*tx", "*js", "ioc", "*async", "*quartz", "quartz", "*sigar", "sigar" })
 @Views({ BeetlViewMaker.class })
+@UrlMappingBy(ApidocUrlMapping.class)
 @Fail("http:500")
 @Ok("json")
 @Filters({ @By(type = CheckSession.class, args = { SessionKeys.USER_KEY, "/" }) })
