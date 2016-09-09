@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.util.Daos;
+import org.nutz.integration.quartz.NutQuartzCronJobFactory;
 import org.nutz.integration.shiro.NutShiro;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.impl.PropertiesProxy;
@@ -75,7 +76,7 @@ public class ThunderSetup implements Setup {
 
 		Dao dao = ioc.get(Dao.class);
 
-		// ioc.get(NutQuartzCronJobFactory.class);// 触发任务
+		ioc.get(NutQuartzCronJobFactory.class);// 触发任务
 
 		// ioc.get(SigarClient.class);// 触发 sigar
 
@@ -104,16 +105,16 @@ public class ThunderSetup implements Setup {
 
 		Lang.each(InstalledRole.values(), new Each<InstalledRole>() {// 内置角色
 
-					@Override
-					public void invoke(int index, InstalledRole role, int length) throws ExitLoop, ContinueLoop, LoopException {
-						if (roleService.fetch(Cnd.where("name", "=", role.getName())) == null) {
-							Role temp = new Role();
-							temp.setName(role.getName());
-							temp.setDescription(role.getDescription());
-							roleService.save(temp);
-						}
-					}
-				});
+			@Override
+			public void invoke(int index, InstalledRole role, int length) throws ExitLoop, ContinueLoop, LoopException {
+				if (roleService.fetch(Cnd.where("name", "=", role.getName())) == null) {
+					Role temp = new Role();
+					temp.setName(role.getName());
+					temp.setDescription(role.getDescription());
+					roleService.save(temp);
+				}
+			}
+		});
 
 		admin = roleService.fetch(Cnd.where("name", "=", InstalledRole.SU.getName()));
 
@@ -126,25 +127,25 @@ public class ThunderSetup implements Setup {
 
 		Lang.each(InstallPermission.values(), new Each<InstallPermission>() {// 内置权限
 
-					@Override
-					public void invoke(int index, InstallPermission permission, int length) throws ExitLoop, ContinueLoop, LoopException {
-						Permission temp = null;
-						if ((temp = permissionService.fetch(Cnd.where("name", "=", permission.getName()))) == null) {
-							temp = new Permission();
-							temp.setName(permission.getName());
-							temp.setDescription(permission.getDescription());
-							temp = permissionService.save(temp);
-						}
+			@Override
+			public void invoke(int index, InstallPermission permission, int length) throws ExitLoop, ContinueLoop, LoopException {
+				Permission temp = null;
+				if ((temp = permissionService.fetch(Cnd.where("name", "=", permission.getName()))) == null) {
+					temp = new Permission();
+					temp.setName(permission.getName());
+					temp.setDescription(permission.getDescription());
+					temp = permissionService.save(temp);
+				}
 
-						// 给SU授权
-						if (rolePermissionService.fetch(Cnd.where("permissionId", "=", temp.getId()).and("roleId", "=", admin.getId())) == null) {
-							RolePermission rp = new RolePermission();
-							rp.setRoleId(admin.getId());
-							rp.setPermissionId(temp.getId());
-							rolePermissionService.save(rp);
-						}
-					}
-				});
+				// 给SU授权
+				if (rolePermissionService.fetch(Cnd.where("permissionId", "=", temp.getId()).and("roleId", "=", admin.getId())) == null) {
+					RolePermission rp = new RolePermission();
+					rp.setRoleId(admin.getId());
+					rp.setPermissionId(temp.getId());
+					rolePermissionService.save(rp);
+				}
+			}
+		});
 
 		User surperMan = null;
 		if ((surperMan = userService.fetch(Cnd.where("name", "=", "admin"))) == null) {
