@@ -21,7 +21,7 @@
 		<module>thunder-biz</module>
 		<module>thunder-web</module>
 	</modules>
-	
+
 	<repositories>
 		<repository>
 			<id>*</id>
@@ -31,7 +31,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	
+
 	<dependencies>
 
 		<!-- junit -->
@@ -162,6 +162,14 @@
 			<artifactId>nutz-plugins-apidoc</artifactId>
 			<version>${nutz.plugins.version}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
 	</dependencies>
 	<properties>
 		<nutz.plugins.version>1.r.58-SNAPSHOT</nutz.plugins.version>

@@ -28,6 +28,8 @@ import org.nutz.mvc.annotation.Views;
 import org.nutz.mvc.filter.CheckSession;
 import org.nutz.mvc.ioc.provider.ComboIocProvider;
 import org.nutz.plugins.apidoc.ApidocUrlMapping;
+import org.nutz.plugins.apidoc.annotation.Api;
+import org.nutz.plugins.apidoc.annotation.ApiMatchMode;
 
 import club.zhcs.thunder.Application.SessionKeys;
 import club.zhcs.thunder.ThunderSetup;
@@ -62,6 +64,7 @@ import club.zhcs.titans.utils.db.Result;
 @Filters({ @By(type = CheckSession.class, args = { SessionKeys.USER_KEY, "/" }) })
 @SetupBy(ThunderSetup.class)
 @ChainBy(type = ThunderChainMaker.class, args = {})
+@Api(name="Thunder nop api",description="nop开放平台接口示例",match=ApiMatchMode.NONE)
 public class MainModule extends AbstractBaseModule {
 
 	private @Inject RoleService roleService;
