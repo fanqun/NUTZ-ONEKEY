@@ -9,6 +9,8 @@ import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.plugins.apidoc.annotation.Api;
 import org.nutz.plugins.apidoc.annotation.ApiMatchMode;
+import org.nutz.plugins.apidoc.annotation.ApiParam;
+import org.nutz.plugins.apidoc.annotation.ReturnKey;
 import org.nutz.plugins.nop.NOPConfig;
 import org.nutz.plugins.nop.core.NOPData;
 import org.nutz.plugins.nop.server.NOPSignFilter;
@@ -33,7 +35,14 @@ import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 public class NOPModule extends AbstractBaseModule {
 
 	@At
-	@Api(author = "kerbores", name = "计算", description = "将传入参数进入EL计算", match = ApiMatchMode.ONLY)
+	@Api(author = "kerbores", name = "计算", description = "将传入参数进入EL计算", match = ApiMatchMode.ONLY, 
+	params = {
+				@ApiParam(name = "data", description = "待计算的el上下文", optional = false)
+			}, 
+	returnKeys = { 
+				@ReturnKey(key = "r", description = "计算结果")
+			}
+	)
 	public NOPData calc(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
 		return NOPData.success().addData("r", data);
 	}
