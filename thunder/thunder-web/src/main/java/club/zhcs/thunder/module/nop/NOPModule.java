@@ -39,9 +39,12 @@ public class NOPModule extends AbstractBaseModule {
 	params = {
 				@ApiParam(name = "data", description = "待计算的el上下文", optional = false)
 			}, 
-	returnKeys = { 
+	ok = { 
 				@ReturnKey(key = "r", description = "计算结果")
-			}
+			},
+	fail={
+			@ReturnKey(key = "reason", description = "失败原因")
+		}
 	)
 	public NOPData calc(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
 		return NOPData.success().addData("r", data);
