@@ -45,4 +45,9 @@ public class ApiModule extends AbstractBaseModule {
 		return Result.success().addData("db", dao.meta());
 	}
 
+
+	@At
+	public Result sigar() {
+		return Result.success();
+	}
 }
