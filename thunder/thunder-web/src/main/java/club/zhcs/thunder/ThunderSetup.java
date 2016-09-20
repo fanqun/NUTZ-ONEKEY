@@ -66,6 +66,7 @@ public class ThunderSetup implements Setup {
 	 */
 	@Override
 	public void init(NutConfig nc) {
+
 		String logConfigPath = "/var/config/log4j.properties";
 		try {
 			if (Files.checkFile(logConfigPath) != null) {// 找到了线上配置
