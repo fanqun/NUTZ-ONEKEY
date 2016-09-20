@@ -3,6 +3,7 @@ package club.zhcs.thunder.module.api;
 import org.nutz.dao.Dao;
 import org.nutz.ioc.loader.annotation.Inject;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.plugins.apidoc.annotation.Api;
 import org.nutz.plugins.apidoc.annotation.ApiMatchMode;
 import org.nutz.plugins.apidoc.annotation.ReturnKey;
@@ -24,6 +25,7 @@ import club.zhcs.titans.utils.db.Result;
  */
 @Api(author = "kerbores", name = "Rest api", description = " 提供一组 rest api", match = ApiMatchMode.ONLY)
 @At("/api")
+@Filters
 public class ApiModule extends AbstractBaseModule {
 
 	@Inject
