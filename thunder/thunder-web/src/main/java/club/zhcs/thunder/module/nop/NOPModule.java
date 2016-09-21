@@ -45,8 +45,8 @@ public class NOPModule extends AbstractBaseModule {
 			fail = {
 					@ReturnKey(key = "reason", description = "失败原因")
 			}
-			)
-			public NOPData calc(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
+		)
+	public NOPData calc(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
 		return NOPData.success().addData("r", data);
 	}
 
