@@ -42,6 +42,7 @@ public class ApiModule extends AbstractBaseModule {
 	@Inject
 	Dao dao;
 
+	@At
 	@Api(author = "kerbores", name = "数据库", description = "获取数据库信息", match = ApiMatchMode.ONLY,
 			ok = {
 					@ReturnKey(key = "db", description = " 数据库的 meta 信息")
@@ -49,9 +50,8 @@ public class ApiModule extends AbstractBaseModule {
 			fail = {
 					@ReturnKey(key = "reason", description = "失败原因")
 			}
-			)
-			@At
-			public Result db() {
+		)
+	public Result db() {
 
 		return Result.success().addData("db", dao.meta());
 	}
@@ -66,8 +66,8 @@ public class ApiModule extends AbstractBaseModule {
 			fail = {
 					@ReturnKey(key = "reason", description = "失败原因")
 			}
-			)
-			public Result sigar(@Param("type") APIType type) throws SigarException, InterruptedException {
+		)
+	public Result sigar(@Param("type") APIType type) throws SigarException, InterruptedException {
 		Sigar sigar = new Sigar();
 		Result result = Result.success();
 		type = null == type ? APIType.DEFAULT : type;
