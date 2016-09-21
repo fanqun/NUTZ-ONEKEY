@@ -57,8 +57,14 @@ public class ApiModule extends AbstractBaseModule {
 	}
 
 	@At
-	@Api(author = "kerbores", name = "系统监控", description = "获取系统运行状况信息", match = ApiMatchMode.ONLY,
-			params = { @ApiParam(index = 1, name = "type", description = "监控信息类型,可选值为CPU, DISK,NI,SYS,MEM,ALL") },
+	@Api(
+			author = "kerbores",
+			name = "系统监控",
+			description = "获取系统运行状况信息",
+			match = ApiMatchMode.ONLY,
+			params = {
+					@ApiParam(index = 1, name = "type", description = "监控信息类型,可选值为CPU, DISK,NI,SYS,MEM,ALL")
+			},
 			ok = {
 					@ReturnKey(key = "sigar", description = "  收集到的心态信息"),
 					@ReturnKey(key = " api", description = "  api 描述")
