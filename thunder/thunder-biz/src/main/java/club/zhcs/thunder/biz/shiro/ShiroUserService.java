@@ -66,8 +66,6 @@ public class ShiroUserService {
 	 *            权限名称
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 用户是否有参数权限的标识
 	 *
 	 * @author 王贵源
@@ -89,8 +87,6 @@ public class ShiroUserService {
 	 *            角色名称
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 用户是否有参数角色的标识
 	 *
 	 * @author 王贵源
@@ -122,8 +118,6 @@ public class ShiroUserService {
 	 * 
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 权限列表
 	 *
 	 * @author 王贵源
@@ -137,8 +131,6 @@ public class ShiroUserService {
 	 * 
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 权限名称列表
 	 *
 	 * @author 王贵源
@@ -161,8 +153,6 @@ public class ShiroUserService {
 	 * 
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 角色列表
 	 *
 	 * @author 王贵源
@@ -177,8 +167,6 @@ public class ShiroUserService {
 	 * 
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 角色列表
 	 *
 	 * @author 王贵源
@@ -207,8 +195,6 @@ public class ShiroUserService {
 	 * 
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 权限列表
 	 *
 	 * @author 王贵源
@@ -233,8 +219,6 @@ public class ShiroUserService {
 	 * 
 	 * @param id
 	 *            用户 id
-	 * @param type
-	 *            用户类型
 	 * @return 角色名称列表
 	 *
 	 * @author 王贵源
