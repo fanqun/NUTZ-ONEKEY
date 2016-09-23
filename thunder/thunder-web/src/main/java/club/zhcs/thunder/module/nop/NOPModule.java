@@ -31,7 +31,7 @@ import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
  */
 @At("test")
 @Filters(@By(type = NOPSignFilter.class))
-@Api(author = "kerbores", name = "NOP数据服务", description = "提供NOP方式的数据对接服务,需使用 NOP 客户端进行调用", match = ApiMatchMode.ONLY)
+@Api(author = "kerbores", name = "NOP数据服务", description = "提供NOP方式的数据对接服务,需使用 NOP 客户端进行调用", match = ApiMatchMode.ALL)
 public class NOPModule extends AbstractBaseModule {
 
 	@At
@@ -45,8 +45,8 @@ public class NOPModule extends AbstractBaseModule {
 			fail = {
 					@ReturnKey(key = "reason", description = "失败原因")
 			}
-		)
-	public NOPData calc(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
+			)
+			public NOPData calc(@Attr(NOPConfig.parasKey) NutMap data) throws IOException {
 		return NOPData.success().addData("r", data);
 	}
 
