@@ -38,6 +38,7 @@ import club.zhcs.thunder.ThunderSetup;
 import club.zhcs.thunder.bean.acl.User;
 import club.zhcs.thunder.biz.acl.RoleService;
 import club.zhcs.thunder.chain.ThunderChainMaker;
+import club.zhcs.thunder.task.APMTask;
 import club.zhcs.titans.nutz.captcha.JPEGView;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.codec.DES;
@@ -73,6 +74,9 @@ public class MainModule extends AbstractBaseModule {
 	private @Inject RoleService roleService;
 
 	@Inject
+	APMTask apmTask;
+
+	@Inject
 	PropertiesProxy config;
 
 	@At("/403")
@@ -95,6 +99,12 @@ public class MainModule extends AbstractBaseModule {
 	@Filters
 	public View captcha(@Param("length") int length) {
 		return new JPEGView(null, length);
+	}
+
+	@At
+	@Filters
+	public Result dashboard() {
+		return apmTask.data();
 	}
 
 	@At
