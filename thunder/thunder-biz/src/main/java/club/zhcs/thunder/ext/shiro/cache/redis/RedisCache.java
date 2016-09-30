@@ -1,4 +1,4 @@
-package club.zhcs.thunder.ext.shiro.cache;
+package club.zhcs.thunder.ext.shiro.cache.redis;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +12,8 @@ import org.apache.shiro.cache.CacheException;
 import org.apache.shiro.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import club.zhcs.thunder.ext.shiro.cache.SerializeUtils;
 
 public class RedisCache<K, V> implements Cache<K, V> {
 

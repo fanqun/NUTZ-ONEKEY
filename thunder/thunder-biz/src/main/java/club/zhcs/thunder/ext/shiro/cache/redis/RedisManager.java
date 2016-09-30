@@ -1,4 +1,4 @@
-package club.zhcs.thunder.ext.shiro.cache;
+package club.zhcs.thunder.ext.shiro.cache.redis;
 
 import java.util.Set;
 
@@ -6,6 +6,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+@SuppressWarnings("deprecation")
 public class RedisManager {
 
 	private String host = "127.0.0.1";

@@ -1,4 +1,4 @@
-package club.zhcs.thunder.ext.shiro.cache;
+package club.zhcs.thunder.ext.shiro.cache.redis;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -10,6 +10,8 @@ import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import club.zhcs.thunder.ext.shiro.cache.SerializeUtils;
 
 public class RedisSessionDAO extends AbstractSessionDAO {
 

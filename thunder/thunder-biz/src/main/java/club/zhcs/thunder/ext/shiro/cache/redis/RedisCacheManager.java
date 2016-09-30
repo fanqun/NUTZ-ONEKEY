@@ -1,4 +1,4 @@
-package club.zhcs.thunder.ext.shiro.cache;
+package club.zhcs.thunder.ext.shiro.cache.redis;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
