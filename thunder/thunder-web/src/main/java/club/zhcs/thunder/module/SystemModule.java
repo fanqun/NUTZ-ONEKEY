@@ -105,7 +105,7 @@ public class SystemModule extends AbstractBaseModule {
 	}
 
 	@At
-	@Ok(">>:/apm/dashboard")
+	@Ok("beetl:pages/admin/main.html")
 	public Result main(@Attr(SessionKeys.USER_KEY) User user) {
 		return Result.success();
 	}
