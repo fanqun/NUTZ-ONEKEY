@@ -96,6 +96,22 @@ NUTZ一键脚手架
     + 自定义 shiro 的验证注解及拦截器
     + 权限验证使用枚举,消灭硬编码
 
+## 运行项目
+
++ clone 源码  ` git clone https://github.com/Kerbores/NUTZ-ONEKEY.git`
++ 导入maven项目 `mvn eclipse:eclipse`
++ 修改数据源 ,修改datasource.properties中的数据源配置**密码采用druid加密,请自行参照druid的加密方式进行修改**
++ 运行项目 ,直接在eclipse中运行项目即可,启动将自动创建数据表和初始化数据
+
+## 部署项目
+
++ clone 源码 ` git clone https://github.com/Kerbores/NUTZ-ONEKEY.git`
++ maven 构建 `mvn clean package -Dmaven.test.skip=true`
++ 环境感知的配置 ,**数据源密码采用druid加密,请自行参照druid的加密方式进行修改**
+    - windows 在C:/datasource下创建数据源的properties配置文件
+    - linux/mac 在 /var/datasource 下创建数据源的properties配置文件
++ 启动项目 将mvn编译产生的war包部署到应用服务器内并启动即可
+
 ## 关于我
 key  | Value
 ------------- | -------------

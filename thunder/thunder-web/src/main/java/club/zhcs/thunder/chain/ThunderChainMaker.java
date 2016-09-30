@@ -49,20 +49,21 @@ public class ThunderChainMaker extends KerboresActionChainMaker {
 	public ActionChain eval(final NutConfig config, final ActionInfo ai) {
 		List<Processor> list = normalList();
 
-		List<AuthorizingAnnotationMethodInterceptor> interceptors = new
-				ArrayList<AuthorizingAnnotationMethodInterceptor>();
+		List<AuthorizingAnnotationMethodInterceptor> interceptors = new ArrayList<AuthorizingAnnotationMethodInterceptor>();
 
 		interceptors.add(new ThunderPermissionAnnotationMethodInterceptor());
 		interceptors.add(new ThunderRoleAnnotationMethodInterceptor());
 
-		addBefore(list, ActionFiltersProcessor.class, new
-				NutShiroProcessor(interceptors, ThunderRequiresPermissions.class,
-						ThunderRequiresRoles.class));
+		addBefore(list, ActionFiltersProcessor.class, new NutShiroProcessor(interceptors, ThunderRequiresPermissions.class, ThunderRequiresRoles.class));
 
-		addBefore(list, ActionFiltersProcessor.class, new
-				WxUserInjectProcessor());
-		addBefore(list, ActionFiltersProcessor.class, new
-				WxJsSdkConfigProcessor());
+		addBefore(list, ActionFiltersProcessor.class, new WxUserInjectProcessor());
+		addBefore(list, ActionFiltersProcessor.class, new WxJsSdkConfigProcessor());
+		// addBefore(list, ActionFiltersProcessor.class, new
+		// XSSProtectProcessor());
+		// addBefore(list, ActionFiltersProcessor.class, new
+		// CSRFProtectPreProcessor());
+		// addBefore(list, ActionFiltersProcessor.class, new
+		// CSRFProtectPostProcessor());
 
 		Processor error = new KerboresFailProcessor();
 		Lang.each(list, new Each<Processor>() {

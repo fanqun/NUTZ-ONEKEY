@@ -30,13 +30,5 @@ public class Application {
 		public static final String USER_KEY = "KERBORES_USER";
 		public static final String WECHAT_USER_KEY = "KERBORES_WECHAT_USER";
 	}
-	// public static final String NAME =
-	// Mvcs.getIoc().get(PropertiesProxy.class,
-	// "config").get("application.name");
-	// public static final String COPYRIGHT =
-	// Mvcs.getIoc().get(PropertiesProxy.class, "config").get("copy.right");
-	//
-	// public static final String BAIDUMAPKEY =
-	// Mvcs.getIoc().get(PropertiesProxy.class, "config").get("baidu.map.key");
 
 }

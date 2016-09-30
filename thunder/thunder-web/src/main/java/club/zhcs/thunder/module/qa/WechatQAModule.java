@@ -12,6 +12,7 @@ import org.nutz.mvc.ViewModel;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
 import org.nutz.mvc.annotation.Attr;
+import org.nutz.mvc.annotation.By;
 import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
@@ -24,6 +25,7 @@ import club.zhcs.thunder.Application;
 import club.zhcs.thunder.Application.SessionKeys;
 import club.zhcs.thunder.bean.qa.Nutzer;
 import club.zhcs.thunder.biz.qa.NutzerService;
+import club.zhcs.titans.nutz.filter.CheckSession;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.db.Result;
 
@@ -40,9 +42,7 @@ import club.zhcs.titans.utils.db.Result;
  *
  */
 @At("qa")
-// @Filters({ @By(type = CheckSession.class, args = {
-// SessionKeys.WECHAT_USER_KEY, "/qa/bind" }) })
-@Filters
+@Filters({ @By(type = CheckSession.class, args = { SessionKeys.WECHAT_USER_KEY, "/qa/bind" }) })
 public class WechatQAModule extends AbstractBaseModule {
 
 	@Inject
@@ -110,7 +110,7 @@ public class WechatQAModule extends AbstractBaseModule {
 	public Result reply(String id) {
 		return Result.success().addData("id", id);
 	}
-	
+
 	@At("/new")
 	@GET
 	@Ok("re:beetl:pages/qa/bind.html")
@@ -120,10 +120,10 @@ public class WechatQAModule extends AbstractBaseModule {
 		}
 		return "beetl:pages/qa/new.html";
 	}
-	
+
 	@At
 	@POST
-	public Result topic( @Param("title") String title, @Param("content") String content,@Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
+	public Result topic(@Param("title") String title, @Param("content") String content, @Attr(Application.SessionKeys.WECHAT_USER_KEY) Nutzer nutzer) {
 		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken()))
 			return Result.fail("非法用户");
 		Response response = Http.post2("https://nutz.cn/yvr/api/v1/topics",
@@ -140,7 +140,7 @@ public class WechatQAModule extends AbstractBaseModule {
 		if (nutzer == null || Strings.isBlank(nutzer.getAccessToken()))
 			return Result.fail("非法用户");
 		Response response = Http.post2("https://nutz.cn/yvr/api/v1/topic/" + id + "/replies",
-				NutMap.NEW().addv("id", id).addv("content", content).addv("accesstoken", nutzer.getAccessToken()), 5000);
+				NutMap.NEW().addv("id", id).addv("content", content + "<br>来自 NX 哄哄的 nutz-onekey 微信客户端!").addv("accesstoken", nutzer.getAccessToken()), 5000);
 		if (response.isOK()) {
 			return Result.success();
 		}
@@ -178,9 +178,9 @@ public class WechatQAModule extends AbstractBaseModule {
 		paras.addv("file", img.getFile());
 		Response response = Http.upload("https://nutz.cn/yvr/api/v1/images?accesstoken=" + nutzer.getAccessToken(), paras, Header.create(), 100000);
 		if (response.isOK()) {
-			return NutMap.NEW().addv("success", 1).addv("message", "上传成功!").addv("url","https://nutz.cn"+ Lang.map(response.getContent()).getString("url"));
+			return NutMap.NEW().addv("success", 1).addv("message", "上传成功!").addv("url", "https://nutz.cn" + Lang.map(response.getContent()).getString("url"));
 		}
 		return NutMap.NEW().addv("success", 0).addv("message", "上传失败!<br>code:" + response.getStatus());
 	}
-	
+
 }

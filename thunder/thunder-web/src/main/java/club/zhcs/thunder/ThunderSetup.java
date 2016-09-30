@@ -2,9 +2,13 @@ package club.zhcs.thunder;
 
 import java.nio.charset.Charset;
 
+import net.sf.ehcache.CacheManager;
+
+import org.apache.log4j.PropertyConfigurator;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
 import org.nutz.dao.util.Daos;
+import org.nutz.integration.quartz.NutQuartzCronJobFactory;
 import org.nutz.integration.shiro.NutShiro;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.impl.PropertiesProxy;
@@ -12,6 +16,7 @@ import org.nutz.lang.ContinueLoop;
 import org.nutz.lang.Each;
 import org.nutz.lang.Encoding;
 import org.nutz.lang.ExitLoop;
+import org.nutz.lang.Files;
 import org.nutz.lang.Lang;
 import org.nutz.lang.LoopException;
 import org.nutz.log.Log;
@@ -67,6 +72,13 @@ public class ThunderSetup implements Setup {
 	@Override
 	public void init(NutConfig nc) {
 
+		String logConfigPath = "/var/config/log4j.properties";
+		try {
+			if (Files.checkFile(logConfigPath) != null) {// 找到了线上配置
+				PropertyConfigurator.configure(new PropertiesProxy(logConfigPath).toProperties());// 那么加载线上的配置吧!!!
+			}
+		} catch (Exception e) {
+		}
 		NutShiro.DefaultLoginURL = "/";
 		NutShiro.DefaultNoAuthURL = "/403";
 
@@ -78,7 +90,10 @@ public class ThunderSetup implements Setup {
 
 		Dao dao = ioc.get(Dao.class);
 
-		// ioc.get(NutQuartzCronJobFactory.class);// 触发任务
+		CacheManager cacheManager = ioc.get(CacheManager.class);
+		log.debug("Ehcache CacheManager = " + cacheManager);
+
+		ioc.get(NutQuartzCronJobFactory.class);// 触发任务
 
 		// ioc.get(SigarClient.class);// 触发 sigar
 

@@ -14,6 +14,7 @@ import org.nutz.lang.Lang;
 import org.nutz.lang.LoopException;
 import org.nutz.mvc.Mvcs;
 import org.nutz.mvc.annotation.At;
+import org.nutz.mvc.annotation.Filters;
 import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
@@ -178,8 +179,8 @@ public class WechatSettingModule extends AbstractBaseModule {
 	}
 
 	@At("/qr/*")
+	@Filters
 	@Ok(">>:${obj}")
-	@ThunderRequiresPermissions(InstallPermission.CONFIG_WECHAT)
 	public String qr() {
 		WxResp resp = wxApi.createQRTicket(0, Type.EVERARGS, "test config");
 		return wxApi.qrURL(resp.getString("ticket"));
