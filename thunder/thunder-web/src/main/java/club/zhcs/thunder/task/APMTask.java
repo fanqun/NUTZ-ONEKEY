@@ -81,7 +81,7 @@ public class APMTask implements Job {
 
 	private List<Double> noUsages = new ArrayList();
 
-	private int monitorCount = 150;
+	private int monitorCount = 25;
 
 	public Result data() {
 
