@@ -137,7 +137,7 @@ public class MainModule extends AbstractBaseModule {
 	@At
 	@Filters
 	public Result testClassPath() {
-		return Result.success().addData("classpath", System.getProperty("java.library.path").split(":"));
+		return Result.success().addData("path", System.getProperty("java.library.path").split(":")).addData("classpath", System.getProperty("java.class.path").split(":"));
 	}
 
 	@At("/testSigar")
