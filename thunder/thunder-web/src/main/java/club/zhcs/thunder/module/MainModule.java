@@ -114,8 +114,8 @@ public class MainModule extends AbstractBaseModule {
 	}
 
 	@At("/")
-	@Ok("jsp:/login")
 	@Filters
+	@Ok("beetl:pages/login/login.html")
 	public View login(@Attr(SessionKeys.USER_KEY) User user, HttpServletRequest request) {
 		request.setAttribute("config", config);
 		String cookie = _getCookie("kerbores");
@@ -132,6 +132,12 @@ public class MainModule extends AbstractBaseModule {
 	public Result shiro() {
 
 		return Result.success();
+	}
+
+	@At
+	@Filters
+	public Result testClassPath() {
+		return Result.success().addData("classpath", System.getProperty("java.library.path").split(":"));
 	}
 
 	@At("/testSigar")

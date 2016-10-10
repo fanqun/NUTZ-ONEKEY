@@ -52,11 +52,6 @@
 		<!-- guava -->
 
 		<!-- servlet -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-		</dependency>
 		<!-- servlet -->
 
 		<!-- db -->
@@ -271,53 +266,9 @@
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-web</artifactId>
 			<version>1.r.58-SNAPSHOT</version>
-			<exclusions> <!-- nutz-web为了兼容Android所以默认使用jetty 7.x, 这里我们换成最新的jetty9 -->
-				<exclusion>
-					<groupId>org.eclipse.jetty.aggregate</groupId>
-					<artifactId>jetty-all-server</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.eclipse.jetty.orbit</groupId>
-					<artifactId>javax.servlet.jsp</artifactId>
-				</exclusion>
-				<exclusion>
-					<artifactId>nutz</artifactId>
-					<groupId>org.nutz</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlets</artifactId>
-			<version>9.2.17.v20160517</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.websocket</groupId>
-			<artifactId>websocket-server</artifactId>
-			<version>9.2.17.v20160517</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.websocket</groupId>
-			<artifactId>websocket-client</artifactId>
-			<version>9.2.17.v20160517</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.websocket</groupId>
-			<artifactId>javax.websocket-api</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jetty.websocket</groupId>
-			<artifactId>javax-websocket-server-impl</artifactId>
-			<version>9.2.17.v20160517</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jsp -->
-		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-jsp</artifactId>
-			<version>9.2.17.v20160517</version>
-		</dependency>
 
 	</dependencies>
 	<properties>
