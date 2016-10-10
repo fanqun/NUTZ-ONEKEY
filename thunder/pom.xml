@@ -96,6 +96,12 @@
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-integration-shiro</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 
@@ -103,18 +109,36 @@
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-plugins-daocache</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-integration-quartz</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutzwx</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -127,24 +151,48 @@
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-plugins-sigar</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-plugins-nop</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-plugins-views</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-plugins-apidoc</artifactId>
 			<version>${nutz.plugins.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- nutz -->
@@ -184,6 +232,12 @@
 			<groupId>club.zhcs</groupId>
 			<artifactId>titans</artifactId>
 			<version>2.0.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- 我的扩展 -->
 
@@ -211,6 +265,58 @@
 			<groupId>com.github.sd4324530</groupId>
 			<artifactId>fastexcel</artifactId>
 			<version>0.0.4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.nutz</groupId>
+			<artifactId>nutz-web</artifactId>
+			<version>1.r.58-SNAPSHOT</version>
+			<exclusions> <!-- nutz-web为了兼容Android所以默认使用jetty 7.x, 这里我们换成最新的jetty9 -->
+				<exclusion>
+					<groupId>org.eclipse.jetty.aggregate</groupId>
+					<artifactId>jetty-all-server</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty.orbit</groupId>
+					<artifactId>javax.servlet.jsp</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>nutz</artifactId>
+					<groupId>org.nutz</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-servlets</artifactId>
+			<version>9.2.17.v20160517</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-server</artifactId>
+			<version>9.2.17.v20160517</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>websocket-client</artifactId>
+			<version>9.2.17.v20160517</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.websocket</groupId>
+			<artifactId>javax.websocket-api</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty.websocket</groupId>
+			<artifactId>javax-websocket-server-impl</artifactId>
+			<version>9.2.17.v20160517</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jsp -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-jsp</artifactId>
+			<version>9.2.17.v20160517</version>
 		</dependency>
 
 	</dependencies>

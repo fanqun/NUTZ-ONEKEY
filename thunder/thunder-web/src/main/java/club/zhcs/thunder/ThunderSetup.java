@@ -2,8 +2,6 @@ package club.zhcs.thunder;
 
 import java.nio.charset.Charset;
 
-import net.sf.ehcache.CacheManager;
-
 import org.apache.log4j.PropertyConfigurator;
 import org.nutz.dao.Cnd;
 import org.nutz.dao.Dao;
@@ -42,6 +40,7 @@ import club.zhcs.thunder.biz.config.ConfigService;
 import club.zhcs.thunder.biz.config.WxConfigService;
 import club.zhcs.thunder.vo.InstallPermission;
 import club.zhcs.thunder.vo.InstalledRole;
+import net.sf.ehcache.CacheManager;
 
 public class ThunderSetup implements Setup {
 	private static final Log log = Logs.get();
@@ -72,6 +71,12 @@ public class ThunderSetup implements Setup {
 	@Override
 	public void init(NutConfig nc) {
 
+		Ioc ioc = nc.getIoc();
+
+		final PropertiesProxy p = ioc.get(PropertiesProxy.class, "config");
+		nc.setAttribute("rs", p.get("app-rs", ""));
+		nc.setAttribute("appnm", p.get("app-name", "Thunder"));
+
 		String logConfigPath = "/var/config/log4j.properties";
 		try {
 			if (Files.checkFile(logConfigPath) != null) {// 找到了线上配置
@@ -85,8 +90,6 @@ public class ThunderSetup implements Setup {
 		if (!Charset.defaultCharset().name().equalsIgnoreCase(Encoding.UTF8)) {
 			log.warn("This project must run in UTF-8, pls add -Dfile.encoding=UTF-8 to JAVA_OPTS");
 		}
-
-		Ioc ioc = nc.getIoc();
 
 		Dao dao = ioc.get(Dao.class);
 
@@ -112,7 +115,6 @@ public class ThunderSetup implements Setup {
 			wxApi.setEncodingAesKey(wxConfig.getEncodingAesKey());
 			wxApi.setToken(wxConfig.getToken());
 		}
-		final PropertiesProxy p = ioc.get(PropertiesProxy.class, "config");
 
 		Lang.each(configService.queryAll(), new Each<Config>() {
 
@@ -130,16 +132,16 @@ public class ThunderSetup implements Setup {
 
 		Lang.each(InstalledRole.values(), new Each<InstalledRole>() {// 内置角色
 
-					@Override
-					public void invoke(int index, InstalledRole role, int length) throws ExitLoop, ContinueLoop, LoopException {
-						if (roleService.fetch(Cnd.where("name", "=", role.getName())) == null) {
-							Role temp = new Role();
-							temp.setName(role.getName());
-							temp.setDescription(role.getDescription());
-							roleService.save(temp);
-						}
-					}
-				});
+			@Override
+			public void invoke(int index, InstalledRole role, int length) throws ExitLoop, ContinueLoop, LoopException {
+				if (roleService.fetch(Cnd.where("name", "=", role.getName())) == null) {
+					Role temp = new Role();
+					temp.setName(role.getName());
+					temp.setDescription(role.getDescription());
+					roleService.save(temp);
+				}
+			}
+		});
 
 		admin = roleService.fetch(Cnd.where("name", "=", InstalledRole.SU.getName()));
 
@@ -152,25 +154,25 @@ public class ThunderSetup implements Setup {
 
 		Lang.each(InstallPermission.values(), new Each<InstallPermission>() {// 内置权限
 
-					@Override
-					public void invoke(int index, InstallPermission permission, int length) throws ExitLoop, ContinueLoop, LoopException {
-						Permission temp = null;
-						if ((temp = permissionService.fetch(Cnd.where("name", "=", permission.getName()))) == null) {
-							temp = new Permission();
-							temp.setName(permission.getName());
-							temp.setDescription(permission.getDescription());
-							temp = permissionService.save(temp);
-						}
+			@Override
+			public void invoke(int index, InstallPermission permission, int length) throws ExitLoop, ContinueLoop, LoopException {
+				Permission temp = null;
+				if ((temp = permissionService.fetch(Cnd.where("name", "=", permission.getName()))) == null) {
+					temp = new Permission();
+					temp.setName(permission.getName());
+					temp.setDescription(permission.getDescription());
+					temp = permissionService.save(temp);
+				}
 
-						// 给SU授权
-						if (rolePermissionService.fetch(Cnd.where("permissionId", "=", temp.getId()).and("roleId", "=", admin.getId())) == null) {
-							RolePermission rp = new RolePermission();
-							rp.setRoleId(admin.getId());
-							rp.setPermissionId(temp.getId());
-							rolePermissionService.save(rp);
-						}
-					}
-				});
+				// 给SU授权
+				if (rolePermissionService.fetch(Cnd.where("permissionId", "=", temp.getId()).and("roleId", "=", admin.getId())) == null) {
+					RolePermission rp = new RolePermission();
+					rp.setRoleId(admin.getId());
+					rp.setPermissionId(temp.getId());
+					rolePermissionService.save(rp);
+				}
+			}
+		});
 
 		User surperMan = null;
 		if ((surperMan = userService.fetch(Cnd.where("name", "=", "admin"))) == null) {
