@@ -18,6 +18,7 @@ import org.nutz.mvc.annotation.GET;
 import org.nutz.mvc.annotation.Ok;
 import org.nutz.mvc.annotation.POST;
 import org.nutz.mvc.annotation.Param;
+import org.nutz.mvc.filter.CheckSession;
 import org.nutz.mvc.upload.TempFile;
 import org.nutz.mvc.upload.UploadAdaptor;
 
@@ -25,7 +26,6 @@ import club.zhcs.thunder.Application;
 import club.zhcs.thunder.Application.SessionKeys;
 import club.zhcs.thunder.bean.qa.Nutzer;
 import club.zhcs.thunder.biz.qa.NutzerService;
-import club.zhcs.titans.nutz.filter.CheckSession;
 import club.zhcs.titans.nutz.module.base.AbstractBaseModule;
 import club.zhcs.titans.utils.db.Result;
 

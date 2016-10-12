@@ -265,7 +265,7 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-web</artifactId>
-			<version>1.r.58-SNAPSHOT</version>
+			<version>1.r.57</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-jsp -->
